@@ -31,6 +31,7 @@ class StudentCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
+        //This has to get deleted
         $this->crud->setFromDb();
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
         
