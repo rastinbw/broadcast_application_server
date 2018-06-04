@@ -3,14 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Http\Controllers\CrudController;
-use App\Student;
-
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\StudentRequest as StoreRequest;
-use App\Http\Requests\StudentRequest as UpdateRequest;
+use App\Http\Requests\WorkbookRequest as StoreRequest;
+use App\Http\Requests\WorkbookRequest as UpdateRequest;
 
-class StudentCrudController extends CrudController
+class WorkbookCrudController extends CrudController
 {
     public function setup()
     {
@@ -20,9 +18,9 @@ class StudentCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Student');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/student');
-        $this->crud->setEntityNameStrings('student', 'students');
+        $this->crud->setModel('App\Models\Workbook');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/workbook');
+        $this->crud->setEntityNameStrings('workbook', 'workbooks');
 
         /*
         |--------------------------------------------------------------------------
@@ -30,28 +28,7 @@ class StudentCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        //This has to get deleted
-        $this->crud->addColumns(['national_code','first_name','last_name']);
-        $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
-
-        $this->crud->addFields([
-            [
-                'name' => 'national_code',
-                'label' => 'کد ملی',
-                'type' => 'text'
-            ],
-            [
-                'name' => 'first_name',
-                'label' => 'نام',
-                'type' => 'text'
-            ],
-            [
-                'name' => 'last_name',
-                'label' => 'نام خانوادگی',
-                'type' => 'text'
-            ],
-
-        ], 'update/create/both');
+        $this->crud->setFromDb();
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -109,12 +86,12 @@ class StudentCrudController extends CrudController
         // ------ ADVANCED QUERIES
         // $this->crud->addClause('active');
         // $this->crud->addClause('type', 'car');
-        //$this->crud->addClause('where', 'user_id', '==', 2);
+        // $this->crud->addClause('where', 'name', '==', 'car');
         // $this->crud->addClause('whereName', 'car');
         // $this->crud->addClause('whereHas', 'posts', function($query) {
         //     $query->activePosts();
         // });
-        //$this->crud->addClause('withoutGlobalScopes');
+        // $this->crud->addClause('withoutGlobalScopes');
         // $this->crud->addClause('withoutGlobalScope', VisibleScope::class);
         // $this->crud->with(); // eager load relationships
         // $this->crud->orderBy();
@@ -128,10 +105,6 @@ class StudentCrudController extends CrudController
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        // $student = Student::orderBy('created_at', 'desc')->first();
-        // $student->user_id = Auth::user()->id;
-        // $student->save();
-
         return $redirect_location;
     }
 
@@ -143,5 +116,4 @@ class StudentCrudController extends CrudController
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
     }
-
 }

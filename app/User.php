@@ -32,4 +32,14 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Student');
     }
+
+    public function workbooks()
+    {
+        return $this->hasMany('App\Workbook');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }

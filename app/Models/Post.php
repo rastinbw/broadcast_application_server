@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
-class Student extends Model
+class Post extends Model
 {
     use CrudTrait;
 
@@ -15,11 +15,11 @@ class Student extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'students';
+    protected $table = 'posts';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['national_code', 'password', 'first_name', 'last_name', 'phone_number', 'user_id', 'token'];
+    protected $fillable = ['title', 'content'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -37,11 +37,6 @@ class Student extends Model
     public function user()
     {
         return $this->belongsTo('App\User');
-    }
-
-    public function workbook()
-    {
-        return $this->hasOne('App\Workbook');
     }
     /*
     |--------------------------------------------------------------------------
