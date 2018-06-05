@@ -30,16 +30,21 @@ class User extends Authenticatable
 
     public function students()
     {
-        return $this->hasMany('App\Student');
+        return $this->hasMany('App\Models\Student');
     }
 
     public function workbooks()
     {
-        return $this->hasMany('App\Workbook');
+        return $this->hasMany('App\Models\Workbook');
     }
 
     public function posts()
     {
-        return $this->hasMany('App\Post');
+        return $this->hasMany('App\Models\Post');
+    }
+
+    public function medias()
+    {
+        return $this->hasMany('App\Models\Media');
     }
 }

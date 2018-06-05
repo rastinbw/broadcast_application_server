@@ -41,7 +41,7 @@ class Student extends Model
 
     public function workbook()
     {
-        return $this->hasOne('App\Workbook');
+        return $this->hasOne('App\Models\Workbook');
     }
     /*
     |--------------------------------------------------------------------------

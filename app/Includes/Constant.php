@@ -16,4 +16,8 @@ class Constant
     public static $INVALID_PASSWORD = 1102;
     public static $INVALID_TOKEN = 1103;
     public static $NO_MORE_POSTS = 1104;
+
+    public static $TYPE_MEDIA = "media";
+    public static $TYPE_HTML = "html";
+
 }

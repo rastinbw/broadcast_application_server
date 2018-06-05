@@ -7,10 +7,22 @@ use App\Models\Post;
 use App\Models\Student;
 use Illuminate\Http\Request;
 use App\Includes\Constant;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class WebserviceController extends Controller
 {
+    function get_student_workbook($user_id, Request $req){
+        $student = Student::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($student) {
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->workbook()->get()->toJson());
+        }else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
 
     function authorize_student($user_id, Request $req){
         //Validation
@@ -80,19 +92,23 @@ class WebserviceController extends Controller
         return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $notifications->toJson());
     }
 
-    function get_posts($user_id, $chunk_count, $page_count)
+    function get_posts($user_id, $type, $chunk_count, $page_count)
     {
+        $table = "posts";
+        if ($type == Constant::$TYPE_MEDIA)
+            $table = "media";
+
         try{
-            $posts = Post::where([
+            $items = DB::table($table)->where([
                 ['user_id', '=', $user_id],
             ])->get();
-            $last_posts = (collect($posts)->sortByDesc('id')->chunk($chunk_count))[$page_count];
+            $last_items = (collect($items)->sortByDesc('id')->chunk($chunk_count))[$page_count];
 
             //putting the selected chunk in a new array to make it start from index zero
             $temp = [];
             $i = 0;
-            foreach ($last_posts as $p){
-                $temp[$i] = $p;
+            foreach ($last_items as $item){
+                $temp[$i] = $item;
                 $i++;
             }
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($temp)->toJson());
@@ -100,6 +116,7 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$NO_MORE_POSTS);
         }
     }
+
 
 
 }

@@ -17,7 +17,10 @@ class CreateWorkbooksTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->nullable();
             $table->integer('student_id')->nullable();
-            $table->mediumText("content")->nullable();
+            $table->string("year")->nullable();
+            $table->string("month")->nullable();
+            $table->string("lessons")->nullable();
+            $table->string("grades")->nullable();
             $table->timestamps();
         });
     }

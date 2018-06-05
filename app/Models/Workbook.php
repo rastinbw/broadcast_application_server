@@ -19,7 +19,7 @@ class Workbook extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['user_id','student_id','content'];
+    protected $fillable = ['user_id','student_id','year','month','lessons','grades'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -36,7 +36,7 @@ class Workbook extends Model
     */
     public function student()
     {
-        return $this->belongsTo('App\Student');
+        return $this->belongsTo('App\Models\Student');
     }
 
     public function user()
