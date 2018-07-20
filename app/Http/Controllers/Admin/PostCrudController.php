@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Includes\Constant;
+use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use App\Post;
 
@@ -33,10 +35,17 @@ class PostCrudController extends CrudController
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
         // ------ CRUD FIELDS
-        $this->crud->addField([   // WYSIWYG Editor
-            'name' => 'content',
-            'label' => 'Content',
-            'type' => 'wysiwyg'
+        $this->crud->addFields([
+          [
+           'name' => 'content',
+           'label' => 'Content',
+           'type' => 'wysiwyg'
+          ],
+          [
+            'name' => 'preview_content',
+            'label' => 'PContent',
+            'type' => 'text'
+          ]
         ], 'update/create/both');
 
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -114,6 +123,12 @@ class PostCrudController extends CrudController
         $post = $this->crud->entry;
         $post->user_id = \Auth::user()->id;
         $post->save();
+
+        $notification = new Notification();
+        $notification->user_id = \Auth::user()->id;
+        $notification->content = $post->title;
+        $notification->category_id = Constant::$CATEGORY_ID_POST;
+        $notification->save();
 
         return $redirect_location;
     }

@@ -38,6 +38,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Workbook');
     }
 
+    public function tickets()
+    {
+        return $this->hasMany('App\Models\Ticket');
+    }
+
     public function posts()
     {
         return $this->hasMany('App\Models\Post');

@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Includes\Constant;
+use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -32,21 +34,31 @@ class MediaCrudController extends CrudController
         $this->crud->addColumn('title');
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
+        $this->crud->addField( 
+            [ // Upload
+                    'name' => 'media',
+                    'label' => 'مسیر',
+                    'type' => 'upload',
+                    'upload' => true,
+                    'disk' => 'uploads',
+            ], 
+            'create'); 
+
         $this->crud->addFields([
             [
                 'name' => 'title',
                 'label' => 'عنوان',
                 'type' => 'text'
             ],
-            [   // Upload
-                'name' => 'media',
-                'label' => 'مسیر',
-                'type' => 'upload',
-                'upload' => true,
-                'disk' => 'uploads'
+            [
+                'name' => 'description',
+                'label' => 'توضیحات',
+                'type' => 'text'
             ],
+        ], 'update/create/both');  
 
-        ], 'update/create/both');
+
+        
 
         //$this->crud->setFromDb();
 
@@ -146,6 +158,13 @@ class MediaCrudController extends CrudController
         $media = $this->crud->entry;
         $media->user_id = \Auth::user()->id;
         $media->save();
+
+        $notification = new Notification();
+        $notification->user_id = \Auth::user()->id;
+        $notification->content = $media->title;
+        $notification->category_id = Constant::$CATEGORY_ID_MEDIA;
+        $notification->save();
+
         return $redirect_location;
     }
 

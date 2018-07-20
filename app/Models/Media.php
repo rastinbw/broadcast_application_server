@@ -20,7 +20,7 @@ class Media extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['title', 'media'];
+    protected $fillable = ['title', 'media', 'description'];
     // protected $hidden = [];
     // protected $dates = [];
 

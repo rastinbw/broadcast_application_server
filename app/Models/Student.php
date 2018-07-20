@@ -39,9 +39,14 @@ class Student extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function workbook()
+    public function workbooks()
     {
-        return $this->hasOne('App\Models\Workbook');
+        return $this->hasMany('App\Models\Workbook');
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Models\Ticket');
     }
     /*
     |--------------------------------------------------------------------------
