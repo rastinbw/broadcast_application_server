@@ -19,7 +19,12 @@ class MaatwebsiteController extends Controller
         return view('import_workbook');
     }
 
-    public function import_excel(Request $request)
+    public function import_student()
+    {
+        return view('import_student');
+    }
+
+    public function import_workbook_excel(Request $request)
     {
         //Authenticating provider
         $user = User::where('email' , '=' , $request->input('email'))->first();
@@ -66,4 +71,39 @@ class MaatwebsiteController extends Controller
 
         return back();
     }
+
+    public function import_student_excel(Request $request)
+    {
+        //Authenticating provider
+        $user = User::where('email' , '=' , $request->input('email'))->first();
+
+        if ($user){
+            if (Hash::check($request->input('password'), $user->password))
+                $user_id = $user->id;
+            else
+                return "Invalid password";
+        }else
+            return "Invalid email";
+
+        //Importing excel
+        try {
+            $rows = Excel::load($request->file('import_file')->getRealPath(), 'UTF-8')->get();
+
+            foreach($rows as $row) {
+                $student = array_values($row->toArray());
+                Student::create([
+                    'user_id' => $user_id,
+                    'first_name' => $student[0],
+                    'last_name' => $student[1],
+                    'national_code' => $student[2],
+                    'grade' => $student[3],
+                ]);
+            }
+        } catch (Exception $e) {
+            return $e;
+        }
+
+        return back();
+    }
+
 }

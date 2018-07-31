@@ -4,3 +4,5 @@
 <li><a href="{{ backpack_url('student') }}"><i class="fa fa-user"></i> <span>Students</span></a></li>
 <li><a href="{{ backpack_url('post') }}"><i class="fa fa-user"></i> <span>Posts</span></a></li>
 <li><a href="{{ backpack_url('media') }}"><i class="fa fa-user"></i> <span>Media</span></a></li>
+<li><a href="{{ backpack_url('program') }}"><i class="fa fa-user"></i> <span>Program</span></a></li>
+<li><a href="{{ backpack_url('group') }}"><i class="fa fa-user"></i> <span>Group</span></a></li>

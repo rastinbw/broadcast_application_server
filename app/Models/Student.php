@@ -19,7 +19,7 @@ class Student extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['national_code', 'password', 'first_name', 'last_name', 'phone_number', 'user_id', 'token'];
+    protected $fillable = ['national_code', 'password', 'first_name', 'last_name', 'phone_number', 'grade', 'user_id', 'token'];
     // protected $hidden = [];
     // protected $dates = [];
 

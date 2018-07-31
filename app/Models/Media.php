@@ -32,8 +32,12 @@ class Media extends Model
     public function setMediaAttribute($value)
     {
         $attribute_name = "media";
-        $disk = "public";
-        $destination_path = "uploads";
+
+        //         if (!request()->hasFile($attribute_name) && !request()->file($attribute_name)->isValid()) {
+//   throw new \Exception('NOT WORK'); }
+
+        $disk = "uploads";
+        $destination_path = ".";
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
     }
 

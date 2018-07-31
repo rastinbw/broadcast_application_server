@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Group;
 use App\Models\Notification;
 use App\Models\Post;
 use App\Models\Student;
 use App\Models\Ticket;
+use App\User;
 use Illuminate\Http\Request;
 use App\Includes\Constant;
 use Illuminate\Support\Facades\DB;
@@ -17,6 +19,17 @@ use Psy\Util\Str;
 
 class WebserviceController extends Controller
 {
+    function get_user_group_list($user_id, Request $req){
+        $user = User::where([
+            ['id', '=', $user_id],
+        ])->first();
+
+        if ($user) {
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->groups()->get()->toJson());
+        }else
+            return sprintf('{"result_code": %u}', Constant::$USER_NOT_EXIST);
+    }
+
     function save_ticket($user_id, Request $req){
         $student = Student::where([
             ['user_id', '=', $user_id],
@@ -51,6 +64,7 @@ class WebserviceController extends Controller
                 'last_name' => $student->last_name,
                 'phone_number' => $student->phone_number,
                 'national_code' => $student->national_code,
+                'grade' => $student->grade,
             ];
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($data)->toJson());
         }else
@@ -154,10 +168,15 @@ class WebserviceController extends Controller
 
         if ($student) {
             //Student Exists
-            if (Hash::check($req->input('password'), $student->password))
-                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->token);
-            else
-                return sprintf('{"result_code": %u}', Constant::$INVALID_PASSWORD);
+            // TODO temporary disable password check
+//            if (Hash::check($req->input('password'), $student->password))
+//                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->token);
+//            else
+//                return sprintf('{"result_code": %u}', Constant::$INVALID_PASSWORD);
+            $token = bin2hex(random_bytes(16));
+            $student->token = $token;
+            $student->save();
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->token);
         }else
             return sprintf('{"result_code": %u}', Constant::$INVALID_NATIONAL_CODE);
     }
@@ -176,13 +195,19 @@ class WebserviceController extends Controller
     }
 
 
-    function get_posts($user_id, $type, $chunk_count, $page_count, $search_phrase)
+    function get_posts($user_id, $type, $chunk_count, $page_count, $search_phrase, $group_id)
     {
+        $query = [['user_id', '=', $user_id]];
         $table = "posts";
+
         if ($type == Constant::$TYPE_MEDIA)
             $table = "media";
+        elseif($type == Constant::$TYPE_PROGRAM){
+            $table = "programs";
+            if ($group_id != 'null')
+                array_push($query, ['group_id', '=', $group_id]);
+        }
 
-        $query = [['user_id', '=', $user_id]];
         if ($search_phrase != 'null')
             array_push($query, ['title', 'LIKE', '%'.$search_phrase.'%']);
 

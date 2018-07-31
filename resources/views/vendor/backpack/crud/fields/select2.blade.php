@@ -18,13 +18,26 @@
         @endif
 
         @if (isset($field['model']))
-            @foreach ($field['model']::all() as $connected_entity_entry)
-                @if($current_value == $connected_entity_entry->getKey())
-                    <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
-                @else
-                    <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
-                @endif
-            @endforeach
+                <?php
+                    if(isset($field['filter']) && is_array($field['filter'])){
+                        $filter = $field['filter'];
+                        $key = $filter['key'];
+                        $val = $filter['value'];
+                        $op = (isset($filter['operator']))? $filter['operator']: '==';
+
+                        $fields = $field['model']::where($key,$op ,$val)->get() ;
+                    }else{
+                        $fields = $field['model']::all() ;
+                    }
+                ?>
+
+                @foreach ($fields as $connected_entity_entry)
+                    @if($current_value == $connected_entity_entry->getKey())
+                        <option value="{{ $connected_entity_entry->getKey() }}" selected>{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    @else
+                        <option value="{{ $connected_entity_entry->getKey() }}">{{ $connected_entity_entry->{$field['attribute']} }}</option>
+                    @endif
+                @endforeach
         @endif
     </select>
 

@@ -12,7 +12,7 @@
         @endif
         {!! Session::forget('success') !!}
         <br />
-        <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('import_excel') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
+        <form style="border: 4px solid #a1a1a1;margin-top: 15px;padding: 10px;" action="{{ URL::to('import_workbook_excel') }}" class="form-horizontal" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <input type="text" name="email" value="email">
             <input type="text" name="password" value="password">

@@ -128,9 +128,9 @@ class StudentCrudController extends CrudController
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        // $student = Student::orderBy('created_at', 'desc')->first();
-        // $student->user_id = Auth::user()->id;
-        // $student->save();
+         $student = $this->data['entry'];
+         $student->user_id = Auth::user()->id;
+         $student->save();
 
         return $redirect_location;
     }
