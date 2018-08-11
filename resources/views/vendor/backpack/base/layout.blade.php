@@ -44,7 +44,7 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
-<body class="hold-transition {{ config('backpack.base.skin') }} sidebar-mini">
+<body class="hold-transition {{ config('backpack.base.skin') }} sidebar-mini" >
 	<script type="text/javascript">
 		/* Recover sidebar state */
 		(function () {
@@ -55,7 +55,7 @@
 		})();
 	</script>
     <!-- Site wrapper -->
-    <div class="wrapper">
+    <div class="wrapper" >
 
       <header class="main-header">
         <!-- Logo -->
@@ -79,10 +79,9 @@
         </nav>
       </header>
 
+
       <!-- =============================================== -->
-
       @include('backpack::inc.sidebar')
-
       <!-- =============================================== -->
 
       <!-- Content Wrapper. Contains page content -->

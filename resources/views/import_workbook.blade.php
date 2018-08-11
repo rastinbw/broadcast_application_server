@@ -16,6 +16,8 @@
             {{ csrf_field() }}
             <input type="text" name="email" value="email">
             <input type="text" name="password" value="password">
+            <input type="text" name="year" value="year">
+            <input type="text" name="month" value="month">
             <input type="file" name="import_file" />
             <button class="btn btn-primary">Import File</button>
         </form>

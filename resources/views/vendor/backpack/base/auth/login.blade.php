@@ -1,6 +1,20 @@
 @extends('backpack::layout')
 
 @section('content')
+    <style>
+        @font-face {
+            font-family: 'nazanin';
+            src: url("{{ asset('fonts/BNazanin.tff') }}") format('truetype'),
+            url("{{ asset('fonts/BNazanin.eot') }}") format('eot'),
+            url("{{ asset('fonts/BNazanin.woff') }}") format('woff');
+        }
+
+        *{
+            font-family: 'nazanin';
+        }
+
+    </style>
+
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="box box-default">
@@ -12,7 +26,7 @@
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has($username) ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ config('backpack.base.authentication_column_name') }}</label>
+                            <label class="col-md-4 control-label">ایمیل</label>
 
                             <div class="col-md-6">
                                 <input type="text" class="form-control" name="{{ $username }}" value="{{ old($username) }}">
