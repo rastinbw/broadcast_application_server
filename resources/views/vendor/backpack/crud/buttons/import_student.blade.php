@@ -1,0 +1,1 @@
+<a href="{{action('Admin\AdminController@import_student')}}" class="btn btn-adn ladda-button" data-style="zoom-in"><span class="ladda-label"  style="font-weight: bold">بارگزاری لیست دانش آموزان</span></a>

@@ -1,16 +1,19 @@
 @extends('backpack::layout')
 
 @section('header')
-	<section class="content-header">
-	  <h1>
+
+    <style>
+        td,th{
+            text-align: right;
+            font-size: 16px;
+        }
+
+    </style>
+
+	<section class="content-header" style="padding-top: 15px">
+	  <h1 style="text-align: right; font-size: 22px;">
 	    <span class="text-capitalize">{{ $crud->entity_name_plural }}</span>
-	    <small>{{ trans('backpack::crud.all') }} <span>{{ $crud->entity_name_plural }}</span> {{ trans('backpack::crud.in_the_database') }}.</small>
 	  </h1>
-	  <ol class="breadcrumb">
-	    <li><a href="{{ url(config('backpack.base.route_prefix'), 'dashboard') }}">{{ trans('backpack::crud.admin') }}</a></li>
-	    <li><a href="{{ url($crud->route) }}" class="text-capitalize">{{ $crud->entity_name_plural }}</a></li>
-	    <li class="active">{{ trans('backpack::crud.list') }}</li>
-	  </ol>
 	</section>
 @endsection
 
@@ -21,7 +24,7 @@
     <!-- THE ACTUAL CONTENT -->
     <div class="col-md-12">
       <div class="box">
-        <div class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
+        <div style="text-align: right" class="box-header {{ $crud->hasAccess('create')?'with-border':'' }}">
 
           @include('crud::inc.button_stack', ['stack' => 'top'])
 
@@ -35,22 +38,24 @@
           @include('crud::inc.filters_navbar')
         @endif
 
-        <table id="crudTable" class="table table-striped table-hover display responsive nowrap" cellspacing="0">
+        <table dir="rtl" id="crudTable" class="table table-bordered table-striped table-hover display responsive nowrap" cellspacing="0">
             <thead>
               <tr>
                 {{-- Table columns --}}
+
                 @foreach ($crud->columns as $column)
                   <th {{ isset($column['orderable']) ? 'data-orderable=' .var_export($column['orderable'], true) : '' }}>
                     {{ $column['label'] }}
                   </th>
                 @endforeach
 
-                @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th data-orderable="false">{{ trans('backpack::crud.actions') }}</th>
-                @endif
+                  @if ( $crud->buttons->where('stack', 'line')->count() )
+                      <th data-orderable="false"></th>
+                  @endif
               </tr>
             </thead>
             <tbody>
+
             </tbody>
             <tfoot>
               <tr>
@@ -60,7 +65,7 @@
                 @endforeach
 
                 @if ( $crud->buttons->where('stack', 'line')->count() )
-                  <th>{{ trans('backpack::crud.actions') }}</th>
+                  <th></th>
                 @endif
               </tr>
             </tfoot>

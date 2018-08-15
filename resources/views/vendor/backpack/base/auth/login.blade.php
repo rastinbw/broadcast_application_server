@@ -16,33 +16,34 @@
     </style>
 
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-10 col-md-offset-1" style="text-align: right">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <div class="box-title">{{ trans('backpack::base.login') }}</div>
+                    <div style="font-size: 18px" class="box-title">{{ trans('backpack::base.login') }}</div>
                 </div>
                 <div class="box-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('backpack.auth.login') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has($username) ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">ایمیل</label>
 
-                            <div class="col-md-6">
-                                <input type="text" class="form-control" name="{{ $username }}" value="{{ old($username) }}">
+                            <div class="col-md-8 col-md-offset-2">
+                                <input  type="text" class="form-control" name="{{ $username }}" value="{{ old($username) }}">
 
                                 @if ($errors->has($username))
                                     <span class="help-block">
                                         <strong>{{ $errors->first($username) }}</strong>
                                     </span>
                                 @endif
+
                             </div>
+
+                            <label style="text-align: left" class="col-md-2 control-label">ایمیل</label>
+
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ trans('backpack::base.password') }}</label>
-
-                            <div class="col-md-6">
+                            <div class="col-md-8 col-md-offset-2">
                                 <input type="password" class="form-control" name="password">
 
                                 @if ($errors->has('password'))
@@ -51,27 +52,32 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <label style="text-align: left" class="col-md-2 control-label">رمز عبور</label>
+
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <div class="checkbox">
+                            <div class="col-md-8 col-md-offset-2">
+                                <div class="checkbox" >
                                     <label>
-                                        <input type="checkbox" name="remember"> {{ trans('backpack::base.remember_me') }}
+                                        <label for="checkbox" style="margin-right: 25px">{{ trans('backpack::base.remember_me') }} </label>
+                                        <input type="checkbox" name="remember" id="checkbox">
                                     </label>
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ trans('backpack::base.login') }}
-                                </button>
+                            <div class="col-md-8 col-md-offset-2">
 
                                 @if (backpack_users_have_email())
-                                <a class="btn btn-link" href="{{ route('backpack.auth.password.reset') }}">{{ trans('backpack::base.forgot_your_password') }}</a>
+                                <a class="btn btn-link" style="font-size: 18px" href="{{ route('backpack.auth.password.reset') }}">{{ trans('backpack::base.forgot_your_password') }}</a>
                                 @endif
+
+                                <button style="font-size: 18px; padding:0 30px 2px 30px;" type="submit" class="btn btn-primary">
+                                    {{ trans('backpack::base.login') }}
+                                </button>
                             </div>
                         </div>
                     </form>

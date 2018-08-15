@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Media');
     }
 
+    public function staffs()
+    {
+        return $this->hasMany('App\Models\Staff');
+    }
+
     public function programs()
     {
         return $this->hasMany('App\Models\Program');

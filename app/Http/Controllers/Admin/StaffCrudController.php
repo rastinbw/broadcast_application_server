@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Includes\Constant;
-use App\Models\Group;
-use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\ProgramRequest as StoreRequest;
-use App\Http\Requests\ProgramRequest as UpdateRequest;
-use function Sodium\add;
+use App\Http\Requests\StaffRequest as StoreRequest;
+use App\Http\Requests\StaffRequest as UpdateRequest;
+use Exception;
 
-class ProgramCrudController extends CrudController
+class StaffCrudController extends CrudController
 {
     public function setup()
     {
@@ -22,9 +19,9 @@ class ProgramCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Program');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/program');
-        $this->crud->setEntityNameStrings('برنامه کلاسی', 'برنامه های کلاسی');
+        $this->crud->setModel('App\Models\Staff');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/staff');
+        $this->crud->setEntityNameStrings('عضو', 'اعضای مجموعه');
 
         /*
         |--------------------------------------------------------------------------
@@ -34,11 +31,10 @@ class ProgramCrudController extends CrudController
 
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
-        // ------ CRUD FIELDS
         $this->crud->addFields([
             [
-                'name' => 'title',
-                'label' => 'عنوان',
+                'name' => 'first_name',
+                'label' => 'نام',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -48,9 +44,8 @@ class ProgramCrudController extends CrudController
                 ],
             ],
             [
-                'name' => 'preview_content',
-                'label' => 'متن پیش نمایش',
-                'type' => 'text',
+                'name' => 'last_name',
+                'label' => 'نام خانوادگی',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -58,18 +53,19 @@ class ProgramCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
-            [  // Select
-                'label' => "گروه آموزشی",
-                'type' => 'select2',
-                'name' => 'group_id', // the db column for the foreign key
-                'entity' => 'group', // the method that defines the relationship in your Model
-                'attribute' => 'title', // foreign key attribute that is shown to user
-                'model' => "App\Models\Group", // foreign key model
-                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            [
+                'name' => 'email',
+                'label' => 'ایمیل',
+                'attributes' => [
+                    'dir' => 'ltr'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
             ],
             [
-                'name' => 'content',
-                'label' => 'متن',
+                'name' => 'description',
+                'label' => 'توضیحات',
                 'type' => 'wysiwyg',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -78,25 +74,32 @@ class ProgramCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
+            [ // base64_image
+                'label' => "تصویر",
+                'name' => "photo",
+                'filename' => NULL, // set to null if not needed
+                'type' => 'base64_image',
+                'aspect_ratio' => 1, // set to 0 to allow any aspect ratio
+                'crop' => true, // set to true to allow cropping, false to disable
+//                'default' => "images/no_image.png", // null to read straight from DB, otherwise set to model accessor function
+            ]
+
         ], 'update/create/both');
 
         $this->crud->addColumns([
             [
-                'name' => 'title',
-                'label' => 'عنوان',
+                'name' => 'first_name',
+                'label' => 'نام',
             ],
             [
-                'name' => 'preview_content',
-                'label' => 'متن پیش نمایش',
+                'name' => 'last_name',
+                'label' => 'نام خانوادگی',
             ],
             [
-                'label' =>  "گروه آموزشی", // Table column heading
-                'type' => "select",
-                'name' => 'group_id', // the column that contains the ID of that connected entity;
-                'entity' => 'group', // the method that defines the relationship in your Model
-                'attribute' => "title", // foreign key attribute that is shown to user
-                'model' => "App\Models\Group", // foreign key model
+                'name' => 'email',
+                'label' => 'ایمیل'
             ],
+
         ]);
 
 
@@ -171,19 +174,15 @@ class ProgramCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        // your additional operations before save here
+//        print("<pre>".print_r($request->input('photo'),true)."</pre>");
+//        return $this->getBase64ImageSize($request->input('photo'));
+
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        $program = $this->crud->entry;
-        $program->user_id = \Auth::user()->id;
-        $program->save();
-
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $program->title;
-        $notification->category_id = Constant::$CATEGORY_ID_PROGRAM;
-        $notification->save();
+        $staff = $this->crud->entry;
+        $staff->user_id = \Auth::user()->id;
+        $staff->save();
 
         return $redirect_location;
     }
@@ -195,5 +194,17 @@ class ProgramCrudController extends CrudController
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
+    }
+
+    public function getBase64ImageSize($base64Image){ //return memory size in B, KB, MB
+        try{
+            $size_in_bytes = (int) (strlen(rtrim($base64Image, '=')) * 3 / 4);
+            $size_in_kb    = $size_in_bytes / 1024;
+
+            return $size_in_kb;
+        }
+        catch(Exception $e){
+            return $e;
+        }
     }
 }

@@ -2,19 +2,18 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
+        <div class="col-md-10 col-md-offset-1" style="text-align: right">
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <div class="box-title">{{ trans('backpack::base.register') }}</div>
+                    <div style="font-size: 18px" class="box-title">{{ trans('backpack::base.register') }}</div>
                 </div>
                 <div class="box-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('backpack.auth.register') }}">
                         {!! csrf_field() !!}
 
                         <div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ trans('backpack::base.name') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8 col-md-offset-2">
                                 <input type="text" class="form-control" name="name" value="{{ old('name') }}">
 
                                 @if ($errors->has('name'))
@@ -23,12 +22,14 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <label style="text-align: left" class="col-md-2 control-label">{{ trans('backpack::base.name') }}</label>
+
                         </div>
 
-                        <div class="form-group{{ $errors->has(backpack_authentication_column()) ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ config('backpack.base.authentication_column_name') }}</label>
 
-                            <div class="col-md-6">
+                        <div class="form-group{{ $errors->has(backpack_authentication_column()) ? ' has-error' : '' }}">
+                            <div class="col-md-8 col-md-offset-2">
                                 <input type="{{ backpack_authentication_column()=='email'?'email':'text'}}" class="form-control" name="{{ backpack_authentication_column() }}" value="{{ old(backpack_authentication_column()) }}">
 
                                 @if ($errors->has(backpack_authentication_column()))
@@ -37,12 +38,13 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <label style="text-align: left" class="col-md-2 control-label">ایمیل</label>
+
                         </div>
 
                         <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ trans('backpack::base.password') }}</label>
-
-                            <div class="col-md-6">
+                            <div class="col-md-8 col-md-offset-2">
                                 <input type="password" class="form-control" name="password">
 
                                 @if ($errors->has('password'))
@@ -51,12 +53,13 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <label  style="text-align: left" class="col-md-2 control-label">{{ trans('backpack::base.password') }}</label>
                         </div>
 
                         <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label class="col-md-4 control-label">{{ trans('backpack::base.confirm_password') }}</label>
 
-                            <div class="col-md-6">
+                            <div class="col-md-8 col-md-offset-2">
                                 <input type="password" class="form-control" name="password_confirmation">
 
                                 @if ($errors->has('password_confirmation'))
@@ -65,12 +68,15 @@
                                     </span>
                                 @endif
                             </div>
+
+                            <label  style="text-align: left" class="col-md-2 control-label">{{ trans('backpack::base.confirm_password') }}</label>
+
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fa fa-btn fa-user"></i> {{ trans('backpack::base.register') }}
+                            <div class="col-md-8 col-md-offset-2">
+                                <button style="font-size: 18px; padding:0 30px 2px 30px;" type="submit" class="btn btn-primary">
+                                    {{ trans('backpack::base.register') }} <i style="margin-left: 5px" class="fa fa-btn fa-user"></i>
                                 </button>
                             </div>
                         </div>

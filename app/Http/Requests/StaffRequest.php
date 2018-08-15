@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProgramRequest extends FormRequest
+class StaffRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,11 @@ class ProgramRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'required|max:255',
-            'preview_content' => 'required|max:255',
-            'content' => 'required',
-            'group_id' => 'required'
-        ];
+            'first_name' => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'description' => 'max:255',
+            'email' => 'max:255',
+            ];
     }
 
     /**
@@ -41,7 +41,7 @@ class ProgramRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+
         ];
     }
 

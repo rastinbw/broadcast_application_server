@@ -32,7 +32,38 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+    CRUD::resource('workbook', 'WorkbookCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
     CRUD::resource('group', 'GroupCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('staff', 'StaffCrudController');
+});
+
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('student', 'StudentCrudController');
+    CRUD::resource('workbook', 'WorkbookCrudController');
+
+    Route::group(['prefix' => 'student/search/{student_id}'], function()
+    {
+        CRUD::resource('workbook', 'StudentWorkbookCrudController');
+    });
+});
+
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
+    Route::get('/import_student', 'AdminController@import_student');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
+    Route::get('/import_workbook', 'AdminController@import_workbook');
 });
 
 // Route for view/blade file.

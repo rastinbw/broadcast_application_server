@@ -20,6 +20,8 @@
     }
 
 ?>
+
+
 <div ng-app="backPackTableApp" ng-controller="tableController" @include('crud::inc.field_wrapper_attributes') >
 
     <label>{!! $field['label'] !!}</label>
@@ -35,7 +37,7 @@
                 <tr>
 
                     @foreach( $field['columns'] as $prop )
-                    <th style="font-weight: 600!important;">
+                    <th style="text-align: right; font-weight: 600!important;">
                         {{ $prop }}
                     </th>
                     @endforeach
@@ -50,7 +52,7 @@
 
                     @foreach( $field['columns'] as $prop => $label)
                     <td>
-                        <input class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
+                        <input style="font-size: 18px" class="form-control input-sm" type="text" ng-model="item.{{ $prop }}">
                     </td>
                     @endforeach
                     <td ng-if="max == -1 || max > 1">

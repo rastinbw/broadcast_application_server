@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 
     <title>
-      {{ isset($title) ? $title.' :: '.config('backpack.base.project_name').' Admin' : config('backpack.base.project_name').' Admin' }}
+      {{ isset($title) ? $title : "پنل ادمین"}}
     </title>
 
     @yield('before_styles')
@@ -44,6 +44,28 @@
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
+
+<style>
+    @font-face {
+        font-family: 'IranNastaliq';
+        src: url("{{asset('fonts/IranNastaliq.eot?#')}}") format('eot'),
+        url("{{asset('fonts/IranNastaliq.ttf')}}") format('truetype'),
+        url("{{asset('fonts/IranNastaliq.woff')}}") format('woff');
+    }
+
+    @font-face {
+        font-family: 'nazanin';
+        src: url("{{ asset('fonts/BNazanin.tff') }}") format('truetype'),
+        url("{{ asset('fonts/BNazanin.eot') }}") format('eot'),
+        url("{{ asset('fonts/BNazanin.woff') }}") format('woff');
+    }
+
+    *{
+        font-family: 'nazanin';
+    }
+</style>
+
+
 <body class="hold-transition {{ config('backpack.base.skin') }} sidebar-mini" >
 	<script type="text/javascript">
 		/* Recover sidebar state */
@@ -61,9 +83,9 @@
         <!-- Logo -->
         <a href="{{ url('') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini">{!! config('backpack.base.logo_mini') !!}</span>
+          <span style="font-size: 20px;font-family:IranNastaliq,'IranNastaliq',tahoma;" class="logo-mini">پنل</span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg">{!! config('backpack.base.logo_lg') !!}</span>
+          <span style="font-size: 20px;font-family:IranNastaliq,'IranNastaliq',tahoma;" class="logo-lg">پنل ادمین</span>
         </a>
         <!-- Header Navbar: style can be found in header.less -->
         <nav class="navbar navbar-static-top" role="navigation">
@@ -99,14 +121,14 @@
       </div>
       <!-- /.content-wrapper -->
 
-      <footer class="main-footer">
-        @if (config('backpack.base.show_powered_by'))
-            <div class="pull-right hidden-xs">
-              {{ trans('backpack::base.powered_by') }} <a target="_blank" href="http://backpackforlaravel.com?ref=panel_footer_link">Backpack for Laravel</a>
-            </div>
-        @endif
-        {{ trans('backpack::base.handcrafted_by') }} <a target="_blank" href="{{ config('backpack.base.developer_link') }}">{{ config('backpack.base.developer_name') }}</a>.
-      </footer>
+      {{--<footer class="main-footer">--}}
+        {{--@if (config('backpack.base.show_powered_by'))--}}
+            {{--<div class="pull-right hidden-xs">--}}
+              {{--{{ trans('backpack::base.powered_by') }} <a target="_blank" href="http://backpackforlaravel.com?ref=panel_footer_link">Backpack for Laravel</a>--}}
+            {{--</div>--}}
+        {{--@endif--}}
+        {{--{{ trans('backpack::base.handcrafted_by') }} <a target="_blank" href="{{ config('backpack.base.developer_link') }}">{{ config('backpack.base.developer_name') }}</a>.--}}
+      {{--</footer>--}}
     </div>
     <!-- ./wrapper -->
 

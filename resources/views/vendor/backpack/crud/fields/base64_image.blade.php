@@ -4,8 +4,9 @@
         @include('crud::inc.field_translatable_icon')
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
-    <div class="row">
-        <div class="col-sm-6" style="margin-bottom: 20px;">
+    <div class="row" style="border:1px solid #D0D0D0; background: #F8F8F8; margin: 2px;padding: 10px">
+
+        <div class="col-sm-6" style="margin-bottom: 20px;text-align: right">
             @if(!is_null(old($field['name'])))
                 <img id="mainImage" src="{{ old($field['name']) }}">
             @elseif(isset($field['src']) && isset($entry))
@@ -13,7 +14,7 @@
             @elseif(isset($field['value']))
                 <img id="mainImage" src="{{ $field['value'] }}">
             @elseif(isset($field['default']))
-                <img id="mainImage" src="{{ $field['default'] }}">
+                <img id="mainImage" src="{{ asset($field['default']) }}">
             @else
                 <img id="mainImage" src="">
             @endif
@@ -31,7 +32,7 @@
     </div>
     <div class="btn-group">
         <label class="btn btn-primary btn-file">
-            Choose file <input type="file" accept="image/*" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            انتخاب تصویر <input type="file" accept="image/*" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
             <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}">
         </label>
         @if(isset($field['crop']) && $field['crop'])

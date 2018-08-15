@@ -16,18 +16,18 @@ return [
     // Forms
     'save_action_save_and_new' => 'Save and new item',
     'save_action_save_and_edit' => 'Save and edit this item',
-    'save_action_save_and_back' => 'Save and back',
+    'save_action_save_and_back' => 'ذخیره و بازگشت',
     'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
 
     // Create form
-    'add'                 => 'Add',
-    'back_to_all'         => 'Back to all ',
-    'cancel'              => 'Cancel',
-    'add_a_new'           => 'Add a new ',
+    'add'                 => 'اضافه کردن',
+    'back_to_all'         => 'بازگشت به لیست ',
+    'cancel'              => 'لغو',
+    'add_a_new'           => 'اضافه کردن ',
 
     // Edit form
-    'edit'                 => 'Edit',
-    'save'                 => 'Save',
+    'edit'                 => 'ویرایش',
+    'save'                 => 'ذخیره',
 
     // Revisions
     'revisions'            => 'Revisions',
@@ -51,13 +51,13 @@ return [
     'list'                      => 'List',
     'actions'                   => 'Actions',
     'preview'                   => 'Preview',
-    'delete'                    => 'Delete',
+    'delete'                    => 'حذف',
     'admin'                     => 'Admin',
     'details_row'               => 'This is the details row. Modify as you please.',
     'details_row_loading_error' => 'There was an error loading the details. Please retry.',
 
         // Confirmation messages and bubbles
-        'delete_confirm'                              => 'Are you sure you want to delete this item?',
+        'delete_confirm'                              => 'آیا از حذف این رکورد اطمینان دارید؟',
         'delete_confirmation_title'                   => 'Item Deleted',
         'delete_confirmation_message'                 => 'The item has been deleted successfully.',
         'delete_confirmation_not_title'               => 'NOT deleted',
@@ -69,22 +69,22 @@ return [
         'ajax_error_text'  => 'Error loading page. Please refresh the page.',
 
         // DataTables translation
-        'emptyTable'     => 'No data available in table',
-        'info'           => 'Showing _START_ to _END_ of _TOTAL_ entries',
-        'infoEmpty'      => 'Showing 0 to 0 of 0 entries',
-        'infoFiltered'   => '(filtered from _MAX_ total entries)',
+        'emptyTable'     => 'هیچ موردی برای نمایش وجود ندارد',
+         'info'           => 'تعداد کل نتایج: _TOTAL_',
+         'infoEmpty'      => 'بدون نتیجه',
+        'infoFiltered'   => '',
         'infoPostFix'    => '',
         'thousands'      => ',',
-        'lengthMenu'     => '_MENU_ records per page',
+        'lengthMenu'     => ' _MENU_ تعداد رکورد در هر صفحه',
         'loadingRecords' => 'Loading...',
         'processing'     => 'Processing...',
-        'search'         => 'Search: ',
+        'search'         => 'جست و جو',
         'zeroRecords'    => 'No matching records found',
         'paginate'       => [
-            'first'    => 'First',
-            'last'     => 'Last',
-            'next'     => 'Next',
-            'previous' => 'Previous',
+            'first'    => 'اولین',
+            'last'     => 'آخرین',
+            'next'     => 'بعدی',
+            'previous' => 'قبلی',
         ],
         'aria' => [
             'sortAscending'  => ': activate to sort column ascending',
@@ -116,8 +116,8 @@ return [
         'reorder_error_message'        => 'Your order has not been saved.',
 
     // CRUD yes/no
-        'yes' => 'Yes',
-        'no' => 'No',
+        'yes' => 'بله',
+        'no' => 'خیر',
 
     // CRUD filters navbar view
         'filters' => 'Filters',

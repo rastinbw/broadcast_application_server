@@ -23,7 +23,7 @@ class PostCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Post');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/post');
-        $this->crud->setEntityNameStrings('post', 'posts');
+        $this->crud->setEntityNameStrings('اطلاعیه', 'اطلاعیه ها');
 
         /*
         |--------------------------------------------------------------------------
@@ -31,22 +31,61 @@ class PostCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        $this->crud->setFromDb();
+//        $this->crud->setFromDb();
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
         // ------ CRUD FIELDS
         $this->crud->addFields([
-          [
-           'name' => 'content',
-           'label' => 'Content',
-           'type' => 'wysiwyg'
-          ],
-          [
-            'name' => 'preview_content',
-            'label' => 'PContent',
-            'type' => 'text'
-          ]
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'preview_content',
+                'label' => 'متن پیش نمایش',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'content',
+                'label' => 'متن',
+                'type' => 'wysiwyg',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
         ], 'update/create/both');
+
+
+
+        $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+            ],
+            [
+                'name' => 'preview_content',
+                'label' => 'متن پیش نمایش',
+            ],
+        ]);
+
+
+
 
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
         // $this->crud->removeField('name', 'update/create/both');

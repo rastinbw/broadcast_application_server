@@ -22,7 +22,7 @@ class StudentCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Student');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/student');
-        $this->crud->setEntityNameStrings('student', 'students');
+        $this->crud->setEntityNameStrings('دانش آموز', 'دانش آموزان');
 
         /*
         |--------------------------------------------------------------------------
@@ -31,27 +31,72 @@ class StudentCrudController extends CrudController
         */
 
         //This has to get deleted
-        $this->crud->addColumns(['national_code','first_name','last_name']);
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
         $this->crud->addFields([
             [
-                'name' => 'national_code',
-                'label' => 'کد ملی',
-                'type' => 'text'
-            ],
-            [
                 'name' => 'first_name',
                 'label' => 'نام',
-                'type' => 'text'
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
             ],
             [
                 'name' => 'last_name',
                 'label' => 'نام خانوادگی',
-                'type' => 'text'
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'national_code',
+                'label' => 'کد ملی',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'grade',
+                'label' => 'پایه تحصیلی',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
             ],
 
         ], 'update/create/both');
+
+        $this->crud->addColumns([
+            [
+                'name' => 'first_name',
+                'label' => 'نام',
+            ],
+            [
+                'name' => 'last_name',
+                'label' => 'نام خانوادگی',
+            ],
+            [
+                'name' => 'national_code',
+                'label' => 'کد ملی'
+            ],
+            [
+                'name' => 'grade',
+                'label' => 'پایه تحصیلی'
+            ],
+        ]);
+
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -71,7 +116,19 @@ class StudentCrudController extends CrudController
         // possible positions: 'beginning' and 'end'; defaults to 'beginning' for the 'line' stack, 'end' for the others;
         // $this->crud->addButton($stack, $name, $type, $content, $position); // add a button; possible types are: view, model_function
         // $this->crud->addButtonFromModelFunction($stack, $name, $model_function_name, $position); // add a button whose HTML is returned by a method in the CRUD model
-        // $this->crud->addButtonFromView($stack, $name, $view, $position); // add a button whose HTML is in a view placed at resources\views\vendor\backpack\crud\buttons
+        $this->crud->addButtonFromView('top',
+            'import_student',
+            'import_student',
+            'beginning');
+
+        $this->crud->addButtonFromView('top',
+            'import_workbook',
+            'import_workbook',
+            'beginning');
+
+        $this->crud->addButtonFromView('line', 'student_workbooks', 'student_workbooks', 'beginning');
+
+        // add a button whose HTML is in a view placed at resources\views\vendor\backpack\crud\buttons
         // $this->crud->removeButton($name);
         // $this->crud->removeButtonFromStack($name, $stack);
         // $this->crud->removeAllButtons();
@@ -129,7 +186,7 @@ class StudentCrudController extends CrudController
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
          $student = $this->data['entry'];
-         $student->user_id = Auth::user()->id;
+         $student->user_id = \Auth::user()->id;
          $student->save();
 
         return $redirect_location;

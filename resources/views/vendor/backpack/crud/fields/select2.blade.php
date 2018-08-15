@@ -9,7 +9,7 @@
     <?php $entity_model = $crud->getRelationModel($field['entity'],  - 1); ?>
     <select
         name="{{ $field['name'] }}"
-        style="width: 100%"
+        style="width: 100%;font-size: 16px;padding: 5px"
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         >
 

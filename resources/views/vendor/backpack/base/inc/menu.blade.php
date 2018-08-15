@@ -10,9 +10,8 @@
     </ul>
 </div>
 
-
 <div class="navbar-custom-menu">
-    <ul class="nav navbar-nav">
+    <ul  style="font-size: large;font-weight: 500" class="nav navbar-nav">
       <!-- ========================================================= -->
       <!-- ========== Top menu right items (ordered left) ========== -->
       <!-- ========================================================= -->
@@ -25,7 +24,7 @@
             <li><a href="{{ route('backpack.auth.register') }}">{{ trans('backpack::base.register') }}</a></li>
             @endif
         @else
-            <li><a href="{{ route('backpack.auth.logout') }}"><i class="fa fa-btn fa-sign-out"></i> {{ trans('backpack::base.logout') }}</a></li>
+            <li><a href="{{ route('backpack.auth.logout') }}">{{ trans('backpack::base.logout') }} <i style="margin-left: 5px;" class="fa fa-btn fa-sign-out"></i> </a></li>
         @endif
        @endif
        <!-- ========== End of top menu right items ========== -->

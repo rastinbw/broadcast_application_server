@@ -20,7 +20,7 @@ class GroupCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Group');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/group');
-        $this->crud->setEntityNameStrings('group', 'groups');
+        $this->crud->setEntityNameStrings('گروه آموزشی', 'گروه های آموزشی');
 
         /*
         |--------------------------------------------------------------------------
@@ -28,8 +28,28 @@ class GroupCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        $this->crud->setFromDb();
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
+
+        $this->crud->addFields([
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+        ], 'update/create/both');
+
+        $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+            ],
+        ]);
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Workbook;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -20,7 +21,7 @@ class WorkbookCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Workbook');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/workbook');
-        $this->crud->setEntityNameStrings('workbook', 'workbooks');
+        $this->crud->setEntityNameStrings('کارنامه دانش آموز', 'کارنامه های دانش آموز');
 
         /*
         |--------------------------------------------------------------------------
@@ -28,7 +29,59 @@ class WorkbookCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        $this->crud->setFromDb();
+        $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
+
+        $this->crud->addColumns([
+            [
+                'name' => 'year',
+                'label' => 'سال تحصیلی',
+            ],
+            [
+                'name' => 'month',
+                'label' => 'ماه کارنامه',
+            ],
+        ]);
+
+        $this->crud->addFields([
+            [
+                'name' => 'year',
+                'label' => 'سال تحصیلی',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'month',
+                'label' => 'ماه کارنامه',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [ // Table
+                'name' => 'records',
+                'label' => 'نمرات دروس',
+                'type' => 'table',
+                'entity_singular' => 'رکورد', // used on the "Add X" button
+                'columns' => [
+                    'lesson' => 'نام درس',
+                    'grade' => 'نمره',
+                ],
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+
+        ], 'update/create/both');
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -66,7 +119,7 @@ class WorkbookCrudController extends CrudController
         // $this->crud->enableDetailsRow();
         // NOTE: you also need to do allow access to the right users: $this->crud->allowAccess('details_row');
         // NOTE: you also need to do overwrite the showDetailsRow($id) method in your EntityCrudController to show whatever you'd like in the details row OR overwrite the views/backpack/crud/details_row.blade.php
-
+        // $this->crud->allowAccess('details_row');
         // ------ REVISIONS
         // You also need to use \Venturecraft\Revisionable\RevisionableTrait;
         // Please check out: https://laravel-backpack.readme.io/docs/crud#revisions
@@ -99,21 +152,44 @@ class WorkbookCrudController extends CrudController
         // $this->crud->limit();
     }
 
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getUpdateFields($id);
+        $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
+
+        $this->data['id'] = $id;
+
+        $lessons = explode("|",$this->data['entry']['lessons']);
+        $grades = explode("|",$this->data['entry']['grades']);
+        $table = array();
+        for($i=0; $i<count($lessons); $i++) {
+            $record = array('lesson' => $lessons[$i], 'grade' => $grades[$i]);
+            array_push($table, $record);
+        }
+        $this->data['fields']['records']['value'] = json_encode($table);
+
+        return view($this->crud->getEditView(), $this->data);
+    }
+
+
     public function store(StoreRequest $request)
     {
         // your additional operations before save here
-        $redirect_location = parent::storeCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
-        return $redirect_location;
+        parent::storeCrud($request);
     }
 
     public function update(UpdateRequest $request)
     {
         // your additional operations before save here
-        $redirect_location = parent::updateCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
-        return $redirect_location;
+        parent::updateCrud($request);
     }
 }

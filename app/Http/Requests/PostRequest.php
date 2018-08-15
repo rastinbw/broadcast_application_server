@@ -26,7 +26,9 @@ class PostRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'title' => 'required|max:255',
+            'preview_content' => 'required|max:255',
+            'content' => 'required',
         ];
     }
 
@@ -50,7 +52,8 @@ class PostRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'required' => 'مقداردهی این فیلد الزامی میباشد.',
+            'max' => 'حداکثر 255 کاراکتر'
         ];
     }
 }

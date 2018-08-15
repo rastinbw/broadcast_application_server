@@ -1,0 +1,1 @@
+<a title="کارنامه های دانش آموز" href="{{ Request::url().'/'.$entry->getKey() }}/workbook"><img src="{{asset('images/workbook.png')}}"></a>

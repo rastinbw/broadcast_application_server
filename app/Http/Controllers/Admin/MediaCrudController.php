@@ -24,41 +24,67 @@ class MediaCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Media');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/media');
-        $this->crud->setEntityNameStrings('media', 'media');
+        $this->crud->setEntityNameStrings('رسانه', 'رسانه ها');
 
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->addColumn('title');
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
-        $this->crud->addField( 
-            [ // Upload
-                    'name' => 'media',
-                    'label' => 'مسیر',
-                    'type' => 'upload',
-                    'upload' => true,
-                    'disk' => 'uploads',
-            ], 
-            'create'); 
 
         $this->crud->addFields([
             [
                 'name' => 'title',
                 'label' => 'عنوان',
-                'type' => 'text'
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
             ],
             [
                 'name' => 'description',
                 'label' => 'توضیحات',
-                'type' => 'text'
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
             ],
-        ], 'update/create/both');  
+        ], 'update/create/both');
 
+        $this->crud->addField(
+            [ // Upload
+                'name' => 'media',
+                'label' => 'مسیر',
+                'type' => 'upload',
+                'upload' => true,
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            'update/create/both');
 
-        
+        $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+            ],
+            [
+                'name' => 'description',
+                'label' => 'توضیحات',
+            ],
+        ]);
+
 
         //$this->crud->setFromDb();
 
