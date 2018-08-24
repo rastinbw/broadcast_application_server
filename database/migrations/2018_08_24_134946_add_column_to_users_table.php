@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGradeColumnToStudentsTable extends Migration
+class AddColumnToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddGradeColumnToStudentsTable extends Migration
      */
     public function up()
     {
-        Schema::table('students', function (Blueprint $table) {
-            $table->string('grade')->nullable();
+        Schema::table('users', function (Blueprint $table) {
+            $table->integer('android_admin_id')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ class AddGradeColumnToStudentsTable extends Migration
      */
     public function down()
     {
-        Schema::table('students', function (Blueprint $table) {
-            $table->dropColumn('grade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('android_admin_id');
         });
     }
 }

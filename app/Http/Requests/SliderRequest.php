@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use App\Http\Requests\Request;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StaffRequest extends FormRequest
+class SliderRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,10 +26,8 @@ class StaffRequest extends FormRequest
     public function rules()
     {
         return [
-            'first_name' => 'required|max:255',
-            'last_name' => 'required|max:255',
-            'email' => 'max:255',
-            ];
+            // 'name' => 'required|min:5|max:255'
+        ];
     }
 
     /**
@@ -40,7 +38,7 @@ class StaffRequest extends FormRequest
     public function attributes()
     {
         return [
-
+            //
         ];
     }
 
@@ -52,8 +50,7 @@ class StaffRequest extends FormRequest
     public function messages()
     {
         return [
-            'required' => 'مقداردهی این فیلد الزامی میباشد.',
-            'max' => 'حداکثر 255 کاراکتر'
+            //
         ];
     }
 }

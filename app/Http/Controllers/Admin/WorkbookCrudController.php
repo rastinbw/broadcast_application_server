@@ -40,12 +40,16 @@ class WorkbookCrudController extends CrudController
                 'name' => 'month',
                 'label' => 'ماه کارنامه',
             ],
+            [
+                'name' => 'scale',
+                'label' => 'مقیاس',
+            ],
         ]);
 
         $this->crud->addFields([
             [
                 'name' => 'year',
-                'label' => 'سال تحصیلی',
+                'label' => '* سال تحصیلی',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -56,7 +60,18 @@ class WorkbookCrudController extends CrudController
             ],
             [
                 'name' => 'month',
-                'label' => 'ماه کارنامه',
+                'label' => '* ماه کارنامه',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'scale',
+                'label' => '* مقیاس',
+                'default' => '20',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -66,7 +81,7 @@ class WorkbookCrudController extends CrudController
             ],
             [ // Table
                 'name' => 'records',
-                'label' => 'نمرات دروس',
+                'label' => '* نمرات دروس',
                 'type' => 'table',
                 'entity_singular' => 'رکورد', // used on the "Add X" button
                 'columns' => [

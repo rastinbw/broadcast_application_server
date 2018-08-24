@@ -16,7 +16,26 @@
 			<a href="{{ url($crud->route) }}">{{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span>  &nbsp<i class="fa fa-angle-double-right"></i></a><br><br>
 		@endif
 
-		@include('crud::inc.grouped_errors')
+		@if($errors->get('custom_fail'))
+			@if($messages = $errors->get('errors'))
+				<ul style="list-style-type: none;">
+					@foreach ($messages as $message)
+						<li>
+							<div style="padding: 10px" class="alert alert-error
+						alert-dismissible fade in" role="alert">
+								<label>{{ $message }}</label>
+								<label data-dismiss="alert" style="cursor: pointer;margin-left: 10px; color: #ffffffff">&#10006;</label>
+							</div>
+						</li>
+					@endforeach
+				</ul>
+			@endif
+		@endif
+		{!! Session::forget('errors') !!}
+		{!! Session::forget('custom_fail') !!}
+
+
+		<br />
 
 		  <form method="post"
 		  		action="{{ url($crud->route) }}"

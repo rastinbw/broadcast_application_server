@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\AndroidAdmin;
+use App\Models\Slider;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -15,7 +17,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','slider_id'
     ];
 
     /**
@@ -27,10 +29,38 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    public static function create(array $attributes = [])
+    {
+
+        $model = static::query()->create($attributes);
+
+        // create slider
+        $slider = new Slider();
+        $slider->user_id = $model->id;
+        $slider->save();
+
+        // create android admin
+        $android = new AndroidAdmin();
+        $android->user_id = $model->id;
+        $android->save();
+
+        // connecting android admin and slider to user
+        $model->slider_id = $slider->id;
+        $model->android_admin_id = $android->id;
+        $model->save();
+
+
+        return $model;
+    }
 
     public function students()
     {
         return $this->hasMany('App\Models\Student');
+    }
+
+    public function ustudents()
+    {
+        return $this->hasMany('App\Models\Ustudent');
     }
 
     public function workbooks()
@@ -66,5 +96,21 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->hasMany('App\Models\Group');
+    }
+
+    public function studentPasswordResets()
+    {
+        return $this->hasMany('App\Models\StudentPasswordReset');
+    }
+
+
+    public function slider()
+    {
+        return $this->hasOne('App\Models\Slider');
+    }
+
+    public function android_admin()
+    {
+        return $this->hasOne('App\Models\AndroidAdmin');
     }
 }

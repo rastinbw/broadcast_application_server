@@ -28,7 +28,8 @@ class WorkbookRequest extends FormRequest
         return [
             'year' => 'required|max:255',
             'month' => 'required|max:255',
-            'records'=> 'required'
+            'records'=> 'required',
+            'scale'=> 'required|max:255'
         ];
     }
 

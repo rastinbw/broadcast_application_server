@@ -32,7 +32,7 @@
     </div>
     <div class="btn-group">
         <label class="btn btn-primary btn-file">
-            انتخاب تصویر <input type="file" accept="image/*" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            انتخاب تصویر <input type="file" accept="image/jpeg" id="uploadImage" @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
             <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}">
         </label>
         @if(isset($field['crop']) && $field['crop'])

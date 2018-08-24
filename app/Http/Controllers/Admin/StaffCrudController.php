@@ -34,7 +34,7 @@ class StaffCrudController extends CrudController
         $this->crud->addFields([
             [
                 'name' => 'first_name',
-                'label' => 'نام',
+                'label' => '* نام',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -45,7 +45,7 @@ class StaffCrudController extends CrudController
             ],
             [
                 'name' => 'last_name',
-                'label' => 'نام خانوادگی',
+                'label' => '* نام خانوادگی',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -56,6 +56,7 @@ class StaffCrudController extends CrudController
             [
                 'name' => 'email',
                 'label' => 'ایمیل',
+                'type' => 'email',
                 'attributes' => [
                     'dir' => 'ltr'
                 ],
@@ -66,7 +67,7 @@ class StaffCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'توضیحات',
-                'type' => 'wysiwyg',
+                'type' => 'ckeditor',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -75,13 +76,13 @@ class StaffCrudController extends CrudController
                 ],
             ],
             [ // base64_image
-                'label' => "تصویر",
+                'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر پرسنل',
                 'name' => "photo",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
                 'aspect_ratio' => 1, // set to 0 to allow any aspect ratio
                 'crop' => true, // set to true to allow cropping, false to disable
-//                'default' => "images/no_image.png", // null to read straight from DB, otherwise set to model accessor function
             ]
 
         ], 'update/create/both');
@@ -175,7 +176,15 @@ class StaffCrudController extends CrudController
     public function store(StoreRequest $request)
     {
 //        print("<pre>".print_r($request->input('photo'),true)."</pre>");
-//        return $this->getBase64ImageSize($request->input('photo'));
+
+        $size = $this->getBase64ImageSize($request->input('photo'));
+        try{
+            if ($size > 4000){
+                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 3 مگابایت است']]);
+            }
+        }catch (Exception $e){
+            abort(500);
+        }
 
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
@@ -189,7 +198,15 @@ class StaffCrudController extends CrudController
 
     public function update(UpdateRequest $request)
     {
-        // your additional operations before save here
+        $size = $this->getBase64ImageSize($request->input('photo'));
+        try{
+            if ($size > 4000){
+                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 3 مگابایت است']]);
+            }
+        }catch (Exception $e){
+            abort(500);
+        }
+
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry

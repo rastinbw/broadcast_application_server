@@ -3,7 +3,11 @@
 @section('header')
 	<section style="padding-top: 5px" class="content-header">
 		<h1 style="text-align: right;">
-			<span  style="font-size: 25px" > ویرایش {{ $crud->entity_name }} </span>
+			@if(isset($slider))
+				<span  style="font-size: 25px" >{{ $crud->entity_name }} </span>
+			@else
+				<span  style="font-size: 25px" > ویرایش {{ $crud->entity_name }} </span>
+			@endif
 		</h1>
 	</section>
 @endsection
@@ -12,10 +16,33 @@
 <div class="row" style="margin-right: 60px;margin-left: 60px">
 	<div  class="col-md-12 col-md-offset-2" style="margin: auto; text-align: right">
 		<!-- Default box -->
-		@if ($crud->hasAccess('list'))
-			<a href="{{ url($crud->route) }}">{{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span>  &nbsp<i class="fa fa-angle-double-right"></i></a><br><br>
+		@if(!isset($slider))
+			@if ($crud->hasAccess('list'))
+				<a href="{{ url($crud->route) }}">{{ trans('backpack::crud.back_to_all') }} <span>{{ $crud->entity_name_plural }}</span>  &nbsp<i class="fa fa-angle-double-right"></i></a><br><br>
+			@endif
 		@endif
-		@include('crud::inc.grouped_errors')
+
+
+		@if($errors->get('custom_fail'))
+			@if($messages = $errors->get('errors'))
+				<ul style="list-style-type: none;">
+					@foreach ($messages as $message)
+						<li>
+							<div style="padding: 10px" class="alert alert-error
+						alert-dismissible fade in" role="alert">
+								<label>{{ $message }}</label>
+								<label data-dismiss="alert" style="cursor: pointer;margin-left: 10px; color: #ffffffff">&#10006;</label>
+							</div>
+						</li>
+					@endforeach
+				</ul>
+			@endif
+		@endif
+		{!! Session::forget('errors') !!}
+		{!! Session::forget('custom_fail') !!}
+
+
+		<br />
 
 		  <form method="post"
 		  		action="{{ url($crud->route.'/'.$entry->getKey()) }}"

@@ -1,13 +1,22 @@
 <div id="saveActions" class="form-group">
 
-    <a style="font-size: 15px;font-weight: 600" href="{{ url($crud->route) }}" class="btn btn-danger"> لغو عملیات &nbsp;<span class="fa fa-ban"></span></a>
+    @if(!isset($slider))
+        <a style="font-size: 15px;font-weight: 600" href="{{ url($crud->route) }}" class="btn btn-danger"> لغو عملیات &nbsp;<span class="fa fa-ban"></span></a>
+    @endif
 
     <input type="hidden" name="save_action" value="{{ $saveAction['active']['value'] }}">
 
     <div class="btn-group">
 
+
         <button style="font-size: 15px;font-weight: 600" type="submit" class="btn btn-success">
-            <span data-value="{{ $saveAction['active']['value'] }}">ذخیره و بازگشت</span>
+            <span data-value="{{ $saveAction['active']['value'] }}">
+                @if(isset($slider))
+                    ذخیره
+                @else
+                    ذخیره و بازگشت
+                @endif
+            </span>
             &nbsp;
             <span class="fa fa-save" role="presentation" aria-hidden="true"></span> &nbsp;
         </button>

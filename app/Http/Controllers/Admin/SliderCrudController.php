@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Includes\Constant;
-use App\Models\Group;
-use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\ProgramRequest as StoreRequest;
-use App\Http\Requests\ProgramRequest as UpdateRequest;
-use function Sodium\add;
+use App\Http\Requests\SliderRequest as StoreRequest;
+use App\Http\Requests\SliderRequest as UpdateRequest;
+use Exception;
 
-class ProgramCrudController extends CrudController
+class SliderCrudController extends CrudController
 {
     public function setup()
     {
@@ -22,83 +19,68 @@ class ProgramCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Program');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/program');
-        $this->crud->setEntityNameStrings('برنامه کلاسی', 'برنامه های کلاسی');
+        $this->crud->setModel('App\Models\Slider');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/slider');
+        $this->crud->setEntityNameStrings('تصاویر اسلایدر', 'تصاویر اسلایدر');
 
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
-        // ------ CRUD FIELDS
         $this->crud->addFields([
-            [
-                'name' => 'title',
-                'label' => '* عنوان',
-                'type' => 'text',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
+            [ // base64_image
+                'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر یک',
+                'name' => "image_1",
+                'filename' => NULL, // set to null if not needed
+                'type' => 'base64_image',
+                'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
+                'crop' => true, // set to true to allow cropping, false to disable
                 'wrapperAttributes' => [
-                    'dir' => 'rtl'
+                    'style' => 'margin-bottom:50px'
                 ],
             ],
-            [
-                'name' => 'preview_content',
-                'label' => '* متن پیش نمایش',
-                'type' => 'text',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
+            [ // base64_image
+                'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر دو',
+                'name' => "image_2",
+                'filename' => NULL, // set to null if not needed
+                'type' => 'base64_image',
+                'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
+                'crop' => true, // set to true to allow cropping, false to disable
                 'wrapperAttributes' => [
-                    'dir' => 'rtl'
+                    'style' => 'margin-bottom:50px'
                 ],
             ],
-            [  // Select
-                'label' => "گروه آموزشی ( میتوانید در بخش گروه های آموزشی اقدام به اضافه کردن گروه های جدید نمایید ) *",
-                'type' => 'select2',
-                'name' => 'group_id', // the db column for the foreign key
-                'entity' => 'group', // the method that defines the relationship in your Model
-                'attribute' => 'title', // foreign key attribute that is shown to user
-                'model' => "App\Models\Group", // foreign key model
-                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
-            ],
-            [
-                'name' => 'content',
-                'label' => '* متن',
-                'type' => 'wysiwyg',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
+            [ // base64_image
+                'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر سه',
+                'name' => "image_3",
+                'filename' => NULL, // set to null if not needed
+                'type' => 'base64_image',
+                'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
+                'crop' => true, // set to true to allow cropping, false to disable
                 'wrapperAttributes' => [
-                    'dir' => 'rtl'
+                    'style' => 'margin-bottom:50px'
                 ],
             ],
-        ], 'update/create/both');
+            [ // base64_image
+                'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر چهار',
+                'name' => "image_4",
+                'filename' => NULL, // set to null if not needed
+                'type' => 'base64_image',
+                'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
+                'crop' => true, // set to true to allow cropping, false to disable
+                'wrapperAttributes' => [
+                    'style' => 'margin-bottom:50px'
+                ],
+            ]
 
-        $this->crud->addColumns([
-            [
-                'name' => 'title',
-                'label' => 'عنوان',
-            ],
-            [
-                'name' => 'preview_content',
-                'label' => 'متن پیش نمایش',
-            ],
-            [
-                'label' =>  "گروه آموزشی", // Table column heading
-                'type' => "select",
-                'name' => 'group_id', // the column that contains the ID of that connected entity;
-                'entity' => 'group', // the method that defines the relationship in your Model
-                'attribute' => "title", // foreign key attribute that is shown to user
-                'model' => "App\Models\Group", // foreign key model
-            ],
-        ]);
-
+        ], 'update');
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -169,31 +151,75 @@ class ProgramCrudController extends CrudController
         // $this->crud->limit();
     }
 
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getUpdateFields($id);
+        $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
+
+        $this->data['id'] = $id;
+        $this->data['slider'] = true;
+
+        return view($this->crud->getEditView(), $this->data);
+    }
+
     public function store(StoreRequest $request)
     {
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        $program = $this->crud->entry;
-        $program->user_id = \Auth::user()->id;
-        $program->save();
-
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $program->title;
-        $notification->category_id = Constant::$CATEGORY_ID_PROGRAM;
-        $notification->save();
-
         return $redirect_location;
     }
 
     public function update(UpdateRequest $request)
     {
-        // your additional operations before save here
-        $redirect_location = parent::updateCrud($request);
+        $errors = array();
+        $size_1 = $this->getBase64ImageSize($request->input('image_1'));
+        $size_2 = $this->getBase64ImageSize($request->input('image_2'));
+        $size_3 = $this->getBase64ImageSize($request->input('image_3'));
+        $size_4 = $this->getBase64ImageSize($request->input('image_4'));
+
+        try{
+            if ($size_1 > 4000)
+                array_push($errors, '.حجم تصویر یک انتخاب شده بیشتر از 3 مگابایت است');
+            if ($size_2 > 4000)
+                array_push($errors, '.حجم تصویر دو انتخاب شده بیشتر از 3 مگابایت است');
+            if ($size_3 > 4000)
+                array_push($errors, '.حجم تصویر سه انتخاب شده بیشتر از 3 مگابایت است');
+            if ($size_4 > 4000)
+                array_push($errors, '.حجم تصویر چهار انتخاب شده بیشتر از 3 مگابایت است');
+        }catch (Exception $e){
+            abort(500);
+        }
+
+        if (sizeof($errors) != 0)
+            return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
+
+
+        parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        return $redirect_location;
+        return back();
+    }
+
+    public function getBase64ImageSize($base64Image){ //return memory size in B, KB, MB
+        try{
+            $size_in_bytes = (int) (strlen(rtrim($base64Image, '=')) * 3 / 4);
+            $size_in_kb    = $size_in_bytes / 1024;
+
+            return $size_in_kb;
+        }
+        catch(Exception $e){
+            return $e;
+        }
     }
 }

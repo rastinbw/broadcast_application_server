@@ -19,7 +19,14 @@ class Student extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['national_code', 'password', 'first_name', 'last_name', 'phone_number', 'grade', 'user_id', 'token'];
+    protected $fillable = [
+        'national_code',
+        'first_name',
+        'last_name',
+        'grade',
+        'parent_code',
+        'user_id',
+    ];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -28,7 +35,16 @@ class Student extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public static function create(array $attributes = [])
+    {
 
+        $model = static::query()->create($attributes);
+
+        $model->parent_code = bin2hex(openssl_random_pseudo_bytes(3));
+        $model->save();
+
+        return $model;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

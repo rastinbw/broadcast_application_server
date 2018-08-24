@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateStaffTable extends Migration
+class CreateStudentPasswordResetTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,10 @@ class CreateStaffTable extends Migration
      */
     public function up()
     {
-        Schema::create('staff', function (Blueprint $table) {
+        Schema::create('student_password_reset', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('national_code')->nullable();
             $table->integer('user_id')->nullable();
-            $table->string('first_name')->nullable();
-            $table->string('last_name')->nullable();
-            $table->mediumText('description')->nullable();
-            $table->string('email')->nullable();
-            $table->mediumText('photo')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +28,6 @@ class CreateStaffTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('staff');
+        Schema::dropIfExists('student_password_reset');
     }
 }

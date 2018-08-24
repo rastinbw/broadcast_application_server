@@ -21,7 +21,6 @@
 
             <div class="box box-default">
                 <div class="box-body">
-
                     @if($message = $errors->first('error'))
                         <div style="padding: 10px" class="alert alert-error alert-dismissible fade in" role="alert">
                             <label>{{ $message }}</label>
@@ -31,7 +30,7 @@
                     {!! Session::forget('error') !!}
                     <br />
 
-                    <form action="{{ URL::to('import_student_excel') }}"
+                    <form action="{{ URL::to('/admin/import_student_excel') }}"
                           class="form-horizontal"
                           method="post"
                           enctype="multipart/form-data"

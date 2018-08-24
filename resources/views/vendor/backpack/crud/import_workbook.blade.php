@@ -25,7 +25,7 @@
                     {!! Session::forget('error') !!}
                     <br />
 
-                    <form action="{{ URL::to('import_workbook_excel') }}"
+                    <form action="{{ URL::to('/admin/import_workbook_excel') }}"
                           class="form-horizontal"
                           method="post"
                           enctype="multipart/form-data"
@@ -41,7 +41,7 @@
                                     <input style="text-align: right; font-size: 18px" class="form-control"  type="text" name="year">
                                 </div>
 
-                                <label style="text-align: left; " class="col-md-2 control-label">سال تحصیلی</label>
+                                <label style="text-align: left; " class="col-md-2 control-label">سال تحصیلی *</label>
                             </div>
 
                             <span id="input_year_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
@@ -56,7 +56,7 @@
                                     <input style="text-align: right; font-size: 18px" class="form-control" type="text" name="month">
                                 </div>
 
-                                <label style="text-align: left" class="col-md-2 control-label">ماه کارنامه</label>
+                                <label style="text-align: left" class="col-md-2 control-label">ماه کارنامه *</label>
                             </div>
 
                             <span id="input_month_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
@@ -64,6 +64,19 @@
                             </span>
                         </div>
 
+                        <div class="form-group" id="input_scale" style="margin-right: 5px; margin-left: 5px">
+                            <div class="col-md-12">
+                                <div style="padding: 5px" class="col-md-8 col-md-offset-2">
+                                    <input style="text-align: right; font-size: 18px" value="20" class="form-control" type="text" name="scale">
+                                </div>
+
+                                <label style="text-align: left" class="col-md-2 control-label">مقیاس *</label>
+                            </div>
+
+                            <span id="input_scale_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
+                                <strong>.لطفا مقیاس کارنامه را مشخص کنید</strong>
+                            </span>
+                        </div>
 
                         <div class="form-group" id="input_excel" style="margin-right: 5px; margin-left: 5px">
                             <div class="col-md-12">
@@ -71,7 +84,7 @@
                                     <input class="form-control" accept=".xls,.xlsx"  type="file" name="file" />
                                 </div>
 
-                                <label style="text-align: left" class="col-md-2 control-label">انتخاب فایل اکسل</label>
+                                <label style="text-align: left" class="col-md-2 control-label">انتخاب فایل اکسل *</label>
                             </div>
 
                             <span id="input_excel_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
@@ -133,6 +146,15 @@
             }else {
                 document.getElementById("input_month").classList.remove('has-error');
                 document.getElementById("input_month_error").style.display = 'none';
+            }
+
+            if (!document.forms["myForm"]["scale"].value.trim().length) {
+                document.getElementById("input_scale").classList.add('has-error');
+                document.getElementById("input_scale_error").style.display = " inline-block";
+                isValid = false;
+            }else {
+                document.getElementById("input_scale").classList.remove('has-error');
+                document.getElementById("input_scale_error").style.display = 'none';
             }
 
             return isValid;

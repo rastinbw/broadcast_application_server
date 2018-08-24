@@ -38,7 +38,7 @@ class PostCrudController extends CrudController
         $this->crud->addFields([
             [
                 'name' => 'title',
-                'label' => 'عنوان',
+                'label' => '* عنوان',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -49,7 +49,7 @@ class PostCrudController extends CrudController
             ],
             [
                 'name' => 'preview_content',
-                'label' => 'متن پیش نمایش',
+                'label' => '* متن پیش نمایش',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -60,7 +60,7 @@ class PostCrudController extends CrudController
             ],
             [
                 'name' => 'content',
-                'label' => 'متن',
+                'label' => '* متن',
                 'type' => 'wysiwyg',
                 'attributes' => [
                     'dir' => 'rtl'

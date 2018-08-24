@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
-class Staff extends Model
+class Message extends Model
 {
     use CrudTrait;
 
@@ -15,19 +15,11 @@ class Staff extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'staff';
+    protected $table = 'messages';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = [
-        'first_name',
-        'last_name',
-        'phone_number',
-        'user_id',
-        'photo',
-        'email',
-        'description'];
-
+    protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -42,10 +34,6 @@ class Staff extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function user()
-    {
-        return $this->belongsTo('App\User');
-    }
 
     /*
     |--------------------------------------------------------------------------

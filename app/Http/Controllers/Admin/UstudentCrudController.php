@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Includes\Constant;
-use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\MediaRequest as StoreRequest;
-use App\Http\Requests\MediaRequest as UpdateRequest;
-use function GuzzleHttp\Psr7\str;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UstudentRequest as StoreRequest;
+use App\Http\Requests\UstudentRequest as UpdateRequest;
 
-class MediaCrudController extends CrudController
+class UstudentCrudController extends CrudController
 {
     public function setup()
     {
@@ -22,73 +18,40 @@ class MediaCrudController extends CrudController
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Media');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/media');
-        $this->crud->setEntityNameStrings('رسانه', 'رسانه ها');
+        $this->crud->setModel('App\Models\Ustudent');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/ustudent');
+        $this->crud->setEntityNameStrings('کاربر', 'کاربران');
 
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
+
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
-
-
-        $this->crud->addFields([
-            [
-                'name' => 'title',
-                'label' => '* عنوان',
-                'type' => 'text',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-            [
-                'name' => 'description',
-                'label' => 'توضیحات',
-                'type' => 'text',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-        ], 'update/create/both');
-
-        $this->crud->addField(
-            [ // Upload
-                'name' => 'media',
-                'label' => '* انتخاب فایل صوتی <label style="color:#e55619"> ( فایل انتخابی باید به فرمت 
-                            <label style="font-family:Arial, Helvetica, sans-serif;">mp&#x33</label> و حداکثر حجم 10 مگابایت باشد ) </label>',
-                'type' => 'upload',
-                'upload' => true,
-                'attributes' => [
-                    'dir' => 'rtl',
-                    'accept' => '.mp3'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-            'update/create/both');
 
         $this->crud->addColumns([
             [
-                'name' => 'title',
-                'label' => 'عنوان',
+                'name' => 'first_name',
+                'label' => 'نام',
             ],
             [
-                'name' => 'description',
-                'label' => 'توضیحات',
+                'name' => 'last_name',
+                'label' => 'نام خانوادگی',
+            ],
+            [
+                'name' => 'national_code',
+                'label' => 'کد ملی'
+            ],
+            [
+                'label' =>  "گروه آموزشی", // Table column heading
+                'type' => "select",
+                'name' => 'group_id', // the column that contains the ID of that connected entity;
+                'entity' => 'group', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Group", // foreign key model
             ],
         ]);
-
-
-        //$this->crud->setFromDb();
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -97,8 +60,7 @@ class MediaCrudController extends CrudController
         // $this->crud->removeFields($array_of_names, 'update/create/both');
 
         // ------ CRUD COLUMNS
-
-        // add a single column, at the end of the stack
+        // $this->crud->addColumn(); // add a single column, at the end of the stack
         // $this->crud->addColumns(); // add multiple columns, at the end of the stack
         // $this->crud->removeColumn('column_name'); // remove a column from the stack
         // $this->crud->removeColumns(['column_name_1', 'column_name_2']); // remove an array of columns from the stack
@@ -110,7 +72,8 @@ class MediaCrudController extends CrudController
         // $this->crud->addButton($stack, $name, $type, $content, $position); // add a button; possible types are: view, model_function
         // $this->crud->addButtonFromModelFunction($stack, $name, $model_function_name, $position); // add a button whose HTML is returned by a method in the CRUD model
         // $this->crud->addButtonFromView($stack, $name, $view, $position); // add a button whose HTML is in a view placed at resources\views\vendor\backpack\crud\buttons
-        // $this->crud->removeButton($name);
+        $this->crud->removeButton('create');
+        $this->crud->removeButton('update');
         // $this->crud->removeButtonFromStack($name, $stack);
         // $this->crud->removeAllButtons();
         // $this->crud->removeAllButtonsFromStack('line');
@@ -162,92 +125,19 @@ class MediaCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        $validator = Validator::make(
-            array(
-                'file'              =>      $request->file('media'),
-                'extension'         =>      strtolower($request->file('media')->getClientOriginalExtension()),
-            ),
-            [
-                'file'              =>      'required|max:1000',
-                'extension'         =>      'required|in:mp3',
-            ],
-            [
-                'file.max'              =>      '.حجم فایل انتخاب شده بیشتر از 10 مگابایت است',
-                'extension.in'         =>      '.فرمت فایل صوتی درست نمی باشد',
-            ]
-        );
-
-        $validator_results = $validator->errors()->messages();
-        $errors = array();
-
-        if (key_exists('file', $validator_results)){
-            array_push($errors, $validator_results['file'][0]);
-        }
-
-        if (key_exists('extension', $validator_results)){
-            array_push($errors, $validator_results['extension'][0]);
-        }
-
-        // return print("<pre>".print_r($errors,true)."</pre>");
-
-        if($validator->fails()){
-            return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
-        }
-
+        // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        $media = $this->crud->entry;
-        $media->user_id = \Auth::user()->id;
-        $media->save();
-
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $media->title;
-        $notification->category_id = Constant::$CATEGORY_ID_MEDIA;
-        $notification->save();
-
         return $redirect_location;
     }
 
     public function update(UpdateRequest $request)
     {
-        $validator = Validator::make(
-            array(
-                'file'              =>      $request->file('media'),
-                'extension'         =>      strtolower($request->file('media')->getClientOriginalExtension()),
-            ),
-            [
-                'file'              =>      'required|max:1000',
-                'extension'         =>      'required|in:mp3',
-            ],
-            [
-                'file.max'              =>      '.حجم فایل انتخاب شده بیشتر از 10 مگابایت است',
-                'extension.in'         =>      '.فرمت فایل صوتی درست نمی باشد',
-            ]
-        );
-
-        $validator_results = $validator->errors()->messages();
-        $errors = array();
-
-        if (key_exists('file', $validator_results)){
-            array_push($errors, $validator_results['file'][0]);
-        }
-
-        if (key_exists('extension', $validator_results)){
-            array_push($errors, $validator_results['extension'][0]);
-        }
-
-        // return print("<pre>".print_r($errors,true)."</pre>");
-
-        if($validator->fails()){
-            return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
-        }
-
+        // your additional operations before save here
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
     }
-
 }
