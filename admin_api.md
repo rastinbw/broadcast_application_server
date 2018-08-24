@@ -47,6 +47,8 @@ output2: {"result_code": 1000, data: json_array(json_object)} -> SUCCESS
 input: token:string, title:string, preview_content:string, content:string
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content -> required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE POST"
 
@@ -55,6 +57,8 @@ input: token:string, title:string, preview_content:string, content:string
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
 output3: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content -> required
 -----------------------------------------------------------------------------------------------------------
 "DELETE POST"
 
@@ -70,6 +74,8 @@ output3: {"result_code": 1103} -> INVALID_TOKEN
 input: token:string, title:string, preview_content:string, content:string, group_id:int
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content, group_id -> required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE PROGRAM"
 
@@ -78,6 +84,8 @@ input: token:string, title:string, preview_content:string, content:string, group
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
 output3: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content, group_id -> required
 -----------------------------------------------------------------------------------------------------------
 "DELETE PROGRAM"
 
@@ -94,6 +102,8 @@ input: token:string, title:string, description:string, media:file
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1103} -> INVALID_TOKEN
 output3: {"result_code": 1114} -> INVALID_FILE
+validations: title, description -> max:255|required 
+			 media -> max:10mb|extension:mp3|required		 
 -----------------------------------------------------------------------------------------------------------
 "UPDATE MEDIA"
 
@@ -103,6 +113,8 @@ output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
 output3: {"result_code": 1103} -> INVALID_TOKEN
 output3: {"result_code": 1114} -> INVALID_FILE
+validations: title, description -> max:255|required 
+			 media -> max:10mb|extension:mp3
 -----------------------------------------------------------------------------------------------------------
 "DELETE MEDIA"
 
