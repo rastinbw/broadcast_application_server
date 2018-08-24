@@ -37,7 +37,7 @@ output3: {"result_code": 1000, data: json_array(type_json_object)} -> SUCCESS
 /api/admin/groups POST, returns a json 
 input: token:string
 output1: {"result_code": 1103} -> INVALID_TOKEN
-output1=2: {"result_code": 1000, data: json_array(json_object)} -> SUCCESS
+output2: {"result_code": 1000, data: json_array(json_object)} -> SUCCESS
 	json_object:
 		{id:int, title:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
 -----------------------------------------------------------------------------------------------------------
