@@ -4,7 +4,7 @@
 input: email:string, password:string
 output1: {"result_code": 1000, "data": token} -> SUCCESS
 output2: {"result_code": 1102} -> INVALID_PASSWORD
-output3: {"result_code": 1113} -> INVALD_EMAIL
+output3: {"result_code": 1113} -> INVALID_EMAIL
 -----------------------------------------------------------------------------------------------------------
 "CHECK TOKEN"
 
@@ -20,8 +20,8 @@ output2: {"result_code": 1103} -> INVALID_TOKEN
 parameters: 
 	type -> 'html', 'media', 'program'
 	search_phrase, group_id -> set null if you dont want
-	chunck_count -> how many result you want per each request
-	page_count -> which chunck you want
+	chunk_count -> how many result you want per each request
+	page_count -> which chunk you want
 
 input: token:string
 output1: {"result_code": 1104} -> NO_MORE_POSTS
