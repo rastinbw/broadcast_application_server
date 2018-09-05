@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -167,6 +168,9 @@ class SliderCrudController extends CrudController
 
         $this->data['id'] = $id;
         $this->data['slider'] = true;
+
+        if (User::find(\Auth::user()->id)->slider()->first()->id != $id)
+            return abort(404);
 
         return view($this->crud->getEditView(), $this->data);
     }

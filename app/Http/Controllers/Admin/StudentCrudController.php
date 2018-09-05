@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Student;
+use App\Models\Ustudent;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 
@@ -64,17 +65,6 @@ class StudentCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
-            [
-                'name' => 'grade',
-                'label' => '* پایه تحصیلی ( مثال: یازدهم-تجربی )',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-
         ], 'update/create/both');
 
         $this->crud->addColumns([
@@ -91,15 +81,33 @@ class StudentCrudController extends CrudController
                 'label' => 'کد ملی'
             ],
             [
-                'name' => 'grade',
-                'label' => 'پایه تحصیلی'
-            ],
-            [
                 'name' => 'parent_code',
                 'label' => 'کد اولیا',
             ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "user_id",
+                'label' => "وضعیت ثبت نام", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getRegistered', // the method in your Model
+            ],
         ]);
 
+
+        $this->crud->addFilter([ // add a "simple" filter called Draft
+            'type' => 'dropdown',
+            'name' => 'is_registered',
+            'label' => 'وضعیت ثبت نام'
+        ], [
+            1 => 'ثبت شده ها',
+            2 => 'ثبت نشده ها',
+        ],  function ($value) {
+            if ($value == 1)
+                $this->crud->addClause('where', 'is_registered', true);
+            else if($value == 2)
+                $this->crud->addClause('where', 'is_registered', false);
+        }
+        );
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -182,22 +190,60 @@ class StudentCrudController extends CrudController
         // $this->crud->limit();
     }
 
+
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+
+        $user = \Auth::user();
+        $count = Student::where([
+            ['user_id', '=', $user->id],
+        ])->count();
+
+        if ($count >= $user->student_count_limit){
+            $message = '.متاسفانه نمی توانید بیشتر از ' . $user->student_count_limit . ' دانش آموز اضافه کنید';
+            return back()->withErrors(['custom_fail' => true, 'errors' => [$message]]);
+        }
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getCreateView(), $this->data);
+    }
+
     public function store(StoreRequest $request)
     {
-        // your additional operations before save here
+        $student = Student::where([
+            ['user_id', '=', \Auth::user()->id],
+            ['national_code', '=', $request->input('national_code')]
+        ])->first();
+
+        if ($student)
+            return back()->withErrors(['custom_fail' => true, 'errors' => ['.کد ملی تکراری میباشد']]);
+
         $redirect_location = parent::storeCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
-         $student = $this->data['entry'];
-         $student->user_id = \Auth::user()->id;
-         $student->save();
+
+        $student = $this->data['entry'];
+        $student->user_id = \Auth::user()->id;
+        $student->save();
 
         return $redirect_location;
     }
 
     public function update(UpdateRequest $request)
     {
-        // your additional operations before save here
+        $student = Student::where([
+            ['user_id', '=', \Auth::user()->id],
+            ['national_code', '=', $request->input('national_code')]
+        ])->first();
+
+        if ($student)
+            return back()->withErrors(['custom_fail' => true, 'errors' => ['.کد ملی تکراری میباشد']]);
+
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry

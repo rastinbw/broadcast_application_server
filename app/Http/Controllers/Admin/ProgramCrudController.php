@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Includes\Constant;
 use App\Models\Group;
 use App\Models\Notification;
+use App\Models\Program;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -97,6 +98,13 @@ class ProgramCrudController extends CrudController
                 'attribute' => "title", // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
             ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "created_at",
+                'label' => "تاریخ ایجاد", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getDate', // the method in your Model
+            ],
         ]);
 
 
@@ -169,6 +177,30 @@ class ProgramCrudController extends CrudController
         // $this->crud->limit();
     }
 
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+
+        $user = \Auth::user();
+        $count = Program::where([
+            ['user_id', '=', $user->id],
+        ])->count();
+
+        if ($count >= $user->program_count_limit){
+            $message = '.متاسفانه نمی توانید بیشتر از ' . $user->program_count_limit . ' برنامه کلاسی اضافه کنید';
+            return back()->withErrors(['custom_fail' => true, 'errors' => [$message]]);
+        }
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getCreateView(), $this->data);
+    }
+
+
     public function store(StoreRequest $request)
     {
         // your additional operations before save here
@@ -179,11 +211,8 @@ class ProgramCrudController extends CrudController
         $program->user_id = \Auth::user()->id;
         $program->save();
 
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $program->title;
-        $notification->category_id = Constant::$CATEGORY_ID_PROGRAM;
-        $notification->save();
+        AdminController::notify("برنامه جدید", $program->title, \Auth::user()->fire_base_api_key,'/topics/all');
+
 
         return $redirect_location;
     }

@@ -1,6 +1,6 @@
 <div id="saveActions" class="form-group">
 
-    @if(!isset($slider))
+    @if(!isset($slider) && !isset($about))
         <a style="font-size: 15px;font-weight: 600" href="{{ url($crud->route) }}" class="btn btn-danger"> لغو عملیات &nbsp;<span class="fa fa-ban"></span></a>
     @endif
 
@@ -11,8 +11,10 @@
 
         <button style="font-size: 15px;font-weight: 600" type="submit" class="btn btn-success">
             <span data-value="{{ $saveAction['active']['value'] }}">
-                @if(isset($slider))
+                @if(isset($slider) || isset($about))
                     ذخیره
+                @elseif(isset($message_log))
+                    ارسال و بازگشت
                 @else
                     ذخیره و بازگشت
                 @endif

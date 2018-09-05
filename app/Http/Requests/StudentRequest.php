@@ -29,8 +29,6 @@ class StudentRequest extends FormRequest
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'national_code' => 'required|max:255',
-            'grade' => 'required|max:255',
-
         ];
     }
 

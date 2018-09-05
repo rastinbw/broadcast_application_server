@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Controller;
 use App\Models\AndroidAdmin;
 use App\Models\Media;
@@ -123,6 +124,9 @@ class AdminWebserviceController extends Controller
             ]);
             $user->posts()->save($post);
 
+            AdminController::notify("اطلاعیه جدید", $post->title, $user->fire_base_api_key,'/topics/all');
+
+
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
@@ -194,6 +198,8 @@ class AdminWebserviceController extends Controller
                 'group_id' => $req->input('group_id'),
             ]);
             $user->programs()->save($program);
+
+            AdminController::notify("برنامه جدید", $program->title, $user->fire_base_api_key,'/topics/all');
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
         } else
@@ -270,6 +276,8 @@ class AdminWebserviceController extends Controller
             ]);
             $user->medias()->save($media);
             $this->uploadFileToDisk('create', $req, $media,  'public', 'media');
+
+            AdminController::notify(" رسانه جدید", $media->title, $user->fire_base_api_key,'/topics/all');
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
         } else

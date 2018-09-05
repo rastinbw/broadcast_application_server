@@ -13,7 +13,10 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        '\App\Console\Commands\CheckUsersActivationDate',
+        '\App\Console\Commands\DeleteNotVerifiedUstudents',
+        '\App\Console\Commands\DeletePastLimitMessages',
+        '\App\Console\Commands\DeletePastLimitPosts',
     ];
 
     /**
@@ -26,6 +29,17 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        $schedule->command('broadcast:delete_not_verified_ustudents')
+            ->everyThirtyMinutes();
+
+        $schedule->command('broadcast:delete_past_limit_posts')
+            ->everyThirtyMinutes();
+
+        $schedule->command('broadcast:delete_past_limit_messages')
+            ->everyThirtyMinutes();
+
+        $schedule->command('broadcast:check_users_activation_date')
+            ->everyThirtyMinutes();
     }
 
     /**

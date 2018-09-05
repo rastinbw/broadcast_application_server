@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 
@@ -29,7 +30,8 @@ class Ustudent extends Model
         'first_name',
         'last_name',
         'phone_number',
-        'token'
+        'token',
+        'fire_base_token'
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -39,7 +41,13 @@ class Ustudent extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function getDate(){
+        $v = new Verta($this->created_at);
+        $year = $v->year;
+        $month = ($v->month < 10) ? '0' . $v->month : $v->month;
+        $day = ($v->day < 10) ? '0' . $v->day : $v->day;
+        return $year . '-' . $month . '-' . $day;
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -53,6 +61,11 @@ class Ustudent extends Model
     public function group()
     {
         return $this->belongsTo('App\Models\Group');
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany('App\Models\Ticket');
     }
     /*
     |--------------------------------------------------------------------------

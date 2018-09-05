@@ -82,6 +82,13 @@ class PostCrudController extends CrudController
                 'name' => 'preview_content',
                 'label' => 'متن پیش نمایش',
             ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "created_at",
+                'label' => "تاریخ ایجاد", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getDate', // the method in your Model
+            ],
         ]);
 
 
@@ -163,11 +170,7 @@ class PostCrudController extends CrudController
         $post->user_id = \Auth::user()->id;
         $post->save();
 
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $post->title;
-        $notification->category_id = Constant::$CATEGORY_ID_POST;
-        $notification->save();
+        AdminController::notify("اطلاعیه جدید", $post->title, \Auth::user()->fire_base_api_key,'/topics/all');
 
         return $redirect_location;
     }
@@ -180,4 +183,6 @@ class PostCrudController extends CrudController
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
     }
+
+
 }

@@ -38,6 +38,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+    CRUD::resource('message', 'MessageCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
     CRUD::resource('workbook', 'WorkbookCrudController');
 });
 
@@ -56,6 +61,10 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
     CRUD::resource('slider', 'SliderCrudController');
 });
 
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('about', 'AboutCrudController');
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
 {
@@ -92,22 +101,28 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' 
     Route::post('/import_student_excel', 'AdminController@import_student_excel');
 });
 
-Route::get('/', function () {
-    return view('base');
-});
+Route::get( '/download/{filename}', 'Admin\AdminController@download_apk');
+
+Route::post( '/upload/apk', 'Admin\AdminController@upload_apk');
+
+Route::get( '/apk_link', 'Admin\AdminController@send_apk_link');
+
+Route::get('/post/{id}', 'Admin\AdminController@show_post');
+
+Route::get('/program/{id}', 'Admin\AdminController@show_program');
 
 Route::get('/change_password/{user_id}/{token}', 'Admin\AdminController@reset_password_form');
 
 Route::post('/reset_password', 'Admin\AdminController@reset_password');
 
-
-Route::get('/about_us', function (){
-    return view('about_us');
+Route::get('/help', function (){
+    return view('help');
 });
 
-Route::get('/rules', function (){
-    return view('rules');
+Route::get('/', function () {
+    return view('base');
 });
+
 
 //Webservice Routes
 Route::post('/api/{user_id}/ustudent/register', 'API\WebserviceController@register_ustudent');
@@ -119,6 +134,7 @@ Route::post('/api/{user_id}/ustudent/forget_password', 'API\WebserviceController
 
 
 Route::post('/api/{user_id}/ustudent/check_token', 'API\WebserviceController@check_token');
+Route::post('/api/{user_id}/ustudent/update_fcm_token', 'API\WebserviceController@update_fcm_token');
 Route::post('/api/{user_id}/ustudent/change_password', 'API\WebserviceController@change_password');
 Route::post('/api/{user_id}/ustudent/info', 'API\WebserviceController@get_ustudent_info');
 Route::post('/api/{user_id}/ustudent/info/update', 'API\WebserviceController@update_ustudent_info');
@@ -126,14 +142,16 @@ Route::post('/api/{user_id}/ustudent/workbook', 'API\WebserviceController@get_st
 
 
 Route::post('/api/{user_id}/send_ticket', 'API\WebserviceController@save_ticket');
+Route::post('/api/{user_id}/messages', 'API\WebserviceController@get_messages');
 Route::get('/api/{user_id}/notification/{date}', 'API\WebserviceController@get_last_notifications');
 Route::get('/api/{user_id}/groups', 'API\WebserviceController@get_user_group_list');
 Route::post('/api/{user_id}/staff', 'API\WebserviceController@get_staff');
 Route::get('/api/{user_id}/slider', 'API\WebserviceController@get_slider');
+Route::get('/api/{user_id}/about', 'API\WebserviceController@get_about');
 Route::get('/api/{user_id}/staff/updated', 'API\WebserviceController@get_staff_updated');
 Route::get('/api/{user_id}/slider/updated', 'API\WebserviceController@get_slider_updated');
 Route::get('/api/{user_id}/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}', 'API\WebserviceController@get_posts');
-Route::get('/api/post/{id}', 'API\WebserviceController@show_post');
+
 
 
 //Admin Webservice Routes
@@ -143,13 +161,13 @@ Route::post('/api/admin/groups', 'API\AdminWebserviceController@get_group_list')
 Route::post('/api/admin/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}', 'API\AdminWebserviceController@get_posts');
 
 Route::post('/api/admin/post/create', 'API\AdminWebserviceController@create_post');
-Route::post('/api/admin/post/{id}/update', 'API\AdminWebserviceController@update_post');
-Route::post('/api/admin/post/{id}/delete', 'API\AdminWebserviceController@delete_post');
+Route::post('/api/admin/post/update/{id}', 'API\AdminWebserviceController@update_post');
+Route::post('/api/admin/post/delete/{id}', 'API\AdminWebserviceController@delete_post');
 
 Route::post('/api/admin/program/create', 'API\AdminWebserviceController@create_program');
-Route::post('/api/admin/program/{id}/update', 'API\AdminWebserviceController@update_program');
-Route::post('/api/admin/program/{id}/delete', 'API\AdminWebserviceController@delete_program');
+Route::post('/api/admin/program/update/{id}', 'API\AdminWebserviceController@update_program');
+Route::post('/api/admin/program/delete/{id}', 'API\AdminWebserviceController@delete_program');
 
 Route::post('/api/admin/media/create', 'API\AdminWebserviceController@create_media');
-Route::post('/api/admin/media/{id}/update', 'API\AdminWebserviceController@update_media');
-Route::post('/api/admin/media/{id}/delete', 'API\AdminWebserviceController@delete_media');
+Route::post('/api/admin/media/update/{id}', 'API\AdminWebserviceController@update_media');
+Route::post('/api/admin/media/delete/{id}', 'API\AdminWebserviceController@delete_media');

@@ -28,6 +28,7 @@ class StaffRequest extends FormRequest
         return [
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
+            'profession' => 'required|max:255',
             'email' => 'max:255',
             ];
     }

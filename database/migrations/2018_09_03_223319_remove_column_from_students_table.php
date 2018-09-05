@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMessagesTable extends Migration
+class RemoveColumnFromStudentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,9 @@ class CreateMessagesTable extends Migration
      */
     public function up()
     {
-        Schema::create('messages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('user_id')->nullable();
-            $table->string("title");
-            $table->Text("content");
-            $table->timestamps();
+        Schema::table('students', function (Blueprint $table) {
+            $table->dropColumn('grade');
         });
-
     }
 
     /**
@@ -30,6 +25,8 @@ class CreateMessagesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('messages');
+        Schema::table('students', function (Blueprint $table) {
+            $table->string('grade')->nullable();
+        });
     }
 }

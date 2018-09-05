@@ -8,21 +8,49 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
+use App\Includes\Constant;
 use App\Models\Student;
 use App\Models\Ustudent;
 use App\User;
 use Exception;
+use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
-use Input;
 use App\Models\Workbook;
-use DB;
 use Session;
 use Excel;
 
 class AdminController extends Controller
 {
+
+    public function show_post($id)
+    {
+        $table = "posts";
+        $query = [['id', '=', $id]];
+
+        $item = DB::table($table)->where($query)->get()->first();
+        if ($item) {
+            return view('post_detail', ['post' => $item]);
+        } else
+            abort(404);
+    }
+
+    public function show_program($id)
+    {
+        $table = "programs";
+        $query = [['id', '=', $id]];
+
+        $item = DB::table($table)->where($query)->get()->first();
+        if ($item) {
+            return view('post_detail', ['post' => $item]);
+        } else
+            abort(404);
+    }
+
     public function import_student(){
         return view('vendor/backpack/crud/import_student')
             ->with('title', 'وارد کردن لیست دانش آموزان')
@@ -32,6 +60,7 @@ class AdminController extends Controller
     public function import_workbook(){
         return view('vendor/backpack/crud/import_workbook')
             ->with('title', 'وارد کردن لیست کارنامه دانش آموزان')
+            ->with('groups', \Auth::user()->groups()->get())
             ->with('user_id', \Auth::user()->id);
     }
 
@@ -101,6 +130,19 @@ class AdminController extends Controller
 
                     if ($student != null){
                         unset($grades[0]);
+                        $lessons = $titles;
+
+                        // clearing empty grades
+                        $empty_indexes = array();
+                        for ($k = 1; $k<=sizeof($grades); $k++){
+                            if (!isset($grades[$k]))
+                                array_push($empty_indexes, $k);
+                        }
+
+                        foreach ($empty_indexes as $index){
+                            unset($grades[$index]);
+                            unset($lessons[$index]);
+                        }
 
                         Workbook::create([
                             'user_id' => $user_id,
@@ -109,7 +151,7 @@ class AdminController extends Controller
                             'month' => $month,
                             'scale' => $scale,
                             'grades' => implode("|",$grades),
-                            'lessons' => implode("|",$titles)
+                            'lessons' => implode("|",$lessons)
                         ]);
                     }
                 }
@@ -135,15 +177,37 @@ class AdminController extends Controller
         try {
             $rows = Excel::load($request->file('file')->getRealPath(), 'UTF-8')->get();
 
+            //check for student limitation
+            $count = Student::where([
+                ['user_id', '=', $user_id],
+            ])->count();
+            if ($count + sizeof($rows) >= $user->student_count_limit){
+                $message = '.متاسفانه نمی توانید بیشتر از ' . $user->student_count_limit . ' دانش آموز اضافه کنید';
+                return back()->withErrors(['error' => $message]);
+            }
+
             foreach($rows as $row) {
-                $student = array_values($row->toArray());
-                Student::create([
-                    'user_id' => $user_id,
-                    'first_name' => $student[0],
-                    'last_name' => $student[1],
-                    'national_code' => $student[2],
-                    'grade' => $student[3],
-                ]);
+                $data = array_values($row->toArray());
+
+                $student = Student::where([
+                    ['user_id', '=', $user_id],
+                    ['national_code', '=', $data[2]]
+                ])->first();
+                if ($student){
+                    $student->first_name =  $data[0];
+                    $student->last_name =  $data[1];
+                    $student->grade =  $data[3];
+                    $student->save();
+                }else{
+                    Student::create([
+                        'user_id' => $user_id,
+                        'first_name' => $data[0],
+                        'last_name' => $data[1],
+                        'national_code' => $data[2],
+                        'grade' => $data[3],
+                    ]);
+                }
+
             }
         } catch (Exception $e) {
             return back()->withErrors(['error'=>'.فرمت فایل انتخابی با فرمت ارائه شده مطابقت ندارد']);
@@ -152,5 +216,98 @@ class AdminController extends Controller
         return redirect(URL::to('/admin/student'));
     }
 
+    public static function notify($title, $message, $from, $to)
+    {
+        $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
 
+        $data = [
+            'title' => $title,
+            'message' => $message,
+        ];
+
+
+        if (is_array($to)){
+            $fcmNotification = [
+                'registration_ids' => $to, //multple token array
+                'data' => $data
+            ];
+        }else{
+            $fcmNotification = [
+                'to'        => $to,
+                'data' => $data
+            ];
+        }
+
+        $headers = [
+            'Authorization: key='.$from,
+            'Content-Type: application/json'
+        ];
+
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL,$fcmUrl);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fcmNotification));
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        // dd($result);
+        return true;
+    }
+
+    public function upload_apk(Request $request){
+        $file = $request->file('apk');
+        // 2. Move the new file to the correct path
+        $file_name = $file->getClientOriginalName();
+        $file_path = $file->storeAs('apks', $file_name , 'public');
+
+        $user = User::find($request->input('user_id'));
+        $user->apk_name = $file_name;
+        $user->last_version = $request->input('version');
+        $user->save();
+
+        return Constant::$SUCCESS;
+    }
+
+    public function download_apk($filename)
+    {
+        // Check if file exists in app/storage/file folder
+        $file_path = public_path() . "/storage/apks/" . $filename;
+        $headers = array(
+            'Content-Type' => 'application/apk',
+            'Content-Disposition: attachment; filename='.$filename,
+        );
+        if ( file_exists( $file_path ) ) {
+            // Send Download
+            return \Response::download( $file_path, $filename, $headers );
+        } else {
+            // Error
+            exit( 'Requested file does not exist on our server!' );
+        }
+    }
+
+    public function send_apk_link(){
+        $user = User::find(Input::get('message'));
+
+        if ($user) {
+            $link = env('APP_URL')
+                . '/download/'
+                . $user->apk_name;
+
+            $url = 'https://api.kavenegar.com/v1/' .
+                env('SMS_API_KEY') .
+                '/verify/lookup.json?receptor=' .
+                Input::get('from') .
+                '&template=' .
+                env('TEMPLATE_APK_LINK') .
+                '&token=' .
+                $link;
+
+            // return Redirect::away($url);
+            return $url;
+        }
+    }
 }

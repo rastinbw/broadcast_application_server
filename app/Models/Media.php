@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Hekmatinasser\Verta\Verta;
 use Illuminate\Database\Eloquent\Model;
 use Backpack\CRUD\CrudTrait;
 use Illuminate\Support\Facades\Storage;
@@ -29,6 +30,14 @@ class Media extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getDate(){
+        $v = new Verta($this->created_at);
+        $year = $v->year;
+        $month = ($v->month < 10) ? '0' . $v->month : $v->month;
+        $day = ($v->day < 10) ? '0' . $v->day : $v->day;
+        return $year . '-' . $month . '-' . $day;
+    }
+
     public function setMediaAttribute($value)
     {
         $attribute_name = "media";

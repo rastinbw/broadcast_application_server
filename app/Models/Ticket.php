@@ -13,9 +13,8 @@ class Ticket extends Model
         'title',
         'message',
         'user_id',
-        'student_id',
+        'ustudent_id',
     ];
-
 
     /*
     |--------------------------------------------------------------------------
@@ -24,7 +23,7 @@ class Ticket extends Model
     */
     public function student()
     {
-        return $this->belongsTo('App\Models\Student');
+        return $this->belongsTo('App\Models\Ustudent');
     }
 
     public function user()

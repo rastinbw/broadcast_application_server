@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Includes\Constant;
+use App\Models\Notification;
+use App\Models\Ustudent;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -20,7 +23,7 @@ class MessageCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Message');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/message');
-        $this->crud->setEntityNameStrings('message', 'messages');
+        $this->crud->setEntityNameStrings('پیام', 'پیام ها');
 
         /*
         |--------------------------------------------------------------------------
@@ -28,8 +31,63 @@ class MessageCrudController extends CrudController
         |--------------------------------------------------------------------------
         */
 
-        $this->crud->setFromDb();
+        $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
 
+        $this->crud->addFields([
+            [
+                'name' => 'title',
+                'label' => '* عنوان',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [  // Select
+                'label' => "گروه آموزشی ( میتوانید در بخش گروه های آموزشی اقدام به اضافه کردن گروه های جدید نمایید ) *",
+                'type' => 'select2',
+                'name' => 'group_id', // the db column for the foreign key
+                'entity' => 'group', // the method that defines the relationship in your Model
+                'attribute' => 'title', // foreign key attribute that is shown to user
+                'model' => "App\Models\Group", // foreign key model
+                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            ],
+            [
+                'name' => 'content',
+                'label' => '* متن',
+                'type' => 'textarea',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+        ], 'update/create/both');
+
+        $this->crud->addColumns([
+            [
+                'name' => 'title',
+                'label' => 'عنوان',
+            ],
+            [
+                'label' =>  "گروه آموزشی", // Table column heading
+                'type' => "select",
+                'name' => 'group_id', // the column that contains the ID of that connected entity;
+                'entity' => 'group', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Group", // foreign key model
+            ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "created_at",
+                'label' => "تاریخ ارسال", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getDate', // the method in your Model
+            ],
+        ]);
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -99,12 +157,65 @@ class MessageCrudController extends CrudController
         // $this->crud->limit();
     }
 
+    public function index()
+    {
+        $this->crud->hasAccessOrFail('list');
+
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+        $this->data['message_log'] = true;
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getListView(), $this->data);
+    }
+
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = 'فرستادن'.' '.$this->crud->entity_name;
+        $this->data['message_log'] = true;
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getCreateView(), $this->data);
+    }
+
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        // get the info for that entry
+        $this->data['entry'] = $this->crud->getEntry($id);
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getUpdateFields($id);
+        $this->data['title'] = trans('backpack::crud.edit').' '.$this->crud->entity_name;
+
+        $this->data['id'] = $id;
+        $this->data['message_log'] = true;
+
+        return view($this->crud->getEditView(), $this->data);
+    }
+
     public function store(StoreRequest $request)
     {
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
-        // your additional operations after save here
-        // use $this->data['entry'] or $this->crud->entry
+
+        $message = $this->crud->entry;
+        $message->user_id = \Auth::user()->id;
+        $message->save();
+
+        $to = '/topics/group_'.$message->group_id;
+        AdminController::notify("پیام جدید", $message->title, \Auth::user()->fire_base_api_key, $to);
+
         return $redirect_location;
     }
 

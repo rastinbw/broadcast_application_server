@@ -26,7 +26,7 @@ class Constant
     public static $INVALID_REQUEST = 1112;
     public static $INVALID_EMAIL = 1113;
     public static $INVALID_FILE = 1114;
-
+    public static $SERVER_ISSUE = 1115;
 
 
     // for get posts function

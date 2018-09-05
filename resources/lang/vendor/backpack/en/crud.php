@@ -58,12 +58,12 @@ return [
 
         // Confirmation messages and bubbles
         'delete_confirm'                              => 'آیا از حذف این رکورد اطمینان دارید؟',
-        'delete_confirmation_title'                   => 'Item Deleted',
-        'delete_confirmation_message'                 => 'The item has been deleted successfully.',
-        'delete_confirmation_not_title'               => 'NOT deleted',
-        'delete_confirmation_not_message'             => "There's been an error. Your item might not have been deleted.",
-        'delete_confirmation_not_deleted_title'       => 'Not deleted',
-        'delete_confirmation_not_deleted_message'     => 'Nothing happened. Your item is safe.',
+        'delete_confirmation_title'                   => 'حذف شد',
+        'delete_confirmation_message'                 => 'رکورد با موفقیت حذف شد',
+        'delete_confirmation_not_title'               => 'حذف نشد',
+        'delete_confirmation_not_message'             => "خطایی رخ داد، رکورد شما ممکن است حذف نشده باشد",
+        'delete_confirmation_not_deleted_title'       => 'حذف نشد',
+        'delete_confirmation_not_deleted_message'     => 'هیچ رویدادی رخ نداد، رکورد شما حذف نشد',
 
         'ajax_error_title' => 'Error',
         'ajax_error_text'  => 'Error loading page. Please refresh the page.',
@@ -100,12 +100,12 @@ return [
         ],
 
     // global crud - errors
-        'unauthorized_access' => 'Unauthorized access - you do not have the necessary permissions to see this page.',
+        'unauthorized_access' => 'دسترسی غیر مجاز، شما مجاز به رویت این صفحه نیستید.',
         'please_fix' => 'Please fix the following errors:',
 
     // global crud - success / error notification bubbles
-        'insert_success' => 'The item has been added successfully.',
-        'update_success' => 'The item has been modified successfully.',
+        'insert_success' => 'آیتم با موفقیت اضافه شد',
+        'update_success' => 'آیتم با موفقیت ویرایش شد',
 
     // CRUD reorder view
         'reorder'                      => 'Reorder',
@@ -126,16 +126,16 @@ return [
 
     // Fields
         'browse_uploads' => 'Browse uploads',
-        'select_all' => 'Select All',
-        'select_files' => 'Select files',
-        'select_file' => 'Select file',
+        'select_all' => 'انتخاب همه',
+        'select_files' => 'انتخاب فایل ها',
+        'select_file' => 'انتخاب فایل',
         'clear' => 'Clear',
         'page_link' => 'Page link',
         'page_link_placeholder' => 'http://example.com/your-desired-page',
         'internal_link' => 'Internal link',
         'internal_link_placeholder' => 'Internal slug. Ex: \'admin/page\' (no quotes) for \':url\'',
         'external_link' => 'External link',
-        'choose_file' => 'Choose file',
+        'choose_file' => 'انتخاب فایل',
 
     //Table field
         'table_cant_add' => 'Cannot add new :entity',

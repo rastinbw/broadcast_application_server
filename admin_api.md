@@ -52,7 +52,7 @@ validations: title, preview_content -> max:255|required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE POST"
 
-/api/admin/post/{id}/update POST, returns a json 
+/api/admin/post/update/{id} POST, returns a json 
 input: token:string, title:string, preview_content:string, content:string
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
@@ -62,7 +62,7 @@ validations: title, preview_content -> max:255|required
 -----------------------------------------------------------------------------------------------------------
 "DELETE POST"
 
-/api/admin/post/{id}/delete POST, returns a json 
+/api/admin/post/delete/{id} POST, returns a json 
 input: token:string
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
@@ -79,7 +79,7 @@ validations: title, preview_content -> max:255|required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE PROGRAM"
 
-/api/admin/program/{id}/update POST, returns a json 
+/api/admin/program/update/{id} POST, returns a json 
 input: token:string, title:string, preview_content:string, content:string, group_id:int
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
@@ -89,9 +89,9 @@ validations: title, preview_content -> max:255|required
 -----------------------------------------------------------------------------------------------------------
 "DELETE PROGRAM"
 
-/api/admin/program/{id}/delete POST, returns a json 
+/api/admin/program/delete/{id} POST, returns a json 
 input: token:string
-output1: {"result_code": 1000} -> SUCCESS
+output1: {"result_code": 1000} -> SUCCESS********
 output2: {"result_code": 1105} -> POST_NOT_EXIST
 output3: {"result_code": 1103} -> INVALID_TOKEN
 -----------------------------------------------------------------------------------------------------------
@@ -103,11 +103,11 @@ output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1103} -> INVALID_TOKEN
 output3: {"result_code": 1114} -> INVALID_FILE
 validations: title, description -> max:255|required 
-			 media -> max:10mb|extension:mp3|required		 
+			 media -> max:10mb|extension:mp3|required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE MEDIA"
 
-/api/admin/media/{id}/update POST, returns a json 
+/api/admin/media/update/{id} POST, returns a json 
 input: token:string, title:string, description:string, media(optional):file
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
@@ -118,7 +118,7 @@ validations: title, description -> max:255|required
 -----------------------------------------------------------------------------------------------------------
 "DELETE MEDIA"
 
-/api/admin/media/{id}/delete POST, returns a json 
+/api/admin/media/delete/{id} POST, returns a json 
 input: token:string
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST

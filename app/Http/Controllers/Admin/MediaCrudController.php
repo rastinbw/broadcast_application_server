@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Includes\Constant;
+use App\Models\Media;
 use App\Models\Notification;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
@@ -74,7 +75,7 @@ class MediaCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
-            'update/create/both');
+            'create');
 
         $this->crud->addColumns([
             [
@@ -84,6 +85,13 @@ class MediaCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'توضیحات',
+            ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "created_at",
+                'label' => "تاریخ ایجاد", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getDate', // the method in your Model
             ],
         ]);
 
@@ -160,15 +168,42 @@ class MediaCrudController extends CrudController
         // $this->crud->limit();
     }
 
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+
+        $user = \Auth::user();
+        $count = Media::where([
+            ['user_id', '=', $user->id],
+        ])->count();
+
+        if ($count >= $user->media_count_limit){
+            $message = '.متاسفانه نمی توانید بیشتر از ' . $user->media_count_limit . ' رسانه اضافه کنید';
+            return back()->withErrors(['custom_fail' => true, 'errors' => [$message]]);
+        }
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getCreateView(), $this->data);
+    }
+
+
     public function store(StoreRequest $request)
     {
+        if (!$request->file('media'))
+            return back()->withErrors(['custom_fail' => true, 'errors' => ['.فایل صوتی را انتخاب کنید']]);
+
         $validator = Validator::make(
             array(
                 'file'              =>      $request->file('media'),
                 'extension'         =>      strtolower($request->file('media')->getClientOriginalExtension()),
             ),
             [
-                'file'              =>      'required|max:1000',
+                'file'              =>      'required|max:10000',
                 'extension'         =>      'required|in:mp3',
             ],
             [
@@ -201,48 +236,51 @@ class MediaCrudController extends CrudController
         $media->user_id = \Auth::user()->id;
         $media->save();
 
-        $notification = new Notification();
-        $notification->user_id = \Auth::user()->id;
-        $notification->content = $media->title;
-        $notification->category_id = Constant::$CATEGORY_ID_MEDIA;
-        $notification->save();
+        AdminController::notify("رسانه جدید", $media->title, \Auth::user()->fire_base_api_key,'/topics/all');
+
 
         return $redirect_location;
     }
 
     public function update(UpdateRequest $request)
     {
-        $validator = Validator::make(
-            array(
-                'file'              =>      $request->file('media'),
-                'extension'         =>      strtolower($request->file('media')->getClientOriginalExtension()),
-            ),
-            [
-                'file'              =>      'required|max:1000',
-                'extension'         =>      'required|in:mp3',
-            ],
-            [
-                'file.max'              =>      '.حجم فایل انتخاب شده بیشتر از 10 مگابایت است',
-                'extension.in'         =>      '.فرمت فایل صوتی درست نمی باشد',
-            ]
-        );
+        // if ($request->file('media')){
+        //     $validator = Validator::make(
+        //         array(
+        //             'file'              =>      $request->file('media'),
+        //             'extension'         =>      strtolower($request->file('media')->getClientOriginalExtension()),
+        //         ),
+        //         [
+        //             'file'              =>      'required|max:10000',
+        //             'extension'         =>      'required|in:mp3',
+        //         ],
+        //         [
+        //             'file.max'              =>      '.حجم فایل انتخاب شده بیشتر از 10 مگابایت است',
+        //             'extension.in'         =>      '.فرمت فایل صوتی درست نمی باشد',
+        //         ]
+        //     );
 
-        $validator_results = $validator->errors()->messages();
-        $errors = array();
+        //     $validator_results = $validator->errors()->messages();
+        //     $errors = array();
 
-        if (key_exists('file', $validator_results)){
-            array_push($errors, $validator_results['file'][0]);
-        }
+        //     if (key_exists('file', $validator_results)){
+        //         array_push($errors, $validator_results['file'][0]);
+        //     }
 
-        if (key_exists('extension', $validator_results)){
-            array_push($errors, $validator_results['extension'][0]);
-        }
+        //     if (key_exists('extension', $validator_results)){
+        //         array_push($errors, $validator_results['extension'][0]);
+        //     }
 
-        // return print("<pre>".print_r($errors,true)."</pre>");
+        //     // return print("<pre>".print_r($errors,true)."</pre>");
 
-        if($validator->fails()){
-            return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
-        }
+        //     if($validator->fails()){
+        //         return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
+        //     }
+
+        // }else{
+        //     if (!$request->input('media'))
+        //         return back()->withErrors(['custom_fail' => true, 'errors' => ['.فایل صوتی را انتخاب کنید']]);
+        // }
 
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here

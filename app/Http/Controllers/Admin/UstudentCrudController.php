@@ -51,6 +51,13 @@ class UstudentCrudController extends CrudController
                 'attribute' => "title", // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
             ],
+            [
+                // run a function on the CRUD model and show its return value
+                'name' => "created_at",
+                'label' => "تاریخ ثبت نام", // Table column heading
+                'type' => "model_function",
+                'function_name' => 'getDate', // the method in your Model
+            ],
         ]);
 
         // ------ CRUD FIELDS

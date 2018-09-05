@@ -26,6 +26,7 @@ class Staff extends Model
         'user_id',
         'photo',
         'email',
+        'profession',
         'description'];
 
     // protected $hidden = [];

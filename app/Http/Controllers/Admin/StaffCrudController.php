@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Staff;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -54,6 +55,16 @@ class StaffCrudController extends CrudController
                 ],
             ],
             [
+                'name' => 'profession',
+                'label' => '* تخصص',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
                 'name' => 'email',
                 'label' => 'ایمیل',
                 'type' => 'email',
@@ -95,6 +106,10 @@ class StaffCrudController extends CrudController
             [
                 'name' => 'last_name',
                 'label' => 'نام خانوادگی',
+            ],
+            [
+                'name' => 'profession',
+                'label' => 'تخصص',
             ],
             [
                 'name' => 'email',
@@ -171,6 +186,30 @@ class StaffCrudController extends CrudController
         // $this->crud->orderBy();
         // $this->crud->groupBy();
         // $this->crud->limit();
+    }
+
+    public function create()
+    {
+        $this->crud->hasAccessOrFail('create');
+
+        // prepare the fields you need to show
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->getSaveAction();
+        $this->data['fields'] = $this->crud->getCreateFields();
+        $this->data['title'] = trans('backpack::crud.add').' '.$this->crud->entity_name;
+
+        $user = \Auth::user();
+        $count = Staff::where([
+            ['user_id', '=', $user->id],
+        ])->count();
+
+        if ($count >= $user->staff_count_limit){
+            $message = '.متاسفانه نمی توانید بیشتر از ' . $user->staff_count_limit . ' عضو اضافه کنید';
+            return back()->withErrors(['custom_fail' => true, 'errors' => [$message]]);
+        }
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        return view($this->crud->getCreateView(), $this->data);
     }
 
     public function store(StoreRequest $request)

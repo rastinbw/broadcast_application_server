@@ -26,7 +26,9 @@ class MessageRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'title' => 'required|max:1000',
+            'content' => 'required|max:1000',
+            'group_id' => 'required'
         ];
     }
 
@@ -50,7 +52,8 @@ class MessageRequest extends FormRequest
     public function messages()
     {
         return [
-            //
+            'required' => 'مقداردهی این فیلد الزامی میباشد.',
+            'max' => 'حداکثر 1000 کاراکتر'
         ];
     }
 }

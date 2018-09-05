@@ -64,6 +64,24 @@
                             </span>
                         </div>
 
+                        <div class="form-group" id="input_group" style="margin-right: 5px; margin-left: 5px">
+                            <div class="col-md-12">
+                                <div style="padding: 5px" class="col-md-8 col-md-offset-2">
+                                    <select style="text-align: right; font-size: 18px" class="form-control" name="group">
+                                        @foreach($groups as $group)
+                                            <option>{{ $group->title }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <label style="text-align: left" class="col-md-2 control-label">گروه آموزشی *</label>
+                            </div>
+
+                            <span id="input_month_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
+                                <strong>.لطفا گروه آموزشی را مشخص کنید</strong>
+                            </span>
+                        </div>
+
                         <div class="form-group" id="input_scale" style="margin-right: 5px; margin-left: 5px">
                             <div class="col-md-12">
                                 <div style="padding: 5px" class="col-md-8 col-md-offset-2">

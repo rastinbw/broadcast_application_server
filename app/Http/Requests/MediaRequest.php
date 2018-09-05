@@ -28,7 +28,6 @@ class MediaRequest extends FormRequest
         return [
             'title' => 'required|max:255',
             'description' => 'max:255',
-            'media' => 'required'
         ];
     }
 

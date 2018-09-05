@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Models\About;
 use App\Models\AndroidAdmin;
 use App\Models\Slider;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Backpack\Base\app\Notifications\ResetPasswordNotification as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -17,7 +19,18 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','slider_id'
+        'name',
+        'email',
+        'password',
+        'slider_id',
+        'about_id',
+        'post_time_limit',
+        'message_log_time_limit',
+        'student_count_limit',
+        'media_count_limit',
+        'program_count_limit',
+        'activation_date',
+        'fire_base_api_key'
     ];
 
     /**
@@ -28,6 +41,17 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
+    }
 
     public static function create(array $attributes = [])
     {
@@ -44,8 +68,14 @@ class User extends Authenticatable
         $android->user_id = $model->id;
         $android->save();
 
+        //create about
+        $about = new About();
+        $about->user_id = $model->id;
+        $about->save();
+
         // connecting android admin and slider to user
         $model->slider_id = $slider->id;
+        $model->about_id = $about->id;
         $model->android_admin_id = $android->id;
         $model->save();
 
@@ -98,15 +128,24 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Group');
     }
 
+    public function messages()
+    {
+        return $this->hasMany('App\Models\Message');
+    }
+
     public function studentPasswordResets()
     {
         return $this->hasMany('App\Models\StudentPasswordReset');
     }
 
-
     public function slider()
     {
         return $this->hasOne('App\Models\Slider');
+    }
+
+    public function about()
+    {
+        return $this->hasOne('App\Models\About');
     }
 
     public function android_admin()
