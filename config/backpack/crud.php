@@ -370,7 +370,7 @@ return [
         // "ps_AF" => "Pashto (Afghanistan)",
         // "ps" => "Pashto",
         // "fa_AF" => "Persian (Afghanistan)",
-        // "fa_IR" => "Persian (Iran)",
+        "fa_IR" => "Persian (Iran)",
         // "fa" => "Persian",
         // "pl_PL" => "Polish (Poland)",
         // "pl" => "Polish",

@@ -26,7 +26,6 @@ use Excel;
 
 class AdminController extends Controller
 {
-
     public function show_post($id)
     {
         $table = "posts";
@@ -275,7 +274,8 @@ class AdminController extends Controller
     public function download_apk($filename)
     {
         // Check if file exists in app/storage/file folder
-        $file_path = public_path() . "/storage/apks/" . $filename;
+        // use /storage/apks/ while testing on localhost
+        $file_path = public_path() . "/storage/public/apks/" . $filename;
         $headers = array(
             'Content-Type' => 'application/apk',
             'Content-Disposition: attachment; filename='.$filename,

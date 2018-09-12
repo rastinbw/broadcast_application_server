@@ -61,7 +61,7 @@ class PostCrudController extends CrudController
             [
                 'name' => 'content',
                 'label' => '* متن',
-                'type' => 'wysiwyg',
+                'type' => 'tinymce',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -166,11 +166,14 @@ class PostCrudController extends CrudController
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
+
+        $user = \Auth::user();
+
         $post = $this->crud->entry;
-        $post->user_id = \Auth::user()->id;
+        $post->user_id = $user->id;
         $post->save();
 
-        AdminController::notify("اطلاعیه جدید", $post->title, \Auth::user()->fire_base_api_key,'/topics/all');
+        AdminController::notify("اطلاعیه جدید", $post->title, $user->fire_base_server_key,'/topics/all');
 
         return $redirect_location;
     }

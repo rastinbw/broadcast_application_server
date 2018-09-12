@@ -34,7 +34,7 @@ class SliderCrudController extends CrudController
         $this->crud->addFields([
             [ // base64_image
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
-                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر یک',
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر یک',
                 'name' => "image_1",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
@@ -46,7 +46,7 @@ class SliderCrudController extends CrudController
             ],
             [ // base64_image
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
-                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر دو',
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر دو',
                 'name' => "image_2",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
@@ -58,7 +58,7 @@ class SliderCrudController extends CrudController
             ],
             [ // base64_image
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
-                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر سه',
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر سه',
                 'name' => "image_3",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
@@ -70,7 +70,7 @@ class SliderCrudController extends CrudController
             ],
             [ // base64_image
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
-                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر چهار',
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر چهار',
                 'name' => "image_4",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
@@ -109,7 +109,7 @@ class SliderCrudController extends CrudController
 
         // ------ CRUD ACCESS
         // $this->crud->allowAccess(['list', 'create', 'update', 'reorder', 'delete']);
-        // $this->crud->denyAccess(['list', 'create', 'update', 'reorder', 'delete']);
+        $this->crud->denyAccess(['list', 'create', 'reorder', 'delete']);
 
         // ------ CRUD REORDER
         // $this->crud->enableReorder('label_name', MAX_TREE_LEVEL);
@@ -186,6 +186,7 @@ class SliderCrudController extends CrudController
 
     public function update(UpdateRequest $request)
     {
+        $limit = 1200;
         $errors = array();
         $size_1 = $this->getBase64ImageSize($request->input('image_1'));
         $size_2 = $this->getBase64ImageSize($request->input('image_2'));
@@ -193,14 +194,14 @@ class SliderCrudController extends CrudController
         $size_4 = $this->getBase64ImageSize($request->input('image_4'));
 
         try{
-            if ($size_1 > 4000)
-                array_push($errors, '.حجم تصویر یک انتخاب شده بیشتر از 3 مگابایت است');
-            if ($size_2 > 4000)
-                array_push($errors, '.حجم تصویر دو انتخاب شده بیشتر از 3 مگابایت است');
-            if ($size_3 > 4000)
-                array_push($errors, '.حجم تصویر سه انتخاب شده بیشتر از 3 مگابایت است');
-            if ($size_4 > 4000)
-                array_push($errors, '.حجم تصویر چهار انتخاب شده بیشتر از 3 مگابایت است');
+            if ($size_1 > $limit)
+                array_push($errors, '.حجم تصویر یک انتخاب شده بیشتر از 1 مگابایت است');
+            if ($size_2 > $limit)
+                array_push($errors, '.حجم تصویر دو انتخاب شده بیشتر از 1 مگابایت است');
+            if ($size_3 > $limit)
+                array_push($errors, '.حجم تصویر سه انتخاب شده بیشتر از 1 مگابایت است');
+            if ($size_4 > $limit)
+                array_push($errors, '.حجم تصویر چهار انتخاب شده بیشتر از 1 مگابایت است');
         }catch (Exception $e){
             abort(500);
         }

@@ -78,7 +78,7 @@ class StaffCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'توضیحات',
-                'type' => 'ckeditor',
+                'type' => 'tinymce',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
@@ -88,7 +88,7 @@ class StaffCrudController extends CrudController
             ],
             [ // base64_image
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
-                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 3 مگابایت باشد )</label> تصویر پرسنل',
+                            <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر پرسنل',
                 'name' => "photo",
                 'filename' => NULL, // set to null if not needed
                 'type' => 'base64_image',
@@ -218,8 +218,8 @@ class StaffCrudController extends CrudController
 
         $size = $this->getBase64ImageSize($request->input('photo'));
         try{
-            if ($size > 4000){
-                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 3 مگابایت است']]);
+            if ($size > 1200){
+                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 1 مگابایت است']]);
             }
         }catch (Exception $e){
             abort(500);
@@ -239,8 +239,8 @@ class StaffCrudController extends CrudController
     {
         $size = $this->getBase64ImageSize($request->input('photo'));
         try{
-            if ($size > 4000){
-                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 3 مگابایت است']]);
+            if ($size > 1200){
+                return back()->withErrors(['custom_fail' => true, 'errors' => ['.حجم تصویر انتخاب شده بیشتر از 1 مگابایت است']]);
             }
         }catch (Exception $e){
             abort(500);

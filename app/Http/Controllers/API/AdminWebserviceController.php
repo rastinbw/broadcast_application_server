@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Controller;
 use App\Models\AndroidAdmin;
 use App\Models\Media;
+use App\Models\Message;
 use App\Models\Post;
 use App\Models\Program;
 use App\User;
@@ -73,6 +74,10 @@ class AdminWebserviceController extends Controller
             $table = "programs";
             if ($group_id != 'null')
                 array_push($query, ['group_id', '=', $group_id]);
+        } elseif ($type == Constant::$TYPE_MESSAGE) {
+            $table = "messages";
+            if ($group_id != 'null')
+                array_push($query, ['group_id', '=', $group_id]);
         }
 
         if ($search_phrase != 'null')
@@ -117,14 +122,17 @@ class AdminWebserviceController extends Controller
 
         if ($admin) {
             $user = $admin->user()->first();
+
+            //saving program
             $post = Post::create([
                 'title' =>  $req->input('title'),
                 'preview_content' =>  $req->input('preview_content'),
                 'content' =>  $req->input('content'),
             ]);
+
             $user->posts()->save($post);
 
-            AdminController::notify("اطلاعیه جدید", $post->title, $user->fire_base_api_key,'/topics/all');
+            AdminController::notify("اطلاعیه جدید", $post->title, $user->fire_base_server_key,'/topics/all');
 
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
@@ -191,15 +199,27 @@ class AdminWebserviceController extends Controller
 
         if ($admin) {
             $user = $admin->user()->first();
+
+            // checking count limit
+            $count = Program::where([
+                ['user_id', '=', $user->id],
+            ])->count();
+
+            $limit = $user->program_count_limit;
+            if ($count >= $limit)
+                return sprintf('{"result_code": %u, "data": %s}', Constant::$COUNT_LIMIT, $limit);
+
+            //saving program
             $program = Program::create([
                 'title' =>  $req->input('title'),
                 'preview_content' =>  $req->input('preview_content'),
                 'content' =>  $req->input('content'),
                 'group_id' => $req->input('group_id'),
             ]);
+
             $user->programs()->save($program);
 
-            AdminController::notify("برنامه جدید", $program->title, $user->fire_base_api_key,'/topics/all');
+            AdminController::notify("برنامه جدید", $program->title, $user->fire_base_server_key,'/topics/all');
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
         } else
@@ -265,19 +285,31 @@ class AdminWebserviceController extends Controller
         ])->first();
 
         if ($admin) {
+            $user = $admin->user()->first();
+
+            // checking count limit
+            $count = Media::where([
+                ['user_id', '=', $user->id],
+            ])->count();
+
+            $limit = $user->media_count_limit;
+            if ($count >= $limit)
+                return sprintf('{"result_code": %u, "data": %s}', Constant::$COUNT_LIMIT, $limit);
+
+            //checking and saving media
             if (!$req->file('media')->isValid())
                 return sprintf('{"result_code": %u}', Constant::$INVALID_FILE);
 
-            $user = $admin->user()->first();
             $media = Media::create([
                 'title' =>  $req->input('title'),
                 'description' =>  $req->input('description'),
                 'media' => null,
             ]);
+
             $user->medias()->save($media);
             $this->uploadFileToDisk('create', $req, $media,  'public', 'media');
 
-            AdminController::notify(" رسانه جدید", $media->title, $user->fire_base_api_key,'/topics/all');
+            AdminController::notify(" رسانه جدید", $media->title, $user->fire_base_server_key,'/topics/all');
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
         } else
@@ -361,6 +393,84 @@ class AdminWebserviceController extends Controller
 
     }
     //*******************************************END MEDIA CRUD PART****************************************************
+    // </editor-fold>
+
+
+    // <editor-fold desc = "MESSAGE CRUD">
+    //*******************************************MESSAGE CRUD PART********************************************************
+    function create_message(Request $req){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+
+            // saving message
+            $message = Message::create([
+                'title' =>  $req->input('title'),
+                'group_id' =>  $req->input('group_id'),
+                'content' =>  $req->input('content'),
+            ]);
+
+            $user->messages()->save($message);
+
+            $to = '/topics/group_'.$message->group_id;
+            AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
+
+            return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function update_message(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $message = Message::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($message){
+                $message->title = $req->input('title');
+                $message->group_id = $req->input('group_id');
+                $message->content = $req->input('content');
+                $message->save();
+
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function delete_message(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $message = Message::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($message){
+                $message->delete();
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+    //*******************************************END MESSAGE CRUD PART****************************************************
     // </editor-fold>
 
 }

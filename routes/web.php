@@ -11,6 +11,8 @@
 |
 */
 
+use Illuminate\Support\Facades\URL;
+
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
     CRUD::resource('ustudent', 'UstudentCrudController');
@@ -101,6 +103,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' 
     Route::post('/import_student_excel', 'AdminController@import_student_excel');
 });
 
+
 Route::get( '/download/{filename}', 'Admin\AdminController@download_apk');
 
 Route::post( '/upload/apk', 'Admin\AdminController@upload_apk');
@@ -120,7 +123,7 @@ Route::get('/help', function (){
 });
 
 Route::get('/', function () {
-    return view('base');
+    return redirect(URL::to('/admin'));
 });
 
 
@@ -133,8 +136,8 @@ Route::post('/api/{user_id}/ustudent/login/parent', 'API\WebserviceController@lo
 Route::post('/api/{user_id}/ustudent/forget_password', 'API\WebserviceController@send_change_password_link');
 
 
+Route::get('/api/{user_id}/ustudent/check_version/{version}', 'API\WebserviceController@check_version');
 Route::post('/api/{user_id}/ustudent/check_token', 'API\WebserviceController@check_token');
-Route::post('/api/{user_id}/ustudent/update_fcm_token', 'API\WebserviceController@update_fcm_token');
 Route::post('/api/{user_id}/ustudent/change_password', 'API\WebserviceController@change_password');
 Route::post('/api/{user_id}/ustudent/info', 'API\WebserviceController@get_ustudent_info');
 Route::post('/api/{user_id}/ustudent/info/update', 'API\WebserviceController@update_ustudent_info');
@@ -143,7 +146,6 @@ Route::post('/api/{user_id}/ustudent/workbook', 'API\WebserviceController@get_st
 
 Route::post('/api/{user_id}/send_ticket', 'API\WebserviceController@save_ticket');
 Route::post('/api/{user_id}/messages', 'API\WebserviceController@get_messages');
-Route::get('/api/{user_id}/notification/{date}', 'API\WebserviceController@get_last_notifications');
 Route::get('/api/{user_id}/groups', 'API\WebserviceController@get_user_group_list');
 Route::post('/api/{user_id}/staff', 'API\WebserviceController@get_staff');
 Route::get('/api/{user_id}/slider', 'API\WebserviceController@get_slider');
@@ -167,6 +169,10 @@ Route::post('/api/admin/post/delete/{id}', 'API\AdminWebserviceController@delete
 Route::post('/api/admin/program/create', 'API\AdminWebserviceController@create_program');
 Route::post('/api/admin/program/update/{id}', 'API\AdminWebserviceController@update_program');
 Route::post('/api/admin/program/delete/{id}', 'API\AdminWebserviceController@delete_program');
+
+Route::post('/api/admin/message/create', 'API\AdminWebserviceController@create_message');
+Route::post('/api/admin/message/update/{id}', 'API\AdminWebserviceController@update_message');
+Route::post('/api/admin/message/delete/{id}', 'API\AdminWebserviceController@delete_message');
 
 Route::post('/api/admin/media/create', 'API\AdminWebserviceController@create_media');
 Route::post('/api/admin/media/update/{id}', 'API\AdminWebserviceController@update_media');

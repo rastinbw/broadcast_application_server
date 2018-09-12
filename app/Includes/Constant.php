@@ -9,6 +9,7 @@
 namespace App\Includes;
 
 
+
 class Constant
 {
     public static $SUCCESS = 1000;
@@ -27,12 +28,16 @@ class Constant
     public static $INVALID_EMAIL = 1113;
     public static $INVALID_FILE = 1114;
     public static $SERVER_ISSUE = 1115;
+    public static $SHOULD_UPDATE = 1116;
+    public static $COUNT_LIMIT = 1117;
+
 
 
     // for get posts function
     public static $TYPE_MEDIA = "media";
     public static $TYPE_PROGRAM = "program";
     public static $TYPE_HTML = "html";
+    public static $TYPE_MESSAGE = "message";
 
     // for notifications
     public static $CATEGORY_ID_POST = 100;

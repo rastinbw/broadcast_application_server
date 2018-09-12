@@ -232,12 +232,13 @@ class MediaCrudController extends CrudController
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
+        $user = \Auth::user();
+
         $media = $this->crud->entry;
-        $media->user_id = \Auth::user()->id;
+        $media->user_id = $user->id;
         $media->save();
 
-        AdminController::notify("رسانه جدید", $media->title, \Auth::user()->fire_base_api_key,'/topics/all');
-
+        AdminController::notify("رسانه جدید", $media->title, $user->fire_base_server_key,'/topics/all');
 
         return $redirect_location;
     }

@@ -43,7 +43,7 @@ class DeletePastLimitMessages extends Command
         $users = User::all();
         foreach ($users as $user){
             Message::where([
-                ['created_at', '<=', Carbon::now()->subMinutes($user->message_log_limitation_time)->toDateTimeString()]
+                ['created_at', '<=', Carbon::now()->subMinutes($user->message_log_time_limit)->toDateTimeString()]
             ])->delete();
         }
     }

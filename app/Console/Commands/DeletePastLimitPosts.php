@@ -42,7 +42,7 @@ class DeletePastLimitPosts extends Command
         $users = User::all();
         foreach ($users as $user){
             Post::where([
-                ['created_at', '<=', Carbon::now()->subMinutes($user->post_limitation_time)->toDateTimeString()]
+                ['created_at', '<=', Carbon::now()->subMinutes($user->post_time_limit)->toDateTimeString()]
             ])->delete();
         }
     }

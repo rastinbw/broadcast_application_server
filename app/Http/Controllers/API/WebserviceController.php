@@ -22,23 +22,23 @@ use Illuminate\Support\Facades\Redirect;
 
 class WebserviceController extends Controller
 {
-    function update_fcm_token($user_id, Request $req){
-        $ustudent = Ustudent::where([
-            ['user_id', '=', $user_id],
-            ['token', '=', $req->input('token')],
-        ])->first();
+    function check_version($user_id, $version){
+        $user = User::find($user_id);
 
-        if ($ustudent){
-            $ustudent->fire_base_token = $req->input('server_fire_base_token');
-            $ustudent->save();
+        if ($user){
+            $should_update = version_compare($user->last_version, $version);
+            if ($should_update){
+                return sprintf('{"result_code": %u, "data": {"name": %s, "version": %s}}',
+                    Constant::$SHOULD_UPDATE,
+                    $user->apk_name,
+                    $user->last_version
+                );
+            }
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
-
-
-        }else
-            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
-
+        }
     }
+
 
     function get_messages($user_id, Request $req){
         $ustudent = Ustudent::where([
@@ -210,18 +210,6 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
 
-    function get_last_notifications($user_id, $date)
-    {
-        $arr = explode('-', $date);
-        $new_date = new Carbon($arr[0] . '-' . $arr[1] . '-' . $arr[2] . ' ' . $arr[3] . ':' . $arr[4] . ':' . $arr[5]);
-
-        $notifications = Notification::where([
-            ['user_id', '=', $user_id],
-            ['created_at', '>', $new_date]
-        ])->get();
-
-        return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($notifications)->toJson());
-    }
 
     function get_posts($user_id, $type, $chunk_count, $page_count, $search_phrase, $group_id)
     {
@@ -576,7 +564,6 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
 
     }
-
 
     //*******************************************END SECURE PART************************************************************
 

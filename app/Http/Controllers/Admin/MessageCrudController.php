@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Includes\Constant;
 use App\Models\Notification;
 use App\Models\Ustudent;
+use App\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -209,12 +210,14 @@ class MessageCrudController extends CrudController
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
 
+        $user = \Auth::user();
+
         $message = $this->crud->entry;
-        $message->user_id = \Auth::user()->id;
+        $message->user_id = $user->id;
         $message->save();
 
         $to = '/topics/group_'.$message->group_id;
-        AdminController::notify("پیام جدید", $message->title, \Auth::user()->fire_base_api_key, $to);
+        AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
 
         return $redirect_location;
     }

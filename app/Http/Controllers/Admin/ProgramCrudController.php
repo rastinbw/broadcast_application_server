@@ -207,11 +207,13 @@ class ProgramCrudController extends CrudController
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
+        $user = \Auth::user();
+
         $program = $this->crud->entry;
-        $program->user_id = \Auth::user()->id;
+        $program->user_id = $user->id;
         $program->save();
 
-        AdminController::notify("برنامه جدید", $program->title, \Auth::user()->fire_base_api_key,'/topics/all');
+        AdminController::notify("برنامه جدید", $program->title, $user->fire_base_server_key,'/topics/all');
 
 
         return $redirect_location;
