@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Models\Ustudent;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
@@ -87,7 +88,7 @@ class UstudentCrudController extends CrudController
 
         // ------ CRUD ACCESS
         // $this->crud->allowAccess(['list', 'create', 'update', 'reorder', 'delete']);
-        // $this->crud->denyAccess(['list', 'create', 'update', 'reorder', 'delete']);
+        $this->crud->denyAccess(['create', 'update']);
 
         // ------ CRUD REORDER
         // $this->crud->enableReorder('label_name', MAX_TREE_LEVEL);
@@ -129,6 +130,28 @@ class UstudentCrudController extends CrudController
         // $this->crud->groupBy();
         // $this->crud->limit();
     }
+
+
+    public function index()
+    {
+        $this->crud->hasAccessOrFail('list');
+
+        $this->data['crud'] = $this->crud;
+        $this->data['title'] = ucfirst($this->crud->entity_name_plural);
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        $user = \Auth::user();
+        $count = Ustudent::where([
+            ['user_id', '=', $user->id],
+        ])->count();
+
+        if ($count >= $user->student_count_limit){
+            $message = '.تعداد کاربران ثیت نام کرده به حداکثر تعداد مجاز  ' . $user->student_count_limit . ' نفر رسیده اند و دانش آموزان قادر به ثبت نام نیستند';
+            return view($this->crud->getListView(), $this->data)->withErrors(['custom_fail' => true, 'errors' => [$message]]);
+        }else
+            return view($this->crud->getListView(), $this->data);
+    }
+
 
     public function store(StoreRequest $request)
     {
