@@ -195,7 +195,6 @@ class AdminController extends Controller
                 if ($student){
                     $student->first_name =  $data[0];
                     $student->last_name =  $data[1];
-                    $student->grade =  $data[3];
                     $student->save();
                 }else{
                     Student::create([
@@ -203,7 +202,6 @@ class AdminController extends Controller
                         'first_name' => $data[0],
                         'last_name' => $data[1],
                         'national_code' => $data[2],
-                        'grade' => $data[3],
                     ]);
                 }
 
@@ -274,8 +272,10 @@ class AdminController extends Controller
     public function download_apk($filename)
     {
         // Check if file exists in app/storage/file folder
-        // use /storage/apks/ while testing on localhost
-        $file_path = public_path() . "/storage/public/apks/" . $filename;
+        // use while testing on localhost
+        // $file_path = public_path() . "/storage/apks/" . $filename;
+        $file_path = "/home/schoolbr/public_html" . "/storage/public/apks/" . $filename;
+
         $headers = array(
             'Content-Type' => 'application/apk',
             'Content-Disposition: attachment; filename='.$filename,
@@ -306,8 +306,7 @@ class AdminController extends Controller
                 '&token=' .
                 $link;
 
-            // return Redirect::away($url);
-            return $url;
+            return Redirect::away($url);
         }
     }
 }
