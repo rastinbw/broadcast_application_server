@@ -92,7 +92,7 @@ return [
         ],
         'export' => [
             'copy'              => 'Copy',
-            'excel'             => 'Excel',
+            'excel'             => 'خروجی اکسل',
             'csv'               => 'CSV',
             'pdf'               => 'PDF',
             'print'             => 'Print',

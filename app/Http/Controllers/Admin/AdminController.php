@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: nitsarof
- * Date: 8/13/18
- * Time: 7:16 PM
- */
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
@@ -13,7 +7,6 @@ use App\Models\Student;
 use App\Models\Ustudent;
 use App\User;
 use Exception;
-use function GuzzleHttp\Psr7\str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
