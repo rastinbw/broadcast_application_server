@@ -41,6 +41,15 @@ output2: {"result_code": 1000, data: json_array(json_object)} -> SUCCESS
 	json_object:
 		{id:int, title:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
 -----------------------------------------------------------------------------------------------------------
+"GET FIELD LIST"
+
+/api/admin/fields POST, returns a json 
+input: token:string
+output1: {"result_code": 1103} -> INVALID_TOKEN
+output2: {"result_code": 1000, data: json_array(json_object)} -> SUCCESS
+	json_object:
+		{id:int, title:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
 "CREATE POST"
 
 /api/admin/post/create POST, returns a json 
@@ -71,23 +80,50 @@ output3: {"result_code": 1103} -> INVALID_TOKEN
 "CREATE PROGRAM"
 
 /api/admin/program/create POST, returns a json 
-input: token:string, title:string, preview_content:string, content:string, group_id:int
+input: token:string, title:string, preview_content:string, content:string, group_id:int, field_id:int
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1103} -> INVALID_TOKEN
-validations: title, preview_content -> max:255|required
-			 content, group_id -> required
+validations: title, preview_content -> max:255|required 
+             content-> required
 -----------------------------------------------------------------------------------------------------------
 "UPDATE PROGRAM"
 
 /api/admin/program/update/{id} POST, returns a json 
-input: token:string, title:string, preview_content:string, content:string, group_id:int
+input: token:string, title:string, preview_content:string, content:string, group_id:int, field_id:int
 output1: {"result_code": 1000} -> SUCCESS
 output2: {"result_code": 1105} -> POST_NOT_EXIST
 output3: {"result_code": 1103} -> INVALID_TOKEN
 validations: title, preview_content -> max:255|required
-			 content, group_id -> required
+			 content -> required
 -----------------------------------------------------------------------------------------------------------
 "DELETE PROGRAM"
+
+/api/admin/program/delete/{id} POST, returns a json 
+input: token:string
+output1: {"result_code": 1000} -> SUCCESS********
+output2: {"result_code": 1105} -> POST_NOT_EXIST
+output3: {"result_code": 1103} -> INVALID_TOKEN
+-----------------------------------------------------------------------------------------------------------
+"CREATE MESSAGE"
+
+/api/admin/message/create POST, returns a json 
+input: token:string, title:string, content:string, group_id:int, field_id:int, gender:int
+output1: {"result_code": 1000} -> SUCCESS
+output2: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content, group_id -> required, field_id -> required, gender -> required
+-----------------------------------------------------------------------------------------------------------
+"UPDATE MESSAGE"
+
+/api/admin/program/update/{id} POST, returns a json 
+input: token:string, title:string, content:string, group_id:int, field_id:int, gender:int
+output1: {"result_code": 1000} -> SUCCESS
+output2: {"result_code": 1105} -> POST_NOT_EXIST
+output3: {"result_code": 1103} -> INVALID_TOKEN
+validations: title, preview_content -> max:255|required
+			 content, group_id -> required, field_id -> required, gender -> required
+-----------------------------------------------------------------------------------------------------------
+"DELETE MESSAGE"
 
 /api/admin/program/delete/{id} POST, returns a json 
 input: token:string

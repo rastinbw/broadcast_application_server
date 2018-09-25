@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\SliderRequest as StoreRequest;
@@ -36,10 +36,11 @@ class SliderCrudController extends CrudController
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
                             <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر یک',
                 'name' => "image_1",
-                'filename' => NULL, // set to null if not needed
-                'type' => 'base64_image',
+                'type' => 'image',
                 'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
                 'crop' => true, // set to true to allow cropping, false to disable
+                'upload' => true,
+                'disk' => 'public',
                 'wrapperAttributes' => [
                     'style' => 'margin-bottom:50px'
                 ],
@@ -48,10 +49,11 @@ class SliderCrudController extends CrudController
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
                             <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر دو',
                 'name' => "image_2",
-                'filename' => NULL, // set to null if not needed
-                'type' => 'base64_image',
+                'type' => 'image',
                 'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
                 'crop' => true, // set to true to allow cropping, false to disable
+                'upload' => true,
+                'disk' => 'public',
                 'wrapperAttributes' => [
                     'style' => 'margin-bottom:50px'
                 ],
@@ -60,10 +62,11 @@ class SliderCrudController extends CrudController
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
                             <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر سه',
                 'name' => "image_3",
-                'filename' => NULL, // set to null if not needed
-                'type' => 'base64_image',
+                'type' => 'image',
                 'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
                 'crop' => true, // set to true to allow cropping, false to disable
+                'upload' => true,
+                'disk' => 'public',
                 'wrapperAttributes' => [
                     'style' => 'margin-bottom:50px'
                 ],
@@ -72,10 +75,11 @@ class SliderCrudController extends CrudController
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
                             <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر چهار',
                 'name' => "image_4",
-                'filename' => NULL, // set to null if not needed
-                'type' => 'base64_image',
+                'type' => 'image',
                 'aspect_ratio' => 2, // set to 0 to allow any aspect ratio
                 'crop' => true, // set to true to allow cropping, false to disable
+                'upload' => true,
+                'disk' => 'public',
                 'wrapperAttributes' => [
                     'style' => 'margin-bottom:50px'
                 ],
@@ -210,10 +214,10 @@ class SliderCrudController extends CrudController
             return back()->withErrors(['custom_fail' => true, 'errors' => $errors]);
 
 
-        parent::updateCrud($request);
+        $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        return back();
+        return $redirect_location;
     }
 
     public function getBase64ImageSize($base64Image){ //return memory size in B, KB, MB

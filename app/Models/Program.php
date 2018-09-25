@@ -20,7 +20,7 @@ class Program extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['title', 'content', 'preview_content', 'group_id'];
+    protected $fillable = ['title', 'content', 'preview_content', 'group_id', 'field_id'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -52,6 +52,10 @@ class Program extends Model
         return $this->belongsTo('App\Models\Group');
     }
 
+    public function field()
+    {
+        return $this->belongsTo('App\Models\Field');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

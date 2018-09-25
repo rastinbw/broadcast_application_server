@@ -30,7 +30,8 @@ class User extends Authenticatable
         'media_count_limit',
         'program_count_limit',
         'activation_date',
-        'fire_base_api_key'
+        'fire_base_api_key',
+        'must_update',
     ];
 
     /**
@@ -126,6 +127,11 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->hasMany('App\Models\Group');
+    }
+
+    public function fields()
+    {
+        return $this->hasMany('App\Models\Field');
     }
 
     public function messages()

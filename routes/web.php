@@ -55,6 +55,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+    CRUD::resource('field', 'FieldCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
     CRUD::resource('staff', 'StaffCrudController');
 });
 
@@ -147,12 +152,13 @@ Route::post('/api/{user_id}/ustudent/workbook', 'API\WebserviceController@get_st
 Route::post('/api/{user_id}/send_ticket', 'API\WebserviceController@save_ticket');
 Route::post('/api/{user_id}/messages', 'API\WebserviceController@get_messages');
 Route::get('/api/{user_id}/groups', 'API\WebserviceController@get_user_group_list');
+Route::get('/api/{user_id}/fields', 'API\WebserviceController@get_user_field_list');
 Route::post('/api/{user_id}/staff', 'API\WebserviceController@get_staff');
 Route::get('/api/{user_id}/slider', 'API\WebserviceController@get_slider');
 Route::get('/api/{user_id}/about', 'API\WebserviceController@get_about');
 Route::get('/api/{user_id}/staff/updated', 'API\WebserviceController@get_staff_updated');
 Route::get('/api/{user_id}/slider/updated', 'API\WebserviceController@get_slider_updated');
-Route::get('/api/{user_id}/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}', 'API\WebserviceController@get_posts');
+Route::get('/api/{user_id}/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}/{field_id}', 'API\WebserviceController@get_posts');
 
 
 
@@ -160,7 +166,8 @@ Route::get('/api/{user_id}/posts/{type}/{chunk_count}/{page_count}/{search_phras
 Route::post('/api/admin/login', 'API\AdminWebserviceController@login_admin');
 Route::post('/api/admin/check_token', 'API\AdminWebserviceController@check_token');
 Route::post('/api/admin/groups', 'API\AdminWebserviceController@get_group_list');
-Route::post('/api/admin/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}', 'API\AdminWebserviceController@get_posts');
+Route::post('/api/admin/fields', 'API\AdminWebserviceController@get_field_list');
+Route::post('/api/admin/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}/{field_id}', 'API\AdminWebserviceController@get_posts');
 
 Route::post('/api/admin/post/create', 'API\AdminWebserviceController@create_post');
 Route::post('/api/admin/post/update/{id}', 'API\AdminWebserviceController@update_post');

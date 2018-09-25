@@ -10,37 +10,37 @@
 @endsection
 
 @section('header')
-<section class="content-header">
+{{--<section class="content-header">--}}
 
-    <h1>
-        {{ trans('backpack::base.my_account') }}
-    </h1>
+    {{--<h1>--}}
+        {{--{{ trans('backpack::base.my_account') }}--}}
+    {{--</h1>--}}
 
-    <ol class="breadcrumb">
+    {{--<ol class="breadcrumb">--}}
 
-        <li>
-            <a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a>
-        </li>
+        {{--<li>--}}
+            {{--<a href="{{ backpack_url() }}">{{ config('backpack.base.project_name') }}</a>--}}
+        {{--</li>--}}
 
-        <li>
-            <a href="{{ route('backpack.account.info') }}">{{ trans('backpack::base.my_account') }}</a>
-        </li>
+        {{--<li>--}}
+            {{--<a href="{{ route('backpack.account.info') }}">{{ trans('backpack::base.my_account') }}</a>--}}
+        {{--</li>--}}
 
-        <li class="active">
-            {{ trans('backpack::base.change_password') }}
-        </li>
+        {{--<li class="active">--}}
+            {{--{{ trans('backpack::base.change_password') }}--}}
+        {{--</li>--}}
 
-    </ol>
+    {{--</ol>--}}
 
-</section>
+{{--</section>--}}
 @endsection
 
 @section('content')
 <div class="row">
-    <div class="col-md-3">
-        @include('backpack::auth.account.sidemenu')
-    </div>
-    <div class="col-md-6">
+    {{--<div class="col-md-3">--}}
+        {{--@include('backpack::auth.account.sidemenu')--}}
+    {{--</div>--}}
+    <div class="col-md-10 col-md-offset-1" style="text-align: right">
 
         <form class="form" action="{{ route('backpack.account.password') }}" method="post">
 
@@ -72,7 +72,7 @@
                             $field = 'old_password';
                         @endphp
                         <label class="required">{{ $label }}</label>
-                        <input autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
+                        <input style="text-align: right"  autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
                     </div>
 
                     <div class="form-group">
@@ -81,7 +81,7 @@
                             $field = 'new_password';
                         @endphp
                         <label class="required">{{ $label }}</label>
-                        <input autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
+                        <input style="text-align: right" autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
                     </div>
 
                     <div class="form-group">
@@ -90,16 +90,14 @@
                             $field = 'confirm_password';
                         @endphp
                         <label class="required">{{ $label }}</label>
-                        <input autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
+                        <input style="text-align: right" autocomplete="new-password" required class="form-control" type="password" name="{{ $field }}" id="{{ $field }}" value="" placeholder="{{ $label }}">
                     </div>
 
                 </div>
 
                 <div class="box-footer">
-
-                    <button type="submit" class="btn btn-success"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::base.change_password') }}</span></button>
-                    <a href="{{ backpack_url() }}" class="btn btn-default"><span class="ladda-label">{{ trans('backpack::base.cancel') }}</span></a>
-
+                    <a href="{{ backpack_url() }}" style="font-size: 15px; padding:5px 30px 5px 30px;" class="btn btn-danger"><span class="ladda-label">{{ trans('backpack::base.cancel') }}</span></a>
+                    <button type="submit" style="font-size: 15px; padding:5px 30px 5px 30px;" class="btn btn-success"><span class="ladda-label"><i class="fa fa-save"></i> {{ trans('backpack::base.change_password') }}</span></button>
                 </div>
             </div>
 

@@ -3,11 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\About;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\AboutRequest as StoreRequest;
 use App\Http\Requests\AboutRequest as UpdateRequest;
+use App\Http\Controllers\CrudController;
+
 use Illuminate\Foundation\Auth\User;
 
 class AboutCrudController extends CrudController
@@ -73,6 +74,8 @@ class AboutCrudController extends CrudController
         // ------ CRUD ACCESS
         // $this->crud->allowAccess(['list', 'create', 'update', 'reorder', 'delete']);
         $this->crud->denyAccess(['list', 'create', 'reorder', 'delete']);
+//        $this->crud->removeAction('save_and_new');
+//        $this->crud->removeAction('save_and_back');
 
         // ------ CRUD REORDER
         // $this->crud->enableReorder('label_name', MAX_TREE_LEVEL);
@@ -154,9 +157,9 @@ class AboutCrudController extends CrudController
     public function update(UpdateRequest $request)
     {
         // your additional operations before save here
-        parent::updateCrud($request);
+        $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        return back();
+        return $redirect_location;
     }
 }

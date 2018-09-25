@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Includes\Constant;
+use App\Models\Group;
 use App\Models\Ustudent;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\UstudentRequest as StoreRequest;
@@ -45,12 +47,26 @@ class UstudentCrudController extends CrudController
                 'label' => 'کد ملی'
             ],
             [
-                'label' =>  "گروه آموزشی", // Table column heading
+                'label' =>  "پایه", // Table column heading
                 'type' => "select",
                 'name' => 'group_id', // the column that contains the ID of that connected entity;
                 'entity' => 'group', // the method that defines the relationship in your Model
                 'attribute' => "title", // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
+            ],
+            [
+                'label' =>  "رشته", // Table column heading
+                'type' => "select",
+                'name' => 'field_id', // the column that contains the ID of that connected entity;
+                'entity' => 'field', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Field", // foreign key model
+            ],
+            [
+                'name' => 'gender',
+                'label' => "جنسیت",
+                'type' => 'select_from_array',
+                'options' => [Constant::$GENDER_MALE => 'پسر', Constant::$GENDER_FEMALE => 'دختر'],
             ],
             [
                 // run a function on the CRUD model and show its return value
@@ -60,6 +76,39 @@ class UstudentCrudController extends CrudController
                 'function_name' => 'getDate', // the method in your Model
             ],
         ]);
+
+        $this->crud->addFilter([ // add a "simple" filter called Draft
+            'type' => 'dropdown',
+            'name' => 'gender',
+            'label' => 'جنسیت'
+        ], [
+            Constant::$GENDER_FEMALE => 'دختر',
+            Constant::$GENDER_MALE => 'پسر',
+        ],  function ($value) {
+            $this->crud->addClause('where', 'gender', $value);
+        }
+        );
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'field_id',
+            'type' => 'select2',
+            'label'=> 'رشته',
+        ], function() {
+            return \Auth::user()->fields()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'field_id', $value);
+        });
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'group_id',
+            'type' => 'select2',
+            'label'=> 'پایه',
+        ], function() {
+            return \Auth::user()->groups()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'group_id', $value);
+        });
+
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

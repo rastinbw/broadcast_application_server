@@ -14,8 +14,8 @@ return [
     */
 
     // Forms
-    'save_action_save_and_new' => 'Save and new item',
-    'save_action_save_and_edit' => 'Save and edit this item',
+    'save_action_save_and_new' => 'ذخیره و آیتم جدید',
+    'save_action_save_and_edit' => 'ذخیره و ویرایش',
     'save_action_save_and_back' => 'ذخیره و بازگشت',
     'save_action_changed_notification' => 'Default behaviour after saving has been changed.',
 

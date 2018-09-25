@@ -31,7 +31,8 @@ class Constant
     public static $SHOULD_UPDATE = 1116;
     public static $COUNT_LIMIT = 1117;
 
-
+    public static $GENDER_MALE = 1;
+    public static $GENDER_FEMALE = 0;
 
     // for get posts function
     public static $TYPE_MEDIA = "media";

@@ -11,7 +11,7 @@
     <title>
       {{ isset($title) ? $title : "پنل ادمین"}}
     </title>
-
+    <link rel="icon" href="{{asset('images/admin.png')}}">
     @yield('before_styles')
     @stack('before_styles')
 

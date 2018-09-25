@@ -55,7 +55,7 @@ class AdminWebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
 
-    function get_posts(Request $req, $type, $chunk_count, $page_count, $search_phrase, $group_id)
+    function get_posts(Request $req, $type, $chunk_count, $page_count, $search_phrase, $group_id, $field_id)
     {
         $admin = AndroidAdmin::where([
             ['token', '=', $req->input('token')],
@@ -74,6 +74,10 @@ class AdminWebserviceController extends Controller
             $table = "programs";
             if ($group_id != 'null')
                 array_push($query, ['group_id', '=', $group_id]);
+
+            if ($field_id != 'null')
+                array_push($query, ['field_id', '=', $field_id]);
+
         } elseif ($type == Constant::$TYPE_MESSAGE) {
             $table = "messages";
             if ($group_id != 'null')
@@ -109,6 +113,19 @@ class AdminWebserviceController extends Controller
         if ($admin) {
             $user = $admin->user()->first();
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->groups()->get()->toJson());
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function get_field_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->fields()->get()->toJson());
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
@@ -215,6 +232,7 @@ class AdminWebserviceController extends Controller
                 'preview_content' =>  $req->input('preview_content'),
                 'content' =>  $req->input('content'),
                 'group_id' => $req->input('group_id'),
+                'field_id' => $req->input('field_id'),
             ]);
 
             $user->programs()->save($program);
@@ -243,6 +261,7 @@ class AdminWebserviceController extends Controller
                 $program->preview_content = $req->input('preview_content');
                 $program->content = $req->input('content');
                 $program->group_id = $req->input('group_id');
+                $program->field_id = $req->input('field_id');
                 $program->save();
 
                 return sprintf('{"result_code": %u}', Constant::$SUCCESS);
@@ -410,12 +429,14 @@ class AdminWebserviceController extends Controller
             $message = Message::create([
                 'title' =>  $req->input('title'),
                 'group_id' =>  $req->input('group_id'),
+                'field_id' => $req->input('field_id'),
+                'gender' => $req->input('gender'),
                 'content' =>  $req->input('content'),
             ]);
 
             $user->messages()->save($message);
 
-            $to = '/topics/group_'.$message->group_id;
+            $to = '/topics/group_'.$message->gender.$message->group_id.$message->field_id;
             AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
@@ -438,6 +459,8 @@ class AdminWebserviceController extends Controller
             if ($message){
                 $message->title = $req->input('title');
                 $message->group_id = $req->input('group_id');
+                $message->field_id = $req->input('field_id');
+                $message->gender = $req->input('gender');
                 $message->content = $req->input('content');
                 $message->save();
 

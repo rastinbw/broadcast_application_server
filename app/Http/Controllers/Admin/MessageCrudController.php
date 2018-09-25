@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Includes\Constant;
 use App\Models\Notification;
-use App\Models\Ustudent;
-use App\User;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\MessageRequest as StoreRequest;
@@ -47,13 +45,33 @@ class MessageCrudController extends CrudController
                 ],
             ],
             [  // Select
-                'label' => "گروه آموزشی ( میتوانید در بخش گروه های آموزشی اقدام به اضافه کردن گروه های جدید نمایید ) *",
+                'label' => "پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید ) *",
                 'type' => 'select2',
                 'name' => 'group_id', // the db column for the foreign key
                 'entity' => 'group', // the method that defines the relationship in your Model
                 'attribute' => 'title', // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            ],
+            [  // Select
+                'label' => "رشته ( میتوانید در بخش رشته های تحصیلی اقدام به اضافه کردن رشته های جدید نمایید ) *",
+                'type' => 'select2',
+                'name' => 'field_id', // the db column for the foreign key
+                'entity' => 'field', // the method that defines the relationship in your Model
+                'attribute' => 'title', // foreign key attribute that is shown to user
+                'model' => "App\Models\Field", // foreign key model
+                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            ],
+            [
+                'name'        => 'gender', // the name of the db column
+                'label'       => 'جنسیت', // the input label
+                'type'        => 'radio',
+                'options'     => [ // the key will be stored in the db, the value will be shown as label;
+                    Constant::$GENDER_FEMALE => 'دختر',
+                    Constant::$GENDER_MALE => 'پسر',
+                ],
+                // optional
+                'inline'      => true, // show the radios all on the same line?
             ],
             [
                 'name' => 'content',
@@ -74,12 +92,26 @@ class MessageCrudController extends CrudController
                 'label' => 'عنوان',
             ],
             [
-                'label' =>  "گروه آموزشی", // Table column heading
+                'label' =>  "پایه", // Table column heading
                 'type' => "select",
                 'name' => 'group_id', // the column that contains the ID of that connected entity;
                 'entity' => 'group', // the method that defines the relationship in your Model
                 'attribute' => "title", // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
+            ],
+            [
+                'label' =>  "رشته", // Table column heading
+                'type' => "select",
+                'name' => 'field_id', // the column that contains the ID of that connected entity;
+                'entity' => 'field', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Field", // foreign key model
+            ],
+            [
+                'name' => 'gender',
+                'label' => "جنسیت",
+                'type' => 'select_from_array',
+                'options' => [Constant::$GENDER_MALE => 'پسر', Constant::$GENDER_FEMALE => 'دختر'],
             ],
             [
                 // run a function on the CRUD model and show its return value
@@ -89,6 +121,40 @@ class MessageCrudController extends CrudController
                 'function_name' => 'getDate', // the method in your Model
             ],
         ]);
+
+
+        $this->crud->addFilter([ // add a "simple" filter called Draft
+            'type' => 'dropdown',
+            'name' => 'gender',
+            'label' => 'جنسیت'
+        ], [
+            Constant::$GENDER_FEMALE => 'دختر',
+            Constant::$GENDER_MALE => 'پسر',
+        ],  function ($value) {
+            $this->crud->addClause('where', 'gender', $value);
+        }
+        );
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'field_id',
+            'type' => 'select2',
+            'label'=> 'رشته',
+        ], function() {
+            return \Auth::user()->fields()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'field_id', $value);
+        });
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'group_id',
+            'type' => 'select2',
+            'label'=> 'پایه',
+        ], function() {
+            return \Auth::user()->groups()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'group_id', $value);
+        });
+
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -216,7 +282,7 @@ class MessageCrudController extends CrudController
         $message->user_id = $user->id;
         $message->save();
 
-        $to = '/topics/group_'.$message->group_id;
+        $to = '/topics/group_'.$message->gender.$message->group_id.$message->field_id;
         AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
 
         return $redirect_location;

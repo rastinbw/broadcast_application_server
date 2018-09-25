@@ -3,8 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Student;
-use App\Models\Ustudent;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 
 
 // VALIDATION: change the requests to match your own file names if you need form validation

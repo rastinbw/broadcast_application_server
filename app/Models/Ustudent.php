@@ -23,6 +23,7 @@ class Ustudent extends Model
     protected $fillable = [
         'user_id',
         'group_id',
+        'field_id',
         'verification_code',
         'verified',
         'national_code',
@@ -61,6 +62,11 @@ class Ustudent extends Model
     public function group()
     {
         return $this->belongsTo('App\Models\Group');
+    }
+
+    public function field()
+    {
+        return $this->belongsTo('App\Models\Field');
     }
 
     public function tickets()

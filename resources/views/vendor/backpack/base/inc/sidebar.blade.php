@@ -9,7 +9,7 @@
 
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree" style="text-align: right; font-size: 18px">
-          {{-- <li class="header">{{ trans('backpack::base.administration') }}</li> --}}
+           {{--<li class="header">{{ trans('backpack::base.administration') }}</li>--}}
           <!-- ================================================ -->
           <!-- ==== Recommended place for admin menu items ==== -->
           <!-- ================================================ -->
@@ -17,7 +17,7 @@
           @include('backpack::inc.sidebar_content')
 
           <!-- ======================================= -->
-          {{-- <li class="header">Other menus</li> --}}
+           {{--<li class="header">Other menus</li>--}}
         </ul>
       </section>
       <!-- /.sidebar -->

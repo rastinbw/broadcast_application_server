@@ -29,7 +29,6 @@ class ProgramRequest extends FormRequest
             'title' => 'required|max:255',
             'preview_content' => 'required|max:255',
             'content' => 'required',
-            'group_id' => 'required'
         ];
     }
 

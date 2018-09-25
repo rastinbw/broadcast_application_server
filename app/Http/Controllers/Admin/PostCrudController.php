@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Includes\Constant;
 use App\Models\Notification;
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 use App\Post;
 
 // VALIDATION: change the requests to match your own file names if you need form validation

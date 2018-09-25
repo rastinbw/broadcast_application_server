@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use Backpack\CRUD\app\Http\Controllers\CrudController;
+use App\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\GroupRequest as StoreRequest;
@@ -20,7 +20,7 @@ class GroupCrudController extends CrudController
         */
         $this->crud->setModel('App\Models\Group');
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/group');
-        $this->crud->setEntityNameStrings('گروه آموزشی', 'گروه های آموزشی');
+        $this->crud->setEntityNameStrings('پایه', 'پایه ها');
 
         /*
         |--------------------------------------------------------------------------

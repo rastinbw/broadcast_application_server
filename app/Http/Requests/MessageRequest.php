@@ -28,7 +28,9 @@ class MessageRequest extends FormRequest
         return [
             'title' => 'required|max:1000',
             'content' => 'required|max:1000',
-            'group_id' => 'required'
+            'group_id' => 'required',
+            'field_id' => 'required',
+            'gender' => 'required',
         ];
     }
 

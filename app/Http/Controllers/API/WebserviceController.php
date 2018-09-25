@@ -28,10 +28,11 @@ class WebserviceController extends Controller
         if ($user){
             $should_update = version_compare($user->last_version, $version);
             if ($should_update){
-                return sprintf('{"result_code": %u, "data": {"name": %s, "version": %s}}',
+                return sprintf('{"result_code": %u, "data": {"name": %s, "version": %s, "must_update": %s}}',
                     Constant::$SHOULD_UPDATE,
                     $user->apk_name,
-                    $user->last_version
+                    $user->last_version,
+                    $user->must_update
                 );
             }
 
@@ -52,6 +53,8 @@ class WebserviceController extends Controller
             $messages = Message::where([
                 ['user_id', '=', $user_id],
                 ['group_id', '=', $ustudent->group_id],
+                ['field_id', '=', $ustudent->field_id],
+                ['gender', '=', $ustudent->gender],
             ])->get();
 
             // <editor-fold desc = "USELESS SNIPPET BUT I LIKE IT">
@@ -187,6 +190,18 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$USER_NOT_EXIST);
     }
 
+    function get_user_field_list($user_id, Request $req)
+    {
+        $user = User::where([
+            ['id', '=', $user_id],
+        ])->first();
+
+        if ($user) {
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->fields()->get()->toJson());
+        } else
+            return sprintf('{"result_code": %u}', Constant::$USER_NOT_EXIST);
+    }
+
     function save_ticket($user_id, Request $req)
     {
         $ustudent = Ustudent::where([
@@ -211,7 +226,7 @@ class WebserviceController extends Controller
     }
 
 
-    function get_posts($user_id, $type, $chunk_count, $page_count, $search_phrase, $group_id)
+    function get_posts($user_id, $type, $chunk_count, $page_count, $search_phrase, $group_id, $field_id)
     {
         $query = [['user_id', '=', $user_id]];
         $table = "posts";
@@ -222,6 +237,9 @@ class WebserviceController extends Controller
             $table = "programs";
             if ($group_id != 'null')
                 array_push($query, ['group_id', '=', $group_id]);
+
+            if ($field_id != 'null')
+                array_push($query, ['field_id', '=', $field_id]);
         }
 
         if ($search_phrase != 'null')
@@ -291,6 +309,8 @@ class WebserviceController extends Controller
         $ustudent->national_code = $req->input('national_code');
         $ustudent->phone_number = $req->input('phone_number');
         $ustudent->group_id = $req->input('group_id');
+        $ustudent->field_id = $req->input('field_id');
+        $ustudent->gender = $req->input('gender');
         $ustudent->password = Hash::make($req->input('password'));
         $ustudent->verified = 0;
         $ustudent->save();
@@ -339,10 +359,14 @@ class WebserviceController extends Controller
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->verified = 1;
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g}}',
+                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
-                    $ustudent->group_id
+                    $ustudent->group_id,
+                    $ustudent->field_id,
+                    $ustudent->gender,
+                    $ustudent->first_name,
+                    $ustudent->last_name
                 );
             } else
                 return sprintf('{"result_code": %u}', Constant::$INVALID_VERIFICATION_CODE);
@@ -365,10 +389,14 @@ class WebserviceController extends Controller
             if (Hash::check($req->input('password'), $ustudent->password)) {
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g}}',
+                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
-                    $ustudent->group_id
+                    $ustudent->group_id,
+                    $ustudent->field_id,
+                    $ustudent->gender,
+                    $ustudent->first_name,
+                    $ustudent->last_name
                 );
             } else
                 return sprintf('{"result_code": %u}', Constant::$INVALID_PASSWORD);
@@ -391,10 +419,14 @@ class WebserviceController extends Controller
                 ['national_code', '=', $student->national_code],
             ])->first();
             if ($ustudent)
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g}}',
+                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s }}',
                     Constant::$SUCCESS,
                     $ustudent->token,
-                    $ustudent->group_id
+                    $ustudent->group_id,
+                    $ustudent->field_id,
+                    $ustudent->gender,
+                    $ustudent->first_name,
+                    $ustudent->last_name
                 );
             else
                 return sprintf('{"result_code": %u}', Constant::$USER_NOT_REGISTERED);
@@ -492,6 +524,8 @@ class WebserviceController extends Controller
                 'last_name' => $ustudent->last_name,
                 'national_code' => $ustudent->national_code,
                 'group_id' => $ustudent->group_id,
+                'field_id' => $ustudent->field_id,
+                'gender' => $ustudent->gender,
                 'is_student' => $is_student,
             ];
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($data)->toJson());
@@ -518,6 +552,7 @@ class WebserviceController extends Controller
             $ustudent->first_name = $req->input('first_name');
             $ustudent->last_name = $req->input('last_name');
             $ustudent->group_id = $req->input('group_id');
+            $ustudent->field_id = $req->input('field_id');
             $ustudent->national_code = $req->input('national_code');
             $ustudent->save();
 

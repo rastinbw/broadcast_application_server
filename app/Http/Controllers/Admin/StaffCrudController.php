@@ -86,14 +86,16 @@ class StaffCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
-            [ // base64_image
+            [
                 'label' => '<label style="color:#e55619">( فایل انتخابی باید به فرمت
                             <label style="font-family:Arial, Helvetica, sans-serif;">jpeg, jpg</label> و حداکثر حجم 1 مگابایت باشد )</label> تصویر پرسنل',
                 'name' => "photo",
-                'filename' => NULL, // set to null if not needed
-                'type' => 'base64_image',
-                'aspect_ratio' => 1, // set to 0 to allow any aspect ratio
+                'type' => 'image',
+                'upload' => true,
                 'crop' => true, // set to true to allow cropping, false to disable
+                'aspect_ratio' => 1, // ommit or set to 0 to allow any aspect ratio
+                'disk' => 'public', // in case you need to show images from a different disk
+                // 'prefix' => 'images' // in case you only store the filename in the database, this text will be prepended to the database value
             ]
 
         ], 'update/create/both');

@@ -206,6 +206,7 @@ class AdminController extends Controller
         return redirect(URL::to('/admin/student'));
     }
 
+
     public static function notify($title, $message, $from, $to)
     {
         $fcmUrl = 'https://fcm.googleapis.com/fcm/send';
@@ -232,7 +233,6 @@ class AdminController extends Controller
             'Authorization: key='.$from,
             'Content-Type: application/json'
         ];
-
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL,$fcmUrl);
@@ -266,8 +266,10 @@ class AdminController extends Controller
     {
         // Check if file exists in app/storage/file folder
         // use while testing on localhost
-        // $file_path = public_path() . "/storage/apks/" . $filename;
-        $file_path = "/home/schoolbr/public_html" . "/storage/public/apks/" . $filename;
+        if (env('APP_ON_SERVER'))
+            $file_path = "/home/schoolbr/public_html" . "/storage/public/apks/" . $filename;
+        else
+            $file_path = public_path() . "/storage/apks/" . $filename;
 
         $headers = array(
             'Content-Type' => 'application/apk',

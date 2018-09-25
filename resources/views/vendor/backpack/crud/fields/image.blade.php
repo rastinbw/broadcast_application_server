@@ -6,13 +6,20 @@
 
     $prefix = isset($field['prefix']) ? $field['prefix'] : '';
     $value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '') );
+
+     if (env('APP_ON_SERVER'))
+         $file_path = "public/" . $value;
+     else
+         $file_path = $value;
+
     $image_url = $value
         ? preg_match('/^data\:image\//', $value)
             ? $value
             : (isset($field['disk'])
-                ? Storage::disk($field['disk'])->url($prefix.$value)
+                ? Storage::disk($field['disk'])->url($file_path)
                 : url($prefix.$value))
         :''; // if validation failed, tha value will be base64, so no need to create a URL for it
+
 
 @endphp
 
@@ -25,7 +32,7 @@
         @include('crud::inc.field_translatable_icon')
     </div>
     <!-- Wrap the image or canvas element with a block element (container) -->
-    <div class="row">
+    <div class="row" style="border:1px solid #D0D0D0; background: #F8F8F8; margin: 2px;padding: 10px">
         <div class="col-sm-6" style="margin-bottom: 20px;">
             <img id="mainImage" src="{{ $image_url }}">
         </div>
@@ -41,7 +48,7 @@
     </div>
     <div class="btn-group">
         <label class="btn btn-primary btn-file">
-            {{ trans('backpack::crud.choose_file') }} <input type="file" accept="image/*" id="uploadImage"  @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
+            انتخاب تصویر<input type="file" accept="image/jpeg" id="uploadImage"  @include('crud::inc.field_attributes', ['default_class' => 'hide'])>
             <input type="hidden" id="hiddenImage" name="{{ $field['name'] }}">
         </label>
         @if(isset($field['crop']) && $field['crop'])
