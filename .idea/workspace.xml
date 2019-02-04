@@ -2,41 +2,21 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="e98807be-623f-4d7b-ad4c-d2268207a349" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/admin_api.md" beforeDir="false" afterPath="$PROJECT_DIR$/admin_api.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/resources/views/ctr_list.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/AdminWebserviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/AdminWebserviceController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/API/WebserviceController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/API/WebserviceController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/AboutCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AboutCrudController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/MediaCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/MediaCrudController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/MessageCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/MessageCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/PostCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/PostCrudController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/SliderCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/SliderCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/StaffCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/StaffCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentWorkbookCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentWorkbookCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/UstudentCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/UstudentCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Admin/WorkbookCrudController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Admin/WorkbookCrudController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/MessageRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/MessageRequest.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Requests/ProgramRequest.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Requests/ProgramRequest.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Includes/Constant.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Includes/Constant.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Message.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Message.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Program.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Program.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Slider.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Slider.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Staff.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Staff.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Ustudent.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Ustudent.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Models/Student.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Student.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/vendor/backpack/en/base.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/vendor/backpack/en/base.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/lang/vendor/backpack/en/crud.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/lang/vendor/backpack/en/crud.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/base/auth/account/change_password.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/base/auth/account/change_password.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_content.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_content.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_user_panel.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_user_panel.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/base/layout.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/base/layout.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/image.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/image.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/inc/form_save_buttons.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/inc/form_save_buttons.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/select2_multiple.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/select2_multiple.blade.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" beforeDir="false" afterPath="$PROJECT_DIR$/vendor/composer/autoload_classmap.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -63,12 +43,30 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="TestCrudController.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/TestCrudController.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="WebserviceController.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/WebserviceController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="32" column="36" lean-forward="true" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
+            <state relative-caret-position="285">
+              <caret line="651" column="31" selection-start-line="651" selection-start-column="31" selection-end-line="651" selection-end-column="31" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="web.php" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/routes/web.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2895">
+              <caret line="202" column="38" selection-start-line="202" selection-start-column="38" selection-end-line="202" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -77,9 +75,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sea</find>
-      <find>next</find>
-      <find>back</find>
       <find>save</find>
       <find>are</find>
       <find>hidd</find>
@@ -107,6 +102,9 @@
       <find>AdminController</find>
       <find>mess</find>
       <find>check_ver</find>
+      <find>all</find>
+      <find>$field['model']::all()</find>
+      <find>name</find>
     </findStrings>
     <replaceStrings>
       <replace>program</replace>
@@ -123,56 +121,56 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/inc/form_save_buttons.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/vendor/backpack/en/crud.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AboutCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/CrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/AdminController.php" />
-        <option value="$PROJECT_DIR$/vendor/backpack/base/src/app/Http/Controllers/AdminController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MediaCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentWorkbookCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/WorkbookCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminController.php" />
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_user_panel.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/auth/account/change_password.blade.php" />
-        <option value="$PROJECT_DIR$/resources/lang/vendor/backpack/en/base.php" />
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/layout.blade.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_193744_create_grades_table.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_193823_create_fields_table.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_193955_add_column_to_users_table.php" />
-        <option value="$PROJECT_DIR$/app/Models/Field.php" />
-        <option value="$PROJECT_DIR$/app/Http/Requests/FieldRequest.php" />
-        <option value="$PROJECT_DIR$/app/Models/Grade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/GradeCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Requests/GradeRequest.php" />
-        <option value="$PROJECT_DIR$/app/Models/Ustudent.php" />
-        <option value="$PROJECT_DIR$/app/User.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_195019_add_column_to_ustudent_table.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/FieldCrudController.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_203144_add_column_to_ustudents_table.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_202844_add_column_to_programs_table.php" />
-        <option value="$PROJECT_DIR$/database/migrations/2018_09_20_202853_add_column_to_messages_table.php" />
-        <option value="$PROJECT_DIR$/app/Http/Requests/MessageRequest.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/GroupCrudController.php" />
-        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_content.blade.php" />
-        <option value="$PROJECT_DIR$/app/Models/Message.php" />
-        <option value="$PROJECT_DIR$/app/Includes/Constant.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/UstudentCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MessageCrudController.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramCrudController.php" />
         <option value="$PROJECT_DIR$/app/Http/Requests/ProgramRequest.php" />
         <option value="$PROJECT_DIR$/app/Models/Program.php" />
         <option value="$PROJECT_DIR$/admin_api.md" />
-        <option value="$PROJECT_DIR$/routes/web.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/API/AdminWebserviceController.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/StaffCrudController.php" />
         <option value="$PROJECT_DIR$/app/Models/Staff.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/SliderCrudController.php" />
         <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/image.blade.php" />
         <option value="$PROJECT_DIR$/app/Models/Slider.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/PostCrudController.php" />
+        <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/API/AdminWebserviceController.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2018_11_12_131153_create_courses_table.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/CourseRequest.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_content.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2018_11_15_201728_create_course_student_table.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/MessageCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/API/StudentController.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/select2_multiple.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2018_11_19_170711_create_tests_table.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/course_tests.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/course_ctr.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2018_11_22_135218_create_ctrs_table.php" />
+        <option value="$PROJECT_DIR$/app/Models/Course.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2018_11_25_184207_create_absents_table.php" />
+        <option value="$PROJECT_DIR$/app/User.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/ctr_list.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/grades_list.blade.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2019_01_27_195310_create_grades_table.php" />
+        <option value="$PROJECT_DIR$/app/Models/Absent.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/StudentCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Models/BaseAdvanceModel.php" />
+        <option value="$PROJECT_DIR$/app/Models/Ctr.php" />
+        <option value="$PROJECT_DIR$/app/Includes/Constant.php" />
+        <option value="$PROJECT_DIR$/app/Models/Grade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/CourseCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Models/Test.php" />
+        <option value="$PROJECT_DIR$/database/migrations/2019_01_28_191217_add_column_to_tests_table.php" />
+        <option value="$PROJECT_DIR$/resources/views/list_layout.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/grades_list.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/AdminController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/CtrRequest.php" />
+        <option value="$PROJECT_DIR$/resources/views/ctr_list.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/CtrCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/CourseTestCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/CourseCtrCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Http/Requests/TestRequest.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/Admin/TestCrudController.php" />
+        <option value="$PROJECT_DIR$/app/Models/Student.php" />
+        <option value="$PROJECT_DIR$/routes/web.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/API/WebserviceController.php" />
       </list>
     </option>
@@ -205,6 +203,7 @@
       <path value="$PROJECT_DIR$/public/vendor/backpack/select2/package.json" />
     </packageJsonPaths>
   </component>
+  <component name="PhpDebugGeneral" listening_started="true" />
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
       <path value="$PROJECT_DIR$/vendor/backpack/crud" />
@@ -309,16 +308,17 @@
       <path value="$PROJECT_DIR$/vendor/hekmatinasser/notowo" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="y" value="105" />
-    <option name="width" value="1018" />
-    <option name="height" value="558" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="1365" />
+    <option name="width" value="1602" />
+    <option name="height" value="901" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -379,47 +379,55 @@
             <path>
               <item name="broadcast_app_server" type="b2602c69:ProjectViewProjectNode" />
               <item name="broadcast_app_server" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="database" type="462c0819:PsiDirectoryNode" />
+              <item name="migrations" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="broadcast_app_server" type="b2602c69:ProjectViewProjectNode" />
               <item name="broadcast_app_server" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="storage" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="broadcast_app_server" type="b2602c69:ProjectViewProjectNode" />
               <item name="broadcast_app_server" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="broadcast_app_server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="broadcast_app_server" type="462c0819:PsiDirectoryNode" />
+              <item name="routes" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="broadcast_app_server" type="b2602c69:ProjectViewProjectNode" />
+              <item name="broadcast_app_server" type="462c0819:PsiDirectoryNode" />
               <item name="storage" type="462c0819:PsiDirectoryNode" />
-              <item name="images" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../Financial_Project" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/Models" />
+      <recent name="$PROJECT_DIR$/resources/views" />
+      <recent name="$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons" />
+      <recent name="$PROJECT_DIR$/app/Http/Controllers/Admin" />
+      <recent name="$PROJECT_DIR$/public/images" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/app/Models" />
       <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/database/migrations" />
       <recent name="$PROJECT_DIR$/resources/views" />
       <recent name="$PROJECT_DIR$/app/Http/Controllers/Admin" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/public/images" />
-      <recent name="$PROJECT_DIR$/app/Http/Controllers" />
-      <recent name="$PROJECT_DIR$/routes/backpack" />
-      <recent name="$PROJECT_DIR$/storage/app/public/apks" />
-      <recent name="$PROJECT_DIR$/public/storage/apks" />
     </key>
   </component>
   <component name="RunDashboard">
@@ -558,11 +566,38 @@
       <workItem from="1537813879920" duration="658000" />
       <workItem from="1537863930897" duration="385000" />
       <workItem from="1537868338885" duration="622000" />
+      <workItem from="1537882259111" duration="1767000" />
+      <workItem from="1537903203733" duration="294000" />
+      <workItem from="1538238391780" duration="859000" />
+      <workItem from="1539281071243" duration="380000" />
+      <workItem from="1541759060512" duration="735000" />
+      <workItem from="1542015520440" duration="2155000" />
+      <workItem from="1542299928283" duration="8496000" />
+      <workItem from="1542486657337" duration="604000" />
+      <workItem from="1542631183642" duration="7036000" />
+      <workItem from="1542725491489" duration="618000" />
+      <workItem from="1542880485075" duration="2571000" />
+      <workItem from="1542968188925" duration="1066000" />
+      <workItem from="1542977880045" duration="12229000" />
+      <workItem from="1543158573924" duration="3427000" />
+      <workItem from="1544104190656" duration="6115000" />
+      <workItem from="1544799880117" duration="1244000" />
+      <workItem from="1544812661380" duration="3456000" />
+      <workItem from="1545376167290" duration="6291000" />
+      <workItem from="1546937272941" duration="750000" />
+      <workItem from="1548577602262" duration="603000" />
+      <workItem from="1548599671424" duration="673000" />
+      <workItem from="1548603020060" duration="10604000" />
+      <workItem from="1548666401611" duration="2300000" />
+      <workItem from="1548687848195" duration="8941000" />
+      <workItem from="1548839439715" duration="4898000" />
+      <workItem from="1548951954031" duration="1869000" />
+      <workItem from="1549292679477" duration="224000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="671009000" />
+    <option name="totallyTimeSpent" value="760990000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -574,9 +609,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="105" width="1018" height="558" extended-state="0" />
+    <frame x="1365" y="0" width="1602" height="901" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4987013" visible="true" weight="0.34123713" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4987013" visible="true" weight="0.38352638" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.32987013" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
@@ -585,7 +621,7 @@
       <window_info anchor="bottom" id="Version Control" order="10" weight="0.32987013" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info id="Structure" order="1" sideWeight="0.5012987" side_tool="true" weight="0.2979408" />
-      <window_info anchor="bottom" id="Terminal" order="9" weight="0.35324675" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.21688312" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -605,317 +641,346 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="8" />
+      <option name="time" value="9" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_02_195809_add_column_to_users_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/reset_password.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="30" column="5" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="30" selection-end-column="5" />
+        <state relative-caret-position="120">
+          <caret line="8" column="12" lean-forward="true" selection-start-line="8" selection-start-column="12" selection-end-line="8" selection-end-column="12" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_08_29_143331_add_column_to_users_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/base/layout.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="52" lean-forward="true" selection-start-line="16" selection-end-line="17" />
+        <state relative-caret-position="525">
+          <caret line="196" column="27" lean-forward="true" selection-end-line="203" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2014_10_12_000000_create_users_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/create.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="33" lean-forward="true" selection-start-line="21" selection-start-column="33" selection-end-line="21" selection-end-column="33" />
+        <state relative-caret-position="330">
+          <caret line="46" column="27" lean-forward="true" selection-start-line="46" selection-end-line="47" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_07_26_113610_add_user_id_to_groups_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/checkbox.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="51" lean-forward="true" selection-start-line="16" selection-end-line="17" />
+        <state relative-caret-position="195">
+          <caret line="13" column="16" lean-forward="true" selection-start-line="13" selection-start-column="16" selection-end-line="13" selection-end-column="16" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_193744_create_grades_table.php" />
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_02_195605_add_column_to_ustudents_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/course_ctr.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="30" column="5" lean-forward="true" selection-start-line="8" selection-start-column="3" selection-end-line="30" selection-end-column="5" />
+        <state relative-caret-position="15">
+          <caret line="1" column="17" selection-start-line="1" selection-start-column="17" selection-end-line="1" selection-end-column="17" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Grade.php" />
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GradeCrudController.php" />
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/GradeRequest.php" />
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/FieldRequest.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/update.blade.php">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/import_workbook.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="54" column="10" lean-forward="true" selection-start-line="51" selection-start-column="7" selection-end-line="54" selection-end-column="10" />
+        <state>
+          <caret column="17" selection-end-column="219" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="107">
+          <caret line="148" column="48" selection-start-line="148" selection-start-column="48" selection-end-line="148" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2018_11_12_131153_create_courses_table.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="18" column="33" selection-start-line="18" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AboutCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="195">
+          <caret line="13" column="41" selection-start-line="13" selection-start-column="41" selection-end-line="13" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/import_workbook.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="28" column="28" selection-start-line="28" selection-start-column="28" selection-end-line="28" selection-end-column="28" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/list.blade.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Ustudent.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="25" selection-start-line="25" selection-end-line="25" />
+        <state relative-caret-position="1186">
+          <caret line="80" column="32" lean-forward="true" selection-start-line="80" selection-start-column="32" selection-end-line="80" selection-end-column="32" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_193823_create_fields_table.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MediaCrudController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" column="62" lean-forward="true" selection-start-line="15" selection-start-column="62" selection-end-line="15" selection-end-column="62" />
+        <state relative-caret-position="434">
+          <caret line="223" column="10" selection-start-line="223" selection-start-column="10" selection-end-line="223" selection-end-column="64" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_193955_add_column_to_users_table.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/StudentWorkbookCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="358">
+          <caret line="80" column="18" lean-forward="true" selection-start-line="80" selection-start-column="18" selection-end-line="80" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/database/migrations/2018_11_25_184207_create_absents_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="285">
-          <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
+          <caret line="21" column="11" lean-forward="true" selection-start-line="21" selection-start-column="11" selection-end-line="21" selection-end-column="11" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_08_24_134946_add_column_to_users_table.php">
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/delete.blade.php">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_07_26_105152_create_programs_table.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/BaseAdvanceModel.php" />
+    <entry file="file://$PROJECT_DIR$/app/Models/Absent.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="21" column="52" lean-forward="true" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="52" />
+        <state relative-caret-position="600">
+          <caret line="40" column="47" selection-start-line="40" selection-start-column="47" selection-end-line="40" selection-end-column="47" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_08_16_230258_add_column_to_users_table.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Workbook.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="17" column="11" lean-forward="true" selection-start-line="8" selection-start-column="2" selection-end-line="30" selection-end-column="5" />
+        <state relative-caret-position="-324" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Includes/Constant.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="321">
+          <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_203144_add_column_to_ustudents_table.php" />
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_202844_add_column_to_programs_table.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Grade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="30" column="11" lean-forward="true" selection-start-line="30" selection-start-column="11" selection-end-line="30" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_195019_add_column_to_ustudent_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="8" column="3" lean-forward="true" selection-start-line="8" selection-start-column="3" selection-end-line="32" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/database/migrations/2018_09_20_202853_add_column_to_messages_table.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="270">
-          <caret line="20" lean-forward="true" selection-start-line="20" selection-end-line="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/GroupRequest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="264">
-          <caret line="31" lean-forward="true" selection-start-line="31" selection-end-line="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/FieldCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="549">
-          <caret line="105" lean-forward="true" selection-start-line="105" selection-end-line="105" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/base/inc/sidebar_content.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="13" column="31" lean-forward="true" selection-start-line="13" selection-start-column="31" selection-end-line="13" selection-end-column="31" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/MessageRequest.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="32" column="35" selection-start-line="32" selection-start-column="35" selection-end-line="32" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/UstudentRequest.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Group.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="19" column="34" lean-forward="true" selection-start-line="19" selection-start-column="34" selection-end-line="19" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Field.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="38" column="50" lean-forward="true" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Message.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="56" column="5" selection-start-line="56" selection-start-column="5" selection-end-line="56" selection-end-column="5" />
+        <state relative-caret-position="6">
+          <caret line="27" selection-start-line="27" selection-end-line="27" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/StudentCrudController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="102" column="31" selection-start-line="102" selection-start-column="31" selection-end-line="102" selection-end-column="31" />
+        <state relative-caret-position="259">
+          <caret line="258" column="21" selection-start-line="258" selection-end-line="259" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Includes/Constant.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CourseCrudController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="405">
-          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
+        <state relative-caret-position="254">
+          <caret line="174" lean-forward="true" selection-start-line="174" selection-end-line="174" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/UstudentCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1155">
-          <caret line="84" selection-start-line="84" selection-end-line="85" selection-end-column="44" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MediaCrudController.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/MessageCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="284" column="38" selection-start-line="284" selection-end-line="285" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Requests/ProgramRequest.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2018_11_19_170711_create_tests_table.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="225">
-          <caret line="31" selection-start-line="31" selection-end-line="31" />
+          <caret line="17" column="9" selection-start-line="17" selection-start-column="9" selection-end-line="19" selection-end-column="53" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/admin_api.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="FIRST">
-          <first_editor relative-caret-position="375">
-            <caret line="91" column="55" selection-start-line="91" selection-start-column="55" selection-end-line="91" selection-end-column="55" />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/routes/web.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2018_11_22_135218_create_ctrs_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="384">
-          <caret line="158" column="89" selection-start-line="158" selection-start-column="89" selection-end-line="158" selection-end-column="89" />
+        <state relative-caret-position="270">
+          <caret line="20" column="47" lean-forward="true" selection-start-line="20" selection-end-line="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/ProgramCrudController.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2019_01_27_195310_create_grades_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2040">
-          <caret line="75" column="41" selection-start-line="75" selection-start-column="41" selection-end-line="75" selection-end-column="41" />
+        <state relative-caret-position="120">
+          <caret line="10" column="6" selection-start-line="10" selection-start-column="6" selection-end-line="10" selection-end-column="6" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Program.php">
+    <entry file="file://$PROJECT_DIR$/database/migrations/2019_01_28_191217_add_column_to_tests_table.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" lean-forward="true" selection-start-line="3" selection-end-line="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/SliderCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/StaffCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1530">
-          <caret line="96" column="16" selection-start-line="96" selection-start-column="16" selection-end-line="96" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Staff.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="42" column="25" selection-start-line="42" selection-start-column="25" selection-end-line="42" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Models/Slider.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="360">
-          <caret line="48" column="33" selection-start-line="48" selection-start-column="33" selection-end-line="48" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/fields/image.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/PostCrudController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="376">
-          <caret line="174" column="8" selection-start-line="174" selection-start-column="8" selection-end-line="174" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/AdminWebserviceController.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5205">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="345">
+          <caret line="25" column="26" lean-forward="true" selection-start-line="25" selection-start-column="26" selection-end-line="25" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AdminController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="714">
-          <caret line="229" column="9" selection-start-line="229" selection-start-column="9" selection-end-line="229" selection-end-column="9" />
+        <state relative-caret-position="150">
+          <caret line="155" column="9" lean-forward="true" selection-start-line="155" selection-start-column="9" selection-end-line="155" selection-end-column="9" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/GroupCrudController.php">
+    <entry file="file://$PROJECT_DIR$/app/Models/Test.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="25" column="67" lean-forward="true" selection-start-line="25" selection-start-column="67" selection-end-line="25" selection-end-column="67" />
+        <state relative-caret-position="-30">
+          <caret line="21" column="65" selection-start-line="21" selection-start-column="65" selection-end-line="21" selection-end-column="65" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/AboutCrudController.php">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/CourseRequest.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1451">
-          <caret line="135" lean-forward="true" selection-start-line="135" selection-end-line="135" />
+        <state relative-caret-position="600">
+          <caret line="53" column="41" lean-forward="true" selection-start-line="52" selection-start-column="11" selection-end-line="53" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/nesbot/carbon/src/Carbon/Carbon.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="395" column="20" selection-start-line="395" selection-start-column="20" selection-end-line="395" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/ctr_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="55" lean-forward="true" selection-start-line="1" selection-start-column="55" selection-end-line="1" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/vendor/backpack/crud/buttons/grades_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="55" lean-forward="true" selection-start-line="1" selection-start-column="55" selection-end-line="1" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/list_layout.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="5" selection-start-line="1" selection-start-column="5" selection-end-line="1" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/vendor/backpack/crud/src/app/Http/Controllers/CrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="151" column="61" lean-forward="true" selection-start-line="136" selection-start-column="8" selection-end-line="151" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/grades_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="25" column="21" lean-forward="true" selection-start-line="25" selection-start-column="12" selection-end-line="25" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/ctr_list.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="24" column="22" selection-start-line="24" selection-start-column="22" selection-end-line="24" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CtrCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-810">
+          <caret line="94" column="14" lean-forward="true" selection-start-line="56" selection-start-column="11" selection-end-line="94" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/TestRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="840">
+          <caret line="57" column="10" selection-start-line="57" selection-start-column="10" selection-end-line="57" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Requests/CtrRequest.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="57" column="10" selection-start-line="54" selection-start-column="8" selection-end-line="57" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CourseCtrCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="82" column="27" selection-start-line="82" selection-start-column="27" selection-end-line="82" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/CourseTestCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1245">
+          <caret line="92" selection-start-line="92" selection-end-line="92" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Student.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1725">
+          <caret line="116" column="48" selection-start-line="116" selection-start-column="48" selection-end-line="116" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/Admin/TestCrudController.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="10" column="4" selection-start-line="10" selection-start-column="4" selection-end-line="10" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Ctr.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="171">
+          <caret line="43" column="21" lean-forward="true" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/routes/web.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2895">
+          <caret line="202" column="38" selection-start-line="202" selection-start-column="38" selection-end-line="202" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Models/Course.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="7" column="6" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Http/Kernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="16" column="42" selection-start-line="16" selection-start-column="42" selection-end-line="16" selection-end-column="42" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Commands/CheckUsersActivationDate.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/Console/Kernel.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-555">
+          <caret line="24" column="53" lean-forward="true" selection-start-line="24" selection-start-column="53" selection-end-line="24" selection-end-column="53" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/API/WebserviceController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="32" column="36" lean-forward="true" selection-start-line="32" selection-start-column="36" selection-end-line="32" selection-end-column="36" />
+        <state relative-caret-position="285">
+          <caret line="651" column="31" selection-start-line="651" selection-start-column="31" selection-end-line="651" selection-end-column="31" />
         </state>
       </provider>
     </entry>

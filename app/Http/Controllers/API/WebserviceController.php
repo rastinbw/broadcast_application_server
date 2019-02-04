@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Absent;
 use App\Models\AndroidAdmin;
+use App\Models\Course;
+use App\Models\Grade;
 use App\Models\Message;
 use App\Models\Notification;
 use App\Models\Student;
@@ -44,7 +47,7 @@ class WebserviceController extends Controller
     function get_messages($user_id, Request $req){
         $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
-            ['token', '=', $req->input('token')],
+            ['token', '=', $req->input('token')]
         ])->first();
 
         if ($ustudent){
@@ -56,31 +59,6 @@ class WebserviceController extends Controller
                 ['field_id', '=', $ustudent->field_id],
                 ['gender', '=', $ustudent->gender],
             ])->get();
-
-            // <editor-fold desc = "USELESS SNIPPET BUT I LIKE IT">
-            //removing those messages
-            //$relations = UstudentMessage::where([
-            //    ['user_id', '=', $user_id],
-            //])->get();
-
-            //$selected = [];
-            //foreach ($total_messages as $key => $value) {
-            //    $condition = $relations
-            //            ->where('ustudent_id', '=', $ustudent->id)
-            //            ->where('message_id', '=', $value->id)
-            //            ->count() === 0;
-            //    if ($condition) {
-            //        array_push($selected, $value);
-
-            //        $um = new UstudentMessage();
-            //        $um->user_id = $user_id;
-            //        $um->ustudent_id = $ustudent->id;
-            //        $um->message_id = $value->id;
-            //        $um->save();
-            //    }
-
-            //}
-            // </editor-fold>
 
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($messages)->toJson());
 
@@ -580,6 +558,111 @@ class WebserviceController extends Controller
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
+
+    function get_student_courses($user_id, Request $req)
+    {
+        $ustudent = UStudent::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($ustudent) {
+            $student = Student::where([
+                ['user_id', '=', $user_id],
+                ['national_code', '=', $ustudent->national_code],
+            ])->first();
+
+            if ($student)
+                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->courses()->get()->toJson());
+            else
+                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, json_encode([]));
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function get_student_course_absents($user_id, Request $req)
+    {
+        $ustudent = UStudent::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($ustudent) {
+            $student = Student::where([
+                ['user_id', '=', $user_id],
+                ['national_code', '=', $ustudent->national_code],
+            ])->first();
+
+            if ($student){
+                $course = Course::find($req->input('course_id'));
+                $ctrs = $course->ctrs()->get();
+
+                $student_absents = [];
+
+                foreach ($ctrs as $ctr){
+                    $abs = Absent::where([
+                        ['user_id', '=', $user_id],
+                        ['ctr_id', '=', $ctr->id],
+                        ['national_code', '=', $ustudent->national_code]
+                    ])->first();
+
+                    if ($abs)
+                        array_push($student_absents, $ctr->date);
+                }
+
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,  json_encode($student_absents));
+
+            }
+            else
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS, json_encode([]));
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function get_student_course_grades($user_id, Request $req)
+    {
+        $ustudent = UStudent::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($ustudent) {
+            $student = Student::where([
+                ['user_id', '=', $user_id],
+                ['national_code', '=', $ustudent->national_code],
+            ])->first();
+
+            if ($student){
+                $course = Course::find($req->input('course_id'));
+                $tests = $course->tests()->get();
+
+                $student_grades = [];
+
+                foreach ($tests as $test){
+                    $grade = Grade::where([
+                        ['user_id', '=', $user_id],
+                        ['test_id', '=', $test->id],
+                        ['national_code', '=', $ustudent->national_code]
+                    ])->first();
+
+                    if ($grade)
+                        array_push($student_grades,
+                            ['title' => $test->title, 'date' => $test->date , 'grade' => $grade->grade]);
+                }
+
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,  json_encode($student_grades));
+
+            }
+            else
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS, json_encode([]));
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
 
     function change_password($user_id, Request $req)
     {

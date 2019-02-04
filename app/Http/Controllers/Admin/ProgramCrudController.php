@@ -65,6 +65,12 @@ class ProgramCrudController extends CrudController
                 'entity' => 'group', // the method that defines the relationship in your Model
                 'attribute' => 'title', // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
             [  // Select
@@ -74,6 +80,12 @@ class ProgramCrudController extends CrudController
                 'entity' => 'field', // the method that defines the relationship in your Model
                 'attribute' => 'title', // foreign key attribute that is shown to user
                 'model' => "App\Models\Field", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
             [

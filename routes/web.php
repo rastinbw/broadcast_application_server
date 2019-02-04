@@ -43,10 +43,6 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
     CRUD::resource('message', 'MessageCrudController');
 });
 
-Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
-{
-    CRUD::resource('workbook', 'WorkbookCrudController');
-});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
@@ -73,6 +69,35 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
     CRUD::resource('about', 'AboutCrudController');
 });
 
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('course', 'CourseCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('workbook', 'WorkbookCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('test', 'TestCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('ctr', 'CtrCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
+    Route::group(['prefix' => 'course/search/{course_id}'], function()
+    {
+        Route::get('/ctr_list/{id}/{user_id}', 'AdminController@get_ctr_list');
+        Route::get('/grades_list/{id}/{user_id}', 'AdminController@get_grades_list');
+    });
+});
+
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
 {
     CRUD::resource('student', 'StudentCrudController');
@@ -84,6 +109,27 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' 
     });
 });
 
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('course', 'CourseCrudController');
+    CRUD::resource('test', 'TestCrudController');
+
+    Route::group(['prefix' => 'course/search/{course_id}'], function()
+    {
+        CRUD::resource('test', 'CourseTestCrudController');
+    });
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('course', 'CourseCrudController');
+    CRUD::resource('ctr', 'CtrCrudController');
+
+    Route::group(['prefix' => 'course/search/{course_id}'], function()
+    {
+        CRUD::resource('ctr', 'CourseCtrCrudController');
+    });
+});
 
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
     Route::get('/import_student', 'AdminController@import_student');
@@ -106,6 +152,14 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' 
 // Route for import excel data to database.
 Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
     Route::post('/import_student_excel', 'AdminController@import_student_excel');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
+    Route::post('/update_ctr_list/{course_id}/{ctr_id}', 'AdminController@update_ctr_list');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function() {
+    Route::post('/update_grades_list/{course_id}/{test_id}', 'AdminController@update_grades_list');
 });
 
 
@@ -147,6 +201,9 @@ Route::post('/api/{user_id}/ustudent/change_password', 'API\WebserviceController
 Route::post('/api/{user_id}/ustudent/info', 'API\WebserviceController@get_ustudent_info');
 Route::post('/api/{user_id}/ustudent/info/update', 'API\WebserviceController@update_ustudent_info');
 Route::post('/api/{user_id}/ustudent/workbook', 'API\WebserviceController@get_student_workbook');
+Route::post('/api/{user_id}/ustudent/courses', 'API\WebserviceController@get_student_courses');
+Route::post('/api/{user_id}/ustudent/absents', 'API\WebserviceController@get_student_course_absents');
+Route::post('/api/{user_id}/ustudent/grades', 'API\WebserviceController@get_student_course_grades');
 
 
 Route::post('/api/{user_id}/send_ticket', 'API\WebserviceController@save_ticket');

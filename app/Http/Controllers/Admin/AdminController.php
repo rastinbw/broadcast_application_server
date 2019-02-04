@@ -3,6 +3,11 @@
 namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Includes\Constant;
+use App\Models\Absent;
+use App\Models\Course;
+use App\Models\Ctr;
+use App\Models\Grade;
+use App\Models\Test;
 use App\Models\Student;
 use App\Models\Ustudent;
 use App\User;
@@ -19,6 +24,142 @@ use Excel;
 
 class AdminController extends Controller
 {
+    public function get_ctr_list($course_id, $ctr_id, $user_id)
+    {
+        $course = Course::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $course_id],
+        ])->first();
+
+        $ctr = Ctr::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $ctr_id],
+        ])->first();
+
+        $students = $course->students()->get();
+
+        $absents = Absent::where([
+            ['user_id', '=', $user_id],
+            ['ctr_id', '=', $ctr_id],
+        ])->get(['national_code']);
+
+        $absents_national_code_list = [];
+        foreach ($absents as $absent){
+            array_push($absents_national_code_list, trim($absent['national_code']));
+        }
+
+        return view('ctr_list',
+            [
+                'absents' => $absents_national_code_list,
+                'course' => $course,
+                'ctr' => $ctr,
+                'students' => $students,
+                'user_id' => $user_id
+            ]
+        );
+    }
+
+    public function get_grades_list($course_id, $test_id, $user_id)
+    {
+        $course = Course::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $course_id],
+        ])->first();
+
+        $test = Test::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $test_id],
+        ])->first();
+
+        $students = $course->students()->get();
+
+        $grades = Grade::where([
+            ['user_id', '=', $user_id],
+            ['test_id', '=', $test_id],
+        ])->get();
+
+        $grades_assoc = [];
+        foreach ($grades as $grade){
+           $grades_assoc[$grade['national_code']] = $grade->grade;
+        }
+
+        return view('grades_list',
+            [
+                'grades' => $grades_assoc,
+                'course' => $course,
+                'test' => $test,
+                'students' => $students,
+                'user_id' => $user_id
+            ]
+        );
+    }
+
+    public function update_ctr_list(Request $request, $course_id, $ctr_id)
+    {
+        $user_id = $request->input('user_id');
+
+        $course = Course::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $course_id],
+        ])->first();
+
+        $students = $course->students()->get();
+
+        foreach ($students as $student) {
+            $is_present = $request->input($student->national_code);
+
+            $absent = Absent::where([
+                ['user_id', '=', $user_id],
+                ['ctr_id', '=', $ctr_id],
+                ['national_code', '=', $student->national_code],
+            ])->first();
+
+            if ($is_present){
+                if ($absent)
+                    Absent::find($absent->id)->delete();
+            }else{
+               if (!$absent){
+                   $new_absent = new Absent();
+                   $new_absent->national_code = $student->national_code;
+                   $new_absent->ctr_id = $ctr_id;
+                   $new_absent->user_id = $user_id;
+                   $new_absent->save();
+               }
+            }
+        }
+
+        return back();
+
+    }
+
+    public function update_grades_list(Request $request, $course_id, $test_id)
+    {
+        $user_id = $request->input('user_id');
+
+        $course = Course::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $course_id],
+        ])->first();
+
+        $students = $course->students()->get();
+
+        foreach ($students as $student) {
+            $grade = Grade::where([
+                ['user_id', '=', $user_id],
+                ['test_id', '=', $test_id],
+                ['national_code', '=', $student->national_code],
+            ])->first();
+
+            $value = $request->input($student->national_code);
+            $grade->grade = (is_numeric($value)) ? $value : "-";
+            $grade->save();
+        }
+
+        return back();
+
+    }
+
+
     public function show_post($id)
     {
         $table = "posts";

@@ -46,5 +46,7 @@ class Constant
     public static $CATEGORY_ID_PROGRAM = 300;
     public static $CATEGORY_ID_MESSAGE = 400;
 
+    public static $NONE_GRADE = "-";
+
 
 }

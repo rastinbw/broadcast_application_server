@@ -82,6 +82,9 @@ class AdminWebserviceController extends Controller
             $table = "messages";
             if ($group_id != 'null')
                 array_push($query, ['group_id', '=', $group_id]);
+
+            if ($field_id != 'null')
+                array_push($query, ['field_id', '=', $field_id]);
         }
 
         if ($search_phrase != 'null')

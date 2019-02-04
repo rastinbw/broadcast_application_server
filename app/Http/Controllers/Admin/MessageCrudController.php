@@ -44,6 +44,20 @@ class MessageCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
+            [
+                'name' => 'content',
+                'label' => '* متن',
+                'type' => 'textarea',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+        ], 'update/create/both');
+
+        $this->crud->addFields([
             [  // Select
                 'label' => "پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید ) *",
                 'type' => 'select2',
@@ -51,6 +65,12 @@ class MessageCrudController extends CrudController
                 'entity' => 'group', // the method that defines the relationship in your Model
                 'attribute' => 'title', // foreign key attribute that is shown to user
                 'model' => "App\Models\Group", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
             [  // Select
@@ -60,6 +80,12 @@ class MessageCrudController extends CrudController
                 'entity' => 'field', // the method that defines the relationship in your Model
                 'attribute' => 'title', // foreign key attribute that is shown to user
                 'model' => "App\Models\Field", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
             [
@@ -73,18 +99,7 @@ class MessageCrudController extends CrudController
                 // optional
                 'inline'      => true, // show the radios all on the same line?
             ],
-            [
-                'name' => 'content',
-                'label' => '* متن',
-                'type' => 'textarea',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-        ], 'update/create/both');
+        ], 'create');
 
         $this->crud->addColumns([
             [

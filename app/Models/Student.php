@@ -112,6 +112,10 @@ class Student extends Model
         return $this->hasMany('App\Models\Workbook');
     }
 
+    public function courses()
+    {
+        return $this->belongsToMany('App\Models\Course');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

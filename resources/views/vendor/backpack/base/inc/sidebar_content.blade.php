@@ -7,6 +7,7 @@
 <li><a href="{{ backpack_url('media') }}"><span>رسانه ها</span> <i class="fa fa-microphone "></i></a></li>
 <li><a href="{{ backpack_url('program') }}"><span>برنامه های کلاسی</span> <i class="fa fa-calendar-o "></i></a></li>
 <li><a href="{{ backpack_url('message') }}"><span>گزارش پیام ها</span> <i class="fa fa-envelope "></i></a></li>
+<li><a href="{{ backpack_url('course') }}"><span>کلاس ها</span> <i class="fa fa-square "></i></a></li>
 <li><a href="{{ backpack_url('group') }}"><span>پایه های تحصیلی</span> <i class="fa fa-th-large "></i></a></li>
 <li><a href="{{ backpack_url('field') }}"><span>رشته های تحصیلی</span> <i class="fa fa-th-large "></i></a></li>
 <li><a href="{{ backpack_url('staff') }}"><span>اعضای مجموعه</span> <i class="fa fa-users "></i></a></li>
