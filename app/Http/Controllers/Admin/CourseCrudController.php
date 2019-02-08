@@ -43,6 +43,18 @@ class CourseCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
+            [
+                'name' => 'teacher',
+                'label' => 'نام استاد',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+
             [       // SelectMultiple = n-n relationship (with pivot table)
                 'label' => "دانش آموزان",
                 'type' => 'select2_multiple',
@@ -68,6 +80,10 @@ class CourseCrudController extends CrudController
             [
                 'name' => 'title',
                 'label' => 'عنوان',
+            ],
+            [
+                'name' => 'teacher',
+                'label' => 'نام استاد',
             ],
         ]);
 
