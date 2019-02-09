@@ -2,67 +2,38 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Course;
+use App\Models\Ctr;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 
 // VALIDATION: change the requests to match your own file names if you need form validation
-use App\Http\Requests\CourseRequest as StoreRequest;
-use App\Http\Requests\CourseRequest as UpdateRequest;
+use App\Http\Requests\CtrRequest as StoreRequest;
+use App\Http\Requests\CtrRequest as UpdateRequest;
+use Carbon\Carbon;
+use Verta;
 
-class CourseCrudController extends CrudController
+class CtrCrudController extends CrudController
 {
     public function setup()
     {
 
+        $time = Verta::now(); //1396-02-02 15:32:08
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
-        $this->crud->setModel('App\Models\Course');
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/course');
-        $this->crud->setEntityNameStrings('کلاس', 'کلاس ها');
+        $this->crud->setModel('App\Models\Ctr');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/ctr');
+        $this->crud->setEntityNameStrings('حضور غیاب', 'حضور غیاب ها');
 
         /*
         |--------------------------------------------------------------------------
         | BASIC CRUD INFORMATION
         |--------------------------------------------------------------------------
         */
+
 
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
-
-        $this->crud->addFields([
-            [
-                'name' => 'title',
-                'label' => 'عنوان',
-                'type' => 'text',
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-            ],
-            [       // SelectMultiple = n-n relationship (with pivot table)
-                'label' => "دانش آموزان",
-                'type' => 'select2_multiple',
-                'name' => 'students', // the method that defines the relationship in your Model
-                'entity' => 'students', // the method that defines the relationship in your Model
-                'attribute' => 'first_name|last_name|national_code', // foreign key attribute that is shown to user
-                'model' => "App\Models\Student", // foreign key model
-                'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
-                'attributes' => [
-                    'dir' => 'rtl'
-                ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
-                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
-
-            ],
-        ], 'update/create/both');
-
-
 
         $this->crud->addColumns([
             [
@@ -71,8 +42,58 @@ class CourseCrudController extends CrudController
             ],
         ]);
 
-        $this->crud->addButtonFromView('line', 'course_tests', 'course_tests', 'beginning');
-        $this->crud->addButtonFromView('line', 'course_ctr', 'course_ctr', 'beginning');
+        $this->crud->addFields([
+            [
+                'name' => 'title',
+                'label' => '* عنوان',
+                'type' => 'text',
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+            ],
+            [
+                'name' => 'year',
+                'label' => '* سال',
+                'type' => 'number',
+                'default' => $time->year,
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl',
+                    'class' => 'col-md-4'
+                ],
+            ],
+            [
+                'name' => 'month',
+                'label' => '* ماه',
+                'type' => 'number',
+                'default' => $time->month,
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl',
+                    'class' => 'col-md-4'
+                ],
+            ],
+            [
+                'name' => 'day',
+                'label' => '* روز',
+                'type' => 'number',
+                'default' => $time->day,
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl',
+                    'class' => 'col-md-4'
+                ],
+            ],
+        ], 'update/create/both');
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
@@ -89,6 +110,8 @@ class CourseCrudController extends CrudController
         // $this->crud->setColumnsDetails(['column_1', 'column_2'], ['attribute' => 'value']);
 
         // ------ CRUD BUTTONS
+        $this->crud->addButtonFromView('line', 'ctr_list', 'ctr_list', 'beginning');
+
         // possible positions: 'beginning' and 'end'; defaults to 'beginning' for the 'line' stack, 'end' for the others;
         // $this->crud->addButton($stack, $name, $type, $content, $position); // add a button; possible types are: view, model_function
         // $this->crud->addButtonFromModelFunction($stack, $name, $model_function_name, $position); // add a button whose HTML is returned by a method in the CRUD model
@@ -143,15 +166,13 @@ class CourseCrudController extends CrudController
         // $this->crud->limit();
     }
 
+
     public function store(StoreRequest $request)
     {
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
-        $field = $this->crud->entry;
-        $field->user_id = \Auth::user()->id;
-        $field->save();
 
         return $redirect_location;
     }
@@ -162,26 +183,8 @@ class CourseCrudController extends CrudController
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
+
         return $redirect_location;
     }
 
-    public function destroy($id)
-    {
-        $this->crud->hasAccessOrFail('delete');
-
-        $course = Course::find($id);
-        $ctrs = $course->ctrs();
-        $tests = $course->tests();
-
-        foreach ($ctrs->get() as $ctr)
-            $ctr->absents()->delete();
-
-        foreach ($tests->get() as $test)
-            $test->grades()->delete();
-
-        $ctrs->delete();
-        $tests->delete();
-
-        return $this->crud->delete($id);
-    }
 }
