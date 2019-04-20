@@ -39,14 +39,10 @@
 @endsection
 
 @section('header')
-    <section class="content-header">
-      <h1>
-        {{ trans('backpack::crud.file_manager') }}
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="{{ url(config('backpack.base.route_prefix')) }}">Admin</a></li>
-        <li class="active">{{ trans('backpack::crud.file_manager') }}</li>
-      </ol>
+    <section style="padding-top: 5px" class="content-header">
+        <h1 style="text-align: right;">
+            <span  style="font-size: 25px" >مدیریت فایل ها</span>
+        </h1>
     </section>
 @endsection
 

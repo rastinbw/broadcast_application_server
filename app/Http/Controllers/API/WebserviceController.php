@@ -31,7 +31,7 @@ class WebserviceController extends Controller
         if ($user){
             $should_update = version_compare($user->last_version, $version);
             if ($should_update){
-                return sprintf('{"result_code": %u, "data": {"name": %s, "version": %s, "must_update": %s}}',
+                return sprintf('{"result_code": %u, "data": {"name": "%s", "version": "%s", "must_update": "%s"}}',
                     Constant::$SHOULD_UPDATE,
                     $user->apk_name,
                     $user->last_version,
@@ -337,7 +337,7 @@ class WebserviceController extends Controller
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->verified = 1;
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s}}',
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s"}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,
@@ -367,7 +367,7 @@ class WebserviceController extends Controller
             if (Hash::check($req->input('password'), $ustudent->password)) {
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s}}',
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s"}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,
@@ -397,7 +397,7 @@ class WebserviceController extends Controller
                 ['national_code', '=', $student->national_code],
             ])->first();
             if ($ustudent)
-                return sprintf('{"result_code": %u, "data": {"token": %s, "group_id": %g, "field_id": %g, "gender": %g, "first_name": %s, "last_name": %s }}',
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s" }}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,

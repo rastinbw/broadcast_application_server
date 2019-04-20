@@ -6,11 +6,14 @@ use App\Includes\Constant;
 use App\Models\Absent;
 use App\Models\Course;
 use App\Models\Ctr;
+use App\Models\Field;
 use App\Models\Grade;
+use App\Models\Group;
 use App\Models\Test;
 use App\Models\Student;
 use App\Models\Ustudent;
 use App\User;
+use function Composer\Autoload\includeFile;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -89,6 +92,42 @@ class AdminController extends Controller
                 'course' => $course,
                 'test' => $test,
                 'students' => $students,
+                'user_id' => $user_id
+            ]
+        );
+    }
+
+    public function get_students_list($course_id, $user_id)
+    {
+        $course = Course::where([
+            ['user_id', '=', $user_id],
+            ['id', '=', $course_id],
+        ])->first();
+
+        $student_list = Student::where([
+            ['user_id', '=', $user_id],
+        ])->get();
+
+        $group_list = Group::where([
+            ['user_id', '=', $user_id]
+        ])->get();
+
+        $field_list = Field::where([
+            ['user_id', '=', $user_id]
+        ])->get();
+
+        $gender_list = [
+            ['id' => Constant::$GENDER_MALE, 'title' => "پسر"],
+            ['id' => Constant::$GENDER_FEMALE, 'title' => "دختر"]
+        ];
+
+        return view('course_students',
+            [
+                'course' => $course,
+                'student_list' => $student_list,
+                'group_list' => $group_list,
+                'field_list' => $field_list,
+                'gender_list' => $gender_list,
                 'user_id' => $user_id
             ]
         );
@@ -322,13 +361,40 @@ class AdminController extends Controller
             foreach($rows as $row) {
                 $data = array_values($row->toArray());
 
+                $group = Group::where([['title', trim($data[3])],['user_id', '=', $user_id]])->first();
+                if (!$group && trim($data[3]) != ''){
+                    $group = new Group();
+                    $group->user_id = $user_id;
+                    $group->title = trim($data[3]);
+                    $group->save();
+                }
+
+                $field = Field::where([['title', trim($data[4])],['user_id', '=', $user_id]])->first();
+                if (!$field && trim($data[4]) != ''){
+                    $field = new Field();
+                    $field->user_id = $user_id;
+                    $field->title = trim($data[4]);
+                    $field->save();
+                }
+
+                $gender = "-";
+                if($data[5] == Constant::$GENDER_MALE_TITLE)
+                    $gender = Constant::$GENDER_MALE;
+                elseif($data[5] == Constant::$GENDER_FEMALE_TITLE)
+                    $gender = Constant::$GENDER_FEMALE;
+
+
                 $student = Student::where([
                     ['user_id', '=', $user_id],
                     ['national_code', '=', $data[2]]
                 ])->first();
+
                 if ($student){
                     $student->first_name =  $data[0];
                     $student->last_name =  $data[1];
+                    $student->group_id = $group->id;
+                    $student->field_id = $field->id;
+                    $student->gender = $gender;
                     $student->save();
                 }else{
                     Student::create([
@@ -336,6 +402,9 @@ class AdminController extends Controller
                         'first_name' => $data[0],
                         'last_name' => $data[1],
                         'national_code' => $data[2],
+                        'group_id' => $group->id,
+                        'field_id' => $field->id,
+                        'gender' => $gender
                     ]);
                 }
 

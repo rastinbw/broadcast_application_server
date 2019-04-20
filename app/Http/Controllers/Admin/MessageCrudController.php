@@ -59,7 +59,7 @@ class MessageCrudController extends CrudController
 
         $this->crud->addFields([
             [  // Select
-                'label' => "پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید ) *",
+                'label' => "* پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید )",
                 'type' => 'select2',
                 'name' => 'group_id', // the db column for the foreign key
                 'entity' => 'group', // the method that defines the relationship in your Model
@@ -74,7 +74,7 @@ class MessageCrudController extends CrudController
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
             [  // Select
-                'label' => "رشته ( میتوانید در بخش رشته های تحصیلی اقدام به اضافه کردن رشته های جدید نمایید ) *",
+                'label' => "* رشته ( میتوانید در بخش رشته های تحصیلی اقدام به اضافه کردن رشته های جدید نمایید )",
                 'type' => 'select2',
                 'name' => 'field_id', // the db column for the foreign key
                 'entity' => 'field', // the method that defines the relationship in your Model

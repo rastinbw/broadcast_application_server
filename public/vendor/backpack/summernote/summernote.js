@@ -2253,7 +2253,7 @@
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
         'Helvetica Neue', 'Helvetica', 'Impact', 'Lucida Grande',
-        'Tahoma', 'Times New Roman', 'Verdana'
+        'Tahoma', 'Times New Roman', 'Verdana',
       ],
       fontNamesIgnoreCheck: [],
 
@@ -2374,6 +2374,105 @@
 
     // default language: en-US
     lang: {
+        'fa-IR': {
+            font: {
+                bold: 'Bold',
+                italic: 'Italic',
+                underline: 'Underline',
+                clear: 'حذف استایل',
+                height: 'ارتفاع خط',
+                name: 'فونت'
+            },
+            image: {
+                image: 'تصویر',
+                insert: 'اضافه کردن تصویر',
+                resizeFull: 'بزرگ نمایی کامل تصویر',
+                resizeHalf: 'نصف کردن اندازه تصویر',
+                resizeQuarter: 'یک چهارم کردن اندازه تصویر',
+                floatLeft: 'شناوری به چپ',
+                floatRight: 'شناوری به راست',
+                floatNone: 'بدون شناوری',
+                shapeRounded: 'شکل: گرد',
+                shapeCircle: 'شکل: دایره',
+                shapeThumbnail: 'شکل: بند انگشتی',
+                shapeNone: 'بدون شکل',
+                dragImageHere: 'تصویر یا متن را بگیرید',
+                dropImage: 'تصویر یا متن را رها کنید',
+                selectFromFiles: 'انتخاب از فایل ها',
+                maximumFileSize: 'حداکثر حجم فایل',
+                maximumFileSizeError: 'حجم فایل انتخاب شده از حداکثر حجم مجاز بیشتر است.',
+                url: 'آدرس تصویر',
+                remove: 'حذف تصویر'
+            },
+            link: {
+                link: 'لینک',
+                insert: 'اضافه کردن لینک',
+                unlink: 'حذف اتصال به آدرس لینک',
+                edit: 'ویرایش',
+                textToDisplay: 'متن نمایشی',
+                url: 'آدرس لینک',
+                openInNewWindow: 'باز شدن در پنجره جدید'
+            },
+            table: {
+                table: 'جدول'
+            },
+            hr: {
+                insert: 'اضافه کردن خط افقی'
+            },
+            style: {
+                style: 'استایل',
+                normal: 'Normal',
+                blockquote: 'Quote',
+                pre: 'Code',
+                h1: 'Header 1',
+                h2: 'Header 2',
+                h3: 'Header 3',
+                h4: 'Header 4',
+                h5: 'Header 5',
+                h6: 'Header 6'
+            },
+            lists: {
+                unordered: 'لیست نامرتب',
+                ordered: 'لیست مرتب'
+            },
+            options: {
+                help: 'راهنما',
+                fullscreen: 'تمام صفحه',
+                codeview: 'نمایش سورس'
+            },
+            paragraph: {
+                paragraph: 'پاراگراف',
+                outdent: 'Outdent',
+                indent: 'Indent',
+                left: 'چپ چین',
+                center: 'وسط چین',
+                right: 'راست چین',
+                justify: 'تراز کردن کامل'
+            },
+            color: {
+                recent: 'رنگ قبلی',
+                more: 'رنگ های بیشتر',
+                background: 'رنگ پس زمینه',
+                foreground: 'رنگ پیش زمینه (رنگ المان)',
+                transparent: 'شفاف',
+                setTransparent: 'شفاف کردن',
+                reset: 'ریست',
+                resetToDefault: 'بازگشت به حالت اولیه'
+            },
+            shortcut: {
+                shortcuts: 'میانبر ها',
+                close: '&#10799',
+                textFormatting: 'فرمت متن',
+                action: 'اعمال',
+                paragraphFormatting: 'فرمت پاراگراف',
+                documentStyle: 'استایل سند',
+                extraKeys: 'کلید های اضافه'
+            },
+            history: {
+                undo: 'Undo',
+                redo: 'Redo'
+            }
+        },
       'en-US': {
         font: {
           bold: 'Bold',
@@ -6036,12 +6135,12 @@
           var unit = Math.floor(Math.log(options.maximumImageFileSize) / Math.log(1024));
           var readableSize = (options.maximumImageFileSize / Math.pow(1024, unit)).toFixed(2) * 1 +
                              ' ' + ' KMGTP'[unit] + 'B';
-          imageLimitation = '<small>' + lang.image.maximumFileSize + ' : ' + readableSize + '</small>';
+          imageLimitation = '<small style="color: #ff2222;">' + lang.image.maximumFileSize + ' : ' + readableSize + '</small>';
         }
 
-        var body = '<div class="form-group row-fluid note-group-select-from-files">' +
+        var body = '<div dir="rtl" class="form-group row-fluid note-group-select-from-files">' +
                      '<label>' + lang.image.selectFromFiles + '</label>' +
-                     '<input class="note-image-input" type="file" name="files" accept="image/*" multiple="multiple" />' +
+                     '<input class="note-image-input" style="margin-bottom:5px" type="file" name="files" accept="image/*" multiple="multiple" />' +
                      imageLimitation +
                    '</div>' +
                    '<div class="form-group row-fluid">' +
@@ -6181,7 +6280,7 @@
       $holder.addClass('note-air-editor note-editable');
       $holder.attr({
         'id': 'note-editor-' + id,
-        'contentEditable': true
+        'contentEditable': true,
       });
 
       var body = document.body;

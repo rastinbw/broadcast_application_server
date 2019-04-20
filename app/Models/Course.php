@@ -19,7 +19,7 @@ class Course extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['title', 'user_id',];
+    protected $fillable = ['title', 'user_id','teacher'];
     // protected $hidden = [];
     // protected $dates = [];
 

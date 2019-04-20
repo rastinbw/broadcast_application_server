@@ -25,7 +25,10 @@ class Student extends Model
         'last_name',
         'parent_code',
         'user_id',
-        'is_registered'
+        'is_registered',
+        'group_id',
+        'field_id',
+        'gender',
     ];
     // protected $hidden = [];
     // protected $dates = [];
@@ -115,6 +118,16 @@ class Student extends Model
     public function courses()
     {
         return $this->belongsToMany('App\Models\Course');
+    }
+
+    public function group()
+    {
+        return $this->belongsTo('App\Models\Group');
+    }
+
+    public function field()
+    {
+        return $this->belongsTo('App\Models\Field');
     }
     /*
     |--------------------------------------------------------------------------

@@ -7,6 +7,9 @@ use App\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\GroupRequest as StoreRequest;
 use App\Http\Requests\GroupRequest as UpdateRequest;
+use App\Models\Group;
+use App\Models\Student;
+use App\Models\Ustudent;
 
 class GroupCrudController extends CrudController
 {
@@ -70,7 +73,7 @@ class GroupCrudController extends CrudController
         // $this->crud->addButton($stack, $name, $type, $content, $position); // add a button; possible types are: view, model_function
         // $this->crud->addButtonFromModelFunction($stack, $name, $model_function_name, $position); // add a button whose HTML is returned by a method in the CRUD model
         // $this->crud->addButtonFromView($stack, $name, $view, $position); // add a button whose HTML is in a view placed at resources\views\vendor\backpack\crud\buttons
-        $this->crud->removeButton('delete');
+        // $this->crud->removeButton('delete');
         // $this->crud->removeButtonFromStack($name, $stack);
         // $this->crud->removeAllButtons();
         // $this->crud->removeAllButtonsFromStack('line');
@@ -122,6 +125,12 @@ class GroupCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
+        if(Group::where([['title', $request->input('title')]])->first())
+            return back()->withErrors([
+                'custom_fail' => true,
+                'errors' => ['.پایه تحصیلی با این عنوان قبلا ایجاد شده است']
+            ]);
+
         // your additional operations before save here
         $redirect_location = parent::storeCrud($request);
         // your additional operations after save here
@@ -135,10 +144,41 @@ class GroupCrudController extends CrudController
 
     public function update(UpdateRequest $request)
     {
+        if(Group::where([['title', $request->input('title')]])->first())
+            return back()->withErrors([
+                'custom_fail' => true,
+                'errors' => ['.پایه تحصیلی با این عنوان قبلا ایجاد شده است']
+            ]);
+
         // your additional operations before save here
         $redirect_location = parent::updateCrud($request);
         // your additional operations after save here
         // use $this->data['entry'] or $this->crud->entry
         return $redirect_location;
+    }
+
+
+    public function destroy($id)
+    {
+        $this->crud->hasAccessOrFail('delete');
+
+        $errors = [];
+        if (Student::where([['group_id',$id]])->first())
+            array_push(
+                $errors,
+                "دانش آموزانی با این پایه تحصیلی وجود دارند. برای حذف این پایه ابتدا اقدام به حذف آن ها کنید."
+            );
+
+        if (Ustudent::where([['group_id',$id]])->first())
+            array_push(
+                $errors,
+                "کاربرانی با این پایه تحصیلی وجود دارند. برای حذف این پایه ابتدا اقدام به حذف آن ها کنید."
+            );
+
+        if (sizeof($errors) > 0)
+           return response()->json(array('errors'=> $errors),400);
+
+
+        return $this->crud->delete($id);
     }
 }

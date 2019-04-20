@@ -33,9 +33,19 @@
 	              },
 	              error: function(result) {
 	                  // Show an alert with the result
+					  var text = "{{ trans('backpack::crud.delete_confirmation_not_message') }}";
+					  if ('responseJSON' in result && 'errors' in result.responseJSON) {
+					      var errors = result['responseJSON']['errors'];
+					      text = '';
+					      for(var i = 0; i < errors.length; i++){
+					          text += errors[i];
+					          if (i !== errors.length - 1)
+					          	text += '\n';
+						  }
+					  }
 	                  new PNotify({
 	                      title: "{{ trans('backpack::crud.delete_confirmation_not_title') }}",
-	                      text: "{{ trans('backpack::crud.delete_confirmation_not_message') }}",
+	                      text: '<p dir="rtl">' + text + '<p>',
 	                      type: "warning"
 	                  });
 	              }

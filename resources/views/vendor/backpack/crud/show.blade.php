@@ -30,7 +30,9 @@
 	    <div class="box-body">
 			<table class="table table-striped table-bordered">
 		        <tbody>
+
 		        @foreach ($crud->columns as $column)
+
 		            <tr>
 		                <td>
 		                    <strong>{{ $column['label'] }}</strong>

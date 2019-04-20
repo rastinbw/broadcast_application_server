@@ -34,7 +34,7 @@ class CourseCrudController extends CrudController
         $this->crud->addFields([
             [
                 'name' => 'title',
-                'label' => 'عنوان',
+                'label' => '* عنوان',
                 'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
@@ -43,24 +43,65 @@ class CourseCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
-            [       // SelectMultiple = n-n relationship (with pivot table)
-                'label' => "دانش آموزان",
-                'type' => 'select2_multiple',
-                'name' => 'students', // the method that defines the relationship in your Model
-                'entity' => 'students', // the method that defines the relationship in your Model
-                'attribute' => 'first_name|last_name|national_code', // foreign key attribute that is shown to user
-                'model' => "App\Models\Student", // foreign key model
-                'pivot' => true, // on create&update, do you need to add/delete pivot table entries?
+            [
+                'name' => 'teacher',
+                'label' => '* نام استاد',
+                'type' => 'text',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],
                 'wrapperAttributes' => [
                     'dir' => 'rtl'
                 ],
-                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
-
             ],
+//            [
+//                'name' => 'sessions',
+//                'label' => 'جلسات کلاس',
+//                'type' => 'child',
+//                'entity_singular' => 'اضافه کردن جلسه',
+//                'columns' => [
+//                    [
+//                        'label' => 'روز',
+//                        'type' => 'child_select',
+//                        'name' => 'day',
+//                        'data' => ['شنبه', 'یکشنبه', 'دوشنبه', 'سه شنبه', 'چهارشنبه', 'پنجشنبه', 'جمعه']
+//                    ],
+//                    [
+//                        'label' => 'زمان شروع',
+//                        'type' => 'child_text',
+//                        'name' => 'start_time',
+//                    ],
+//                    [
+//                        'label' => 'زمان پایان',
+//                        'type' => 'child_text',
+//                        'name' => 'finish_time',
+//                    ],
+//
+//                ],
+//                'attributes' => [
+//                    'dir' => 'rtl'
+//                ],
+//                'wrapperAttributes' => [
+//                    'dir' => 'rtl'
+//                ],
+//            ],
+
         ], 'update/create/both');
+
+//        $this->crud->addFields([
+//            [
+//                'name' => 'select_student',
+//                'label' => 'دانش آموزان',
+//                'data' => ['user_id' => \Auth::user()->id],
+//                'attributes' => [
+//                    'dir' => 'rtl'
+//                ],
+//                'wrapperAttributes' => [
+//                    'dir' => 'rtl'
+//                ],
+//                'type' => 'select_student_for_course',
+//            ]
+//        ], 'update');
 
 
 
@@ -69,10 +110,15 @@ class CourseCrudController extends CrudController
                 'name' => 'title',
                 'label' => 'عنوان',
             ],
+            [
+                'name' => 'teacher',
+                'label' => 'استاد',
+            ],
         ]);
 
         $this->crud->addButtonFromView('line', 'course_tests', 'course_tests', 'beginning');
         $this->crud->addButtonFromView('line', 'course_ctr', 'course_ctr', 'beginning');
+        $this->crud->addButtonFromView('line', 'course_students', 'course_students', 'beginning');
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

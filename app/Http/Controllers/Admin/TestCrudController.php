@@ -38,6 +38,10 @@ class TestCrudController extends CrudController
                 'name' => 'title',
                 'label' => 'عنوان',
             ],
+            [
+                'name' => 'date',
+                'label' => 'تاریخ',
+            ],
         ]);
 
         $this->crud->addFields([

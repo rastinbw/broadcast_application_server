@@ -60,13 +60,13 @@ class PostCrudController extends CrudController
             [
                 'name' => 'content',
                 'label' => '* متن',
-                'type' => 'tinymce',
-                'attributes' => [
-                    'dir' => 'rtl'
+                'type' => 'summernote',
+                'options' => [
+                    'lang' => 'fa-IR',
+                    'maximumImageFileSize' => '1100000',
+                    'height' => '300'
                 ],
-                'wrapperAttributes' => [
-                    'dir' => 'rtl'
-                ],
+
             ],
         ], 'update/create/both');
 

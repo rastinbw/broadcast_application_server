@@ -28,7 +28,7 @@
     {{-- FIELD JS - will be loaded in the after_scripts section --}}
     @push('crud_fields_scripts')
         <!-- include summernote js-->
-        <script src="{{ asset('vendor/backpack/summernote/summernote.min.js') }}"></script>
+        <script src="{{ asset('vendor/backpack/summernote/summernote.js') }}"></script>
     @endpush
 
 @endif

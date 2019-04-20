@@ -78,7 +78,7 @@ class StaffCrudController extends CrudController
             [
                 'name' => 'description',
                 'label' => 'توضیحات',
-                'type' => 'tinymce',
+                'type' => 'textarea',
                 'attributes' => [
                     'dir' => 'rtl'
                 ],

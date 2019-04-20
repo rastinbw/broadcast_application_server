@@ -1,6 +1,5 @@
 @extends('list_layout')
 
-
 @section('css')
     <style type="text/css">
 

@@ -27,6 +27,7 @@ class CourseRequest extends FormRequest
     {
         return [
             'title' => 'required|max:255',
+            'teacher' => 'required|max:255',
         ];
     }
 

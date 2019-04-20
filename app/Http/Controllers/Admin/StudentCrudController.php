@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Includes\Constant;
 use App\Models\Student;
 use App\Http\Controllers\CrudController;
 
@@ -64,7 +65,49 @@ class StudentCrudController extends CrudController
                     'dir' => 'rtl'
                 ],
             ],
+            [  // Select
+                'label' => "* پایه",
+                'type' => 'select2',
+                'name' => 'group_id', // the db column for the foreign key
+                'entity' => 'group', // the method that defines the relationship in your Model
+                'attribute' => 'title', // foreign key attribute that is shown to user
+                'model' => "App\Models\Group", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            ],
+            [  // Select
+                'label' => "* رشته",
+                'type' => 'select2',
+                'name' => 'field_id', // the db column for the foreign key
+                'entity' => 'field', // the method that defines the relationship in your Model
+                'attribute' => 'title', // foreign key attribute that is shown to user
+                'model' => "App\Models\Field", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
+            ],
+            [
+                'name'        => 'gender', // the name of the db column
+                'label'       => '* جنسیت', // the input label
+                'type'        => 'radio',
+                'options'     => [ // the key will be stored in the db, the value will be shown as label;
+                    Constant::$GENDER_FEMALE => 'دختر',
+                    Constant::$GENDER_MALE => 'پسر',
+                ],
+                // optional
+                'inline'      => true, // show the radios all on the same line?
+            ],
         ], 'update/create/both');
+
 
         $this->crud->addColumns([
             [
@@ -82,6 +125,28 @@ class StudentCrudController extends CrudController
             [
                 'name' => 'parent_code',
                 'label' => 'کد اولیا',
+            ],
+            [
+                'label' =>  "پایه", // Table column heading
+                'type' => "select",
+                'name' => 'group_id', // the column that contains the ID of that connected entity;
+                'entity' => 'group', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Group", // foreign key model
+            ],
+            [
+                'label' =>  "رشته", // Table column heading
+                'type' => "select",
+                'name' => 'field_id', // the column that contains the ID of that connected entity;
+                'entity' => 'field', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Field", // foreign key model
+            ],
+            [
+                'name' => 'gender',
+                'label' => "جنسیت",
+                'type' => 'select_from_array',
+                'options' => [Constant::$GENDER_MALE => 'پسر', Constant::$GENDER_FEMALE => 'دختر'],
             ],
             [
                 // run a function on the CRUD model and show its return value
@@ -108,6 +173,38 @@ class StudentCrudController extends CrudController
         }
         );
 
+
+        $this->crud->addFilter([ // add a "simple" filter called Draft
+            'type' => 'dropdown',
+            'name' => 'gender',
+            'label' => 'جنسیت'
+        ], [
+            Constant::$GENDER_FEMALE => 'دختر',
+            Constant::$GENDER_MALE => 'پسر',
+        ],  function ($value) {
+            $this->crud->addClause('where', 'gender', $value);
+        }
+        );
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'field_id',
+            'type' => 'select2',
+            'label'=> 'رشته',
+        ], function() {
+            return \Auth::user()->fields()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'field_id', $value);
+        });
+
+        $this->crud->addFilter([ // select2 filter
+            'name' => 'group_id',
+            'type' => 'select2',
+            'label'=> 'پایه',
+        ], function() {
+            return \Auth::user()->groups()->get()->keyBy('id')->pluck('title', 'id')->toArray();
+        }, function($value) { // if the filter is active
+            $this->crud->addClause('where', 'group_id', $value);
+        });
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');
         // $this->crud->addFields($array_of_arrays, 'update/create/both');
@@ -173,6 +270,7 @@ class StudentCrudController extends CrudController
         // Does not work well with AJAX datatables.
         $this->crud->enableExportButtons();
 
+
         // ------ ADVANCED QUERIES
         // $this->crud->addClause('active');
         // $this->crud->addClause('type', 'car');
@@ -237,7 +335,8 @@ class StudentCrudController extends CrudController
     {
         $student = Student::where([
             ['user_id', '=', \Auth::user()->id],
-            ['national_code', '=', $request->input('national_code')]
+            ['national_code', '=', $request->input('national_code')],
+            ['id', '!=', $request->input('id')],
         ])->first();
 
         if ($student)

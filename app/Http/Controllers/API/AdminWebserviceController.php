@@ -4,11 +4,16 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Controller;
+use App\Models\Absent;
 use App\Models\AndroidAdmin;
+use App\Models\Course;
+use App\Models\Ctr;
+use App\Models\Grade;
 use App\Models\Media;
 use App\Models\Message;
 use App\Models\Post;
 use App\Models\Program;
+use App\Models\Test;
 use App\User;
 use Illuminate\Http\Request;
 use App\Includes\Constant;
@@ -129,6 +134,37 @@ class AdminWebserviceController extends Controller
         if ($admin) {
             $user = $admin->user()->first();
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->fields()->get()->toJson());
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function get_course_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->courses()->get()->toJson());
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function get_course_student_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $course = Course::find($req->input("course_id"));
+            if ($course){
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,
+                    $course->students()->get()->toJson());
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
@@ -417,7 +453,6 @@ class AdminWebserviceController extends Controller
     //*******************************************END MEDIA CRUD PART****************************************************
     // </editor-fold>
 
-
     // <editor-fold desc = "MESSAGE CRUD">
     //*******************************************MESSAGE CRUD PART********************************************************
     function create_message(Request $req){
@@ -497,6 +532,304 @@ class AdminWebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
     //*******************************************END MESSAGE CRUD PART****************************************************
+    // </editor-fold>
+
+    // <editor-fold desc = "CTR CRUD">
+    function get_ctr_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $course = Course::find($req->input('course_id'));
+            if ($course){
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,
+                    $course->ctrs()->get()->toJson());
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function create_ctr(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+
+            $ctr = Ctr::create([
+                'title' =>  $req->input('title'),
+                'date' =>  $req->input('date'),
+                'course_id' => $req->input('course_id'),
+            ]);
+
+            $user->ctrs()->save($ctr);
+
+            return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function update_ctr(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $ctr = Ctr::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($ctr){
+                $ctr->title = $req->input('title');
+                $ctr->date = $req->input('date');
+                $ctr->save();
+
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function delete_ctr(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $ctr = Ctr::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($ctr){
+                foreach ($ctr->absents()->get() as $absent){
+                    $absent->delete();
+                }
+                $ctr->delete();
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc = "ABSENT CRUD">
+    function get_absent_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $ctr = Ctr::find($req->input('ctr_id'));
+            if ($ctr){
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,
+                    $ctr->absents()->get()->toJson());
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function create_absent(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+
+            $absent = Absent::create([
+                'national_code' =>  $req->input('national_code'),
+                'ctr_id' =>  $req->input('ctr_id'),
+            ]);
+
+            $user->absents()->save($absent);
+
+            return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function delete_absent(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $absent = Absent::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($absent){
+                $absent->delete();
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc = "TEST CRUD">
+    function get_test_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $course = Course::find($req->input('course_id'));
+            if ($course){
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,
+                    $course->tests()->get()->toJson());
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function create_test(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+
+            $test = Test::create([
+                'title' =>  $req->input('title'),
+                'date' =>  $req->input('date'),
+                'course_id' => $req->input('course_id'),
+            ]);
+
+            $user->ctrs()->save($test);
+
+            $course = Course::find($req->input('course_id'));
+            foreach ($course->students()->get() as $student){
+                $grade = new Grade();
+                $grade->user_id = $user->id;
+                $grade->test_id = $test->id;
+                $grade->national_code = $student->national_code;
+                $grade->grade = Constant::$NONE_GRADE;
+                $grade->save();
+            }
+
+            return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function update_test(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $test = Test::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($test){
+                $test->title = $req->input('title');
+                $test->date = $req->input('date');
+                $test->save();
+
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function delete_test(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $test = Test::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($test){
+                foreach ($test->grades()->get() as $grade){
+                    $grade->delete();
+                }
+                $test->delete();
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+    // </editor-fold>
+
+    // <editor-fold desc = "GRADE CRUD">
+    function get_grade_list(Request $req)
+    {
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $test = Test::find($req->input('test_id'));
+            if ($test){
+                return sprintf('{"result_code": %u, "data": %s}',
+                    Constant::$SUCCESS,
+                    $test->grades()->get()->toJson());
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
+    function update_grade(Request $req, $id){
+        $admin = AndroidAdmin::where([
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($admin) {
+            $user = $admin->user()->first();
+            $grade = Grade::where([
+                ['user_id', '=', $user->id],
+                ['id', '=', $id],
+            ])->first();
+
+            if ($grade){
+                $grade->grade = $req->input('grade');
+                $grade->save();
+
+                return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+            }else
+                return sprintf('{"result_code": %u}', Constant::$POST_NOT_EXIST);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
     // </editor-fold>
 
 }

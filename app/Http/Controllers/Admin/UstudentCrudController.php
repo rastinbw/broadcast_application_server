@@ -75,6 +75,10 @@ class UstudentCrudController extends CrudController
                 'type' => "model_function",
                 'function_name' => 'getDate', // the method in your Model
             ],
+            [
+                'name' => 'phone_number',
+                'label' => "شماره تلفن همراه", // Table column heading
+            ],
         ]);
 
         $this->crud->addFilter([ // add a "simple" filter called Draft

@@ -32,7 +32,9 @@ class Constant
     public static $COUNT_LIMIT = 1117;
 
     public static $GENDER_MALE = 1;
+    public static $GENDER_MALE_TITLE = "پسر";
     public static $GENDER_FEMALE = 0;
+    public static $GENDER_FEMALE_TITLE = "دختر";
 
     // for get posts function
     public static $TYPE_MEDIA = "media";

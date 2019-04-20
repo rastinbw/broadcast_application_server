@@ -95,6 +95,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
     {
         Route::get('/ctr_list/{id}/{user_id}', 'AdminController@get_ctr_list');
         Route::get('/grades_list/{id}/{user_id}', 'AdminController@get_grades_list');
+        Route::get('/students/{user_id}', 'AdminController@get_students_list');
     });
 });
 
@@ -185,6 +186,11 @@ Route::get('/', function () {
     return redirect(URL::to('/admin'));
 });
 
+//ajax urls
+Route::post('/get_filtered_students','Admin\AjaxController@get_filtered_students');
+Route::post('/get_some_students','Admin\AjaxController@get_some_students');
+Route::post('/add_students_to_course','Admin\AjaxController@add_students_to_course');
+Route::post('/remove_students_from_course','Admin\AjaxController@remove_students_from_course');
 
 //Webservice Routes
 Route::post('/api/{user_id}/ustudent/register', 'API\WebserviceController@register_ustudent');
@@ -224,6 +230,8 @@ Route::post('/api/admin/login', 'API\AdminWebserviceController@login_admin');
 Route::post('/api/admin/check_token', 'API\AdminWebserviceController@check_token');
 Route::post('/api/admin/groups', 'API\AdminWebserviceController@get_group_list');
 Route::post('/api/admin/fields', 'API\AdminWebserviceController@get_field_list');
+Route::post('/api/admin/courses', 'API\AdminWebserviceController@get_course_list');
+Route::post('/api/admin/course/students', 'API\AdminWebserviceController@get_course_student_list');
 Route::post('/api/admin/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}/{field_id}', 'API\AdminWebserviceController@get_posts');
 
 Route::post('/api/admin/post/create', 'API\AdminWebserviceController@create_post');
@@ -241,3 +249,22 @@ Route::post('/api/admin/message/delete/{id}', 'API\AdminWebserviceController@del
 Route::post('/api/admin/media/create', 'API\AdminWebserviceController@create_media');
 Route::post('/api/admin/media/update/{id}', 'API\AdminWebserviceController@update_media');
 Route::post('/api/admin/media/delete/{id}', 'API\AdminWebserviceController@delete_media');
+
+
+Route::post('/api/admin/course/ctrs', 'API\AdminWebserviceController@get_ctr_list');
+Route::post('/api/admin/course/ctr/create', 'API\AdminWebserviceController@create_ctr');
+Route::post('/api/admin/course/ctr/update/{id}', 'API\AdminWebserviceController@update_ctr');
+Route::post('/api/admin/course/ctr/delete/{id}', 'API\AdminWebserviceController@delete_ctr');
+
+Route::post('/api/admin/course/ctr/absents', 'API\AdminWebserviceController@get_absent_list');
+Route::post('/api/admin/course/ctr/absent/create', 'API\AdminWebserviceController@create_absent');
+Route::post('/api/admin/course/ctr/absent/delete/{id}', 'API\AdminWebserviceController@delete_absent');
+
+
+Route::post('/api/admin/course/tests', 'API\AdminWebserviceController@get_test_list');
+Route::post('/api/admin/course/test/create', 'API\AdminWebserviceController@create_test');
+Route::post('/api/admin/course/test/update/{id}', 'API\AdminWebserviceController@update_test');
+Route::post('/api/admin/course/test/delete/{id}', 'API\AdminWebserviceController@delete_test');
+
+Route::post('/api/admin/course/test/grades', 'API\AdminWebserviceController@get_grades_list');
+Route::post('/api/admin/course/test/grade/update/{id}', 'API\AdminWebserviceController@update_grade');
