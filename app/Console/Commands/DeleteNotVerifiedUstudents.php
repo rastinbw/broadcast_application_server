@@ -40,9 +40,15 @@ class DeleteNotVerifiedUstudents extends Command
      */
     public function handle()
     {
-        Ustudent::where([
+        $ustudents = Ustudent::where([
             ['verified', '=', false],
-            ['created_at', '<=', Carbon::now()->subMinutes(30)->toDateTimeString()]
-        ])->delete();
+            ['created_at', '<=', Carbon::now()->subMinutes(1)->toDateTimeString()]
+        ]);
+
+        foreach ($ustudents->get() as $ustudent){
+            $ustudent->plans()->sync([]);
+        }
+
+        $ustudents->delete();
     }
 }

@@ -91,13 +91,7 @@ class ProgramCrudController extends CrudController
             [
                 'name' => 'content',
                 'label' => '* متن',
-                'type' => 'summernote',
-                'options' => [
-                    'lang' => 'fa-IR',
-                    'maximumImageFileSize' => '1100000',
-                    'height' => '300'
-                ],
-
+                'type' => 'wysiwyg',
             ],
         ], 'update/create/both');
 

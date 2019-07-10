@@ -9,6 +9,7 @@ use App\Models\Course;
 use App\Models\Grade;
 use App\Models\Message;
 use App\Models\Notification;
+use App\Models\Plan;
 use App\Models\Student;
 use App\Models\StudentPasswordReset;
 use App\Models\Ticket;
@@ -50,15 +51,33 @@ class WebserviceController extends Controller
             ['token', '=', $req->input('token')]
         ])->first();
 
-        if ($ustudent){
 
-            // get all related messages
-            $messages = Message::where([
-                ['user_id', '=', $user_id],
-                ['group_id', '=', $ustudent->group_id],
-                ['field_id', '=', $ustudent->field_id],
-                ['gender', '=', $ustudent->gender],
-            ])->get();
+        if ($ustudent){
+            $messages = [];
+
+            foreach (Message::where('user_id', '=', $user_id)->get() as $message){
+                if($message->group_id != null){
+                    if($message->group_id != $ustudent->group_id)
+                        continue;
+                }
+
+                if($message->field_id != null){
+                    if($message->field_id != $ustudent->field_id)
+                        continue;
+                }
+
+                if($message->gender != null){
+                    if($message->gender != $ustudent->gender)
+                        continue;
+                }
+
+                if($message->plan_id != null){
+                    if(!$ustudent->plans->contains($message->plan_id))
+                        continue;
+                }
+
+                array_push($messages, $message);
+            }
 
             return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, collect($messages)->toJson());
 
@@ -180,6 +199,19 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$USER_NOT_EXIST);
     }
 
+    function get_user_plan_list($user_id, Request $req)
+    {
+        $user = User::where([
+            ['id', '=', $user_id],
+        ])->first();
+
+
+        if ($user) {
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $user->plans()->get()->toJson());
+        } else
+            return sprintf('{"result_code": %u}', Constant::$USER_NOT_EXIST);
+    }
+
     function save_ticket($user_id, Request $req)
     {
         $ustudent = Ustudent::where([
@@ -293,8 +325,10 @@ class WebserviceController extends Controller
         $ustudent->verified = 0;
         $ustudent->save();
 
-        if ($ustudent)
+        if ($ustudent) {
+            $ustudent->plans()->attach(Plan::find(json_decode($req->input('plan_ids'))));
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        }
     }
 
 
@@ -337,14 +371,21 @@ class WebserviceController extends Controller
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->verified = 1;
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s"}}',
+
+                $plan_ids = [];
+                foreach ($ustudent->plans()->get() as $plan){
+                    array_push($plan_ids, $plan->id);
+                }
+
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s", "plan_ids": %s}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,
                     $ustudent->field_id,
                     $ustudent->gender,
                     $ustudent->first_name,
-                    $ustudent->last_name
+                    $ustudent->last_name,
+                    json_encode($plan_ids)
                 );
             } else
                 return sprintf('{"result_code": %u}', Constant::$INVALID_VERIFICATION_CODE);
@@ -367,14 +408,21 @@ class WebserviceController extends Controller
             if (Hash::check($req->input('password'), $ustudent->password)) {
                 $ustudent->token = bin2hex(random_bytes(16));
                 $ustudent->save();
-                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s"}}',
+
+                $plan_ids = [];
+                foreach ($ustudent->plans()->get() as $plan){
+                    array_push($plan_ids, $plan->id);
+                }
+
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s", "plan_ids": %s}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,
                     $ustudent->field_id,
                     $ustudent->gender,
                     $ustudent->first_name,
-                    $ustudent->last_name
+                    $ustudent->last_name,
+                    json_encode($plan_ids)
                 );
             } else
                 return sprintf('{"result_code": %u}', Constant::$INVALID_PASSWORD);
@@ -392,20 +440,27 @@ class WebserviceController extends Controller
 
         if ($student) {
             // Check for Ustudent
-            $ustudent = UStudent::where([
+            $ustudent = Ustudent::where([
                 ['user_id', '=', $user_id],
                 ['national_code', '=', $student->national_code],
             ])->first();
-            if ($ustudent)
-                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s" }}',
+            if ($ustudent) {
+                $plan_ids = [];
+                foreach ($ustudent->plans()->get() as $plan) {
+                    array_push($plan_ids, $plan->id);
+                }
+
+                return sprintf('{"result_code": %u, "data": {"token": "%s", "group_id": %g, "field_id": %g, "gender": %g, "first_name": "%s", "last_name": "%s",  "plan_ids": %s}}',
                     Constant::$SUCCESS,
                     $ustudent->token,
                     $ustudent->group_id,
                     $ustudent->field_id,
                     $ustudent->gender,
                     $ustudent->first_name,
-                    $ustudent->last_name
+                    $ustudent->last_name,
+                    json_encode($plan_ids)
                 );
+            }
             else
                 return sprintf('{"result_code": %u}', Constant::$USER_NOT_REGISTERED);
 
@@ -420,7 +475,6 @@ class WebserviceController extends Controller
             ['user_id', '=', $user_id],
             ['national_code', '=', $req->input('national_code')],
         ])->first();
-
 
         if ($ustudent) {
             $reset = StudentPasswordReset::where([
@@ -467,7 +521,7 @@ class WebserviceController extends Controller
     //*******************************************SECURE PART************************************************************
     function check_token($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
@@ -478,9 +532,24 @@ class WebserviceController extends Controller
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
 
+    function save_fire_base_token($user_id, Request $req)
+    {
+        $ustudent = Ustudent::where([
+            ['user_id', '=', $user_id],
+            ['token', '=', $req->input('token')],
+        ])->first();
+
+        if ($ustudent) {
+            $ustudent->fire_base_token = $req->input('fire_base_token');
+            $ustudent->save();
+            return sprintf('{"result_code": %u}', Constant::$SUCCESS);
+        } else
+            return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
+    }
+
     function get_ustudent_info($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
@@ -497,12 +566,18 @@ class WebserviceController extends Controller
 
 
         if ($ustudent) {
+            $plan_ids = [];
+            foreach ($ustudent->plans()->get() as $plan){
+                array_push($plan_ids, $plan->id);
+            }
+
             $data = [
                 'first_name' => $ustudent->first_name,
                 'last_name' => $ustudent->last_name,
                 'national_code' => $ustudent->national_code,
                 'group_id' => $ustudent->group_id,
                 'field_id' => $ustudent->field_id,
+                'plan_ids' => $plan_ids,
                 'gender' => $ustudent->gender,
                 'is_student' => $is_student,
             ];
@@ -513,7 +588,7 @@ class WebserviceController extends Controller
 
     function update_ustudent_info($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
@@ -532,6 +607,10 @@ class WebserviceController extends Controller
             $ustudent->group_id = $req->input('group_id');
             $ustudent->field_id = $req->input('field_id');
             $ustudent->national_code = $req->input('national_code');
+
+            $ustudent->plans()->sync([]);
+            $ustudent->plans()->attach(Plan::find(json_decode($req->input('plan_ids'))));
+
             $ustudent->save();
 
             return sprintf('{"result_code": %u}', Constant::$SUCCESS);
@@ -541,7 +620,7 @@ class WebserviceController extends Controller
 
     function get_student_workbook($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
@@ -561,104 +640,74 @@ class WebserviceController extends Controller
 
     function get_student_courses($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
 
         if ($ustudent) {
-            $student = Student::where([
-                ['user_id', '=', $user_id],
-                ['national_code', '=', $ustudent->national_code],
-            ])->first();
-
-            if ($student)
-                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $student->courses()->get()->toJson());
-            else
-                return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, json_encode([]));
+            return sprintf('{"result_code": %u, "data": %s}', Constant::$SUCCESS, $ustudent->courses()->get()->toJson());
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
 
     function get_student_course_absents($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
 
         if ($ustudent) {
-            $student = Student::where([
-                ['user_id', '=', $user_id],
-                ['national_code', '=', $ustudent->national_code],
-            ])->first();
+            $course = Course::find($req->input('course_id'));
+            $ctrs = $course->ctrs()->get();
 
-            if ($student){
-                $course = Course::find($req->input('course_id'));
-                $ctrs = $course->ctrs()->get();
+            $student_absents = [];
 
-                $student_absents = [];
+            foreach ($ctrs as $ctr){
+                $abs = Absent::where([
+                    ['user_id', '=', $user_id],
+                    ['ctr_id', '=', $ctr->id],
+                    ['national_code', '=', $ustudent->national_code]
+                ])->first();
 
-                foreach ($ctrs as $ctr){
-                    $abs = Absent::where([
-                        ['user_id', '=', $user_id],
-                        ['ctr_id', '=', $ctr->id],
-                        ['national_code', '=', $ustudent->national_code]
-                    ])->first();
-
-                    if ($abs)
-                        array_push($student_absents, $ctr->date);
-                }
-
-                return sprintf('{"result_code": %u, "data": %s}',
-                    Constant::$SUCCESS,  json_encode($student_absents));
-
+                if ($abs)
+                    array_push($student_absents, $ctr->date);
             }
-            else
-                return sprintf('{"result_code": %u, "data": %s}',
-                    Constant::$SUCCESS, json_encode([]));
+
+            return sprintf('{"result_code": %u, "data": %s}',
+                Constant::$SUCCESS,  json_encode($student_absents));
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
 
     function get_student_course_grades($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();
 
         if ($ustudent) {
-            $student = Student::where([
-                ['user_id', '=', $user_id],
-                ['national_code', '=', $ustudent->national_code],
-            ])->first();
+            $course = Course::find($req->input('course_id'));
+            $tests = $course->tests()->get();
 
-            if ($student){
-                $course = Course::find($req->input('course_id'));
-                $tests = $course->tests()->get();
+            $student_grades = [];
 
-                $student_grades = [];
+            foreach ($tests as $test){
+                $grade = Grade::where([
+                    ['user_id', '=', $user_id],
+                    ['test_id', '=', $test->id],
+                    ['national_code', '=', $ustudent->national_code]
+                ])->first();
 
-                foreach ($tests as $test){
-                    $grade = Grade::where([
-                        ['user_id', '=', $user_id],
-                        ['test_id', '=', $test->id],
-                        ['national_code', '=', $ustudent->national_code]
-                    ])->first();
-
-                    if ($grade)
-                        array_push($student_grades,
-                            ['title' => $test->title, 'date' => $test->date , 'grade' => $grade->grade]);
-                }
-
-                return sprintf('{"result_code": %u, "data": %s}',
-                    Constant::$SUCCESS,  json_encode($student_grades));
-
+                if ($grade)
+                    array_push($student_grades,
+                        ['title' => $test->title, 'date' => $test->date , 'grade' => $grade->grade]);
             }
-            else
-                return sprintf('{"result_code": %u, "data": %s}',
-                    Constant::$SUCCESS, json_encode([]));
+
+            return sprintf('{"result_code": %u, "data": %s}',
+                Constant::$SUCCESS,  json_encode($student_grades));     
         } else
             return sprintf('{"result_code": %u}', Constant::$INVALID_TOKEN);
     }
@@ -666,7 +715,7 @@ class WebserviceController extends Controller
 
     function change_password($user_id, Request $req)
     {
-        $ustudent = UStudent::where([
+        $ustudent = Ustudent::where([
             ['user_id', '=', $user_id],
             ['token', '=', $req->input('token')],
         ])->first();

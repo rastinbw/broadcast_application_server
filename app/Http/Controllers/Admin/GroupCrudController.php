@@ -144,7 +144,7 @@ class GroupCrudController extends CrudController
 
     public function update(UpdateRequest $request)
     {
-        if(Group::where([['title', $request->input('title')]])->first())
+        if(Group::where([['title', trim($request->input('title'))]])->first())
             return back()->withErrors([
                 'custom_fail' => true,
                 'errors' => ['.پایه تحصیلی با این عنوان قبلا ایجاد شده است']

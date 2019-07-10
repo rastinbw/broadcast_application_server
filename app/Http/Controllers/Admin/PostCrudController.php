@@ -32,7 +32,6 @@ class PostCrudController extends CrudController
 
 //        $this->crud->setFromDb();
         $this->crud->addClause('where', 'user_id', '=', \Auth::user()->id);
-
         // ------ CRUD FIELDS
         $this->crud->addFields([
             [

@@ -56,6 +56,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
 
 Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
 {
+    CRUD::resource('plan', 'PlanCrudController');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Admin'], function()
+{
     CRUD::resource('staff', 'StaffCrudController');
 });
 
@@ -95,7 +100,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['admin'], 'namespace' => 'Ad
     {
         Route::get('/ctr_list/{id}/{user_id}', 'AdminController@get_ctr_list');
         Route::get('/grades_list/{id}/{user_id}', 'AdminController@get_grades_list');
-        Route::get('/students/{user_id}', 'AdminController@get_students_list');
+        Route::get('/ustudents/{user_id}', 'AdminController@get_ustudents_list');
     });
 });
 
@@ -107,6 +112,17 @@ Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' 
     Route::group(['prefix' => 'student/search/{student_id}'], function()
     {
         CRUD::resource('workbook', 'StudentWorkbookCrudController');
+    });
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['web', 'auth'], 'namespace' => 'Admin'], function()
+{
+    CRUD::resource('plan', 'PlanCrudController');
+    CRUD::resource('ustudent', 'UstudentCrudController');
+
+    Route::group(['prefix' => 'plan/search/{plan_id}'], function()
+    {
+        CRUD::resource('ustudent', 'PlanUstudentCrudController');
     });
 });
 
@@ -198,11 +214,12 @@ Route::post('/api/{user_id}/ustudent/verification_code', 'API\WebserviceControll
 Route::post('/api/{user_id}/ustudent/confirm', 'API\WebserviceController@confirm_ustudent');
 Route::post('/api/{user_id}/ustudent/login', 'API\WebserviceController@login_ustudent');
 Route::post('/api/{user_id}/ustudent/login/parent', 'API\WebserviceController@login_as_parent');
+Route::post('/api/{user_id}/ustudent/check_token', 'API\WebserviceController@check_token');
 Route::post('/api/{user_id}/ustudent/forget_password', 'API\WebserviceController@send_change_password_link');
 
 
 Route::get('/api/{user_id}/ustudent/check_version/{version}', 'API\WebserviceController@check_version');
-Route::post('/api/{user_id}/ustudent/check_token', 'API\WebserviceController@check_token');
+Route::post('/api/{user_id}/ustudent/save_fire_base_token', 'API\WebserviceController@save_fire_base_token');
 Route::post('/api/{user_id}/ustudent/change_password', 'API\WebserviceController@change_password');
 Route::post('/api/{user_id}/ustudent/info', 'API\WebserviceController@get_ustudent_info');
 Route::post('/api/{user_id}/ustudent/info/update', 'API\WebserviceController@update_ustudent_info');
@@ -216,6 +233,7 @@ Route::post('/api/{user_id}/send_ticket', 'API\WebserviceController@save_ticket'
 Route::post('/api/{user_id}/messages', 'API\WebserviceController@get_messages');
 Route::get('/api/{user_id}/groups', 'API\WebserviceController@get_user_group_list');
 Route::get('/api/{user_id}/fields', 'API\WebserviceController@get_user_field_list');
+Route::get('/api/{user_id}/plans', 'API\WebserviceController@get_user_plan_list');
 Route::post('/api/{user_id}/staff', 'API\WebserviceController@get_staff');
 Route::get('/api/{user_id}/slider', 'API\WebserviceController@get_slider');
 Route::get('/api/{user_id}/about', 'API\WebserviceController@get_about');

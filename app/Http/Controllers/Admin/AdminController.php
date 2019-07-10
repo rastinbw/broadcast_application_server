@@ -39,7 +39,7 @@ class AdminController extends Controller
             ['id', '=', $ctr_id],
         ])->first();
 
-        $students = $course->students()->get();
+        $ustudents = $course->ustudents()->get();
 
         $absents = Absent::where([
             ['user_id', '=', $user_id],
@@ -56,7 +56,7 @@ class AdminController extends Controller
                 'absents' => $absents_national_code_list,
                 'course' => $course,
                 'ctr' => $ctr,
-                'students' => $students,
+                'students' => $ustudents,
                 'user_id' => $user_id
             ]
         );
@@ -74,7 +74,7 @@ class AdminController extends Controller
             ['id', '=', $test_id],
         ])->first();
 
-        $students = $course->students()->get();
+        $ustudents = $course->ustudents()->get();
 
         $grades = Grade::where([
             ['user_id', '=', $user_id],
@@ -91,20 +91,20 @@ class AdminController extends Controller
                 'grades' => $grades_assoc,
                 'course' => $course,
                 'test' => $test,
-                'students' => $students,
+                'students' => $ustudents,
                 'user_id' => $user_id
             ]
         );
     }
 
-    public function get_students_list($course_id, $user_id)
+    public function get_ustudents_list($course_id, $user_id)
     {
         $course = Course::where([
             ['user_id', '=', $user_id],
             ['id', '=', $course_id],
         ])->first();
 
-        $student_list = Student::where([
+        $ustudent_list = Ustudent::where([
             ['user_id', '=', $user_id],
         ])->get();
 
@@ -121,10 +121,10 @@ class AdminController extends Controller
             ['id' => Constant::$GENDER_FEMALE, 'title' => "دختر"]
         ];
 
-        return view('course_students',
+        return view('course_ustudents',
             [
                 'course' => $course,
-                'student_list' => $student_list,
+                'student_list' => $ustudent_list,
                 'group_list' => $group_list,
                 'field_list' => $field_list,
                 'gender_list' => $gender_list,
@@ -136,35 +136,57 @@ class AdminController extends Controller
     public function update_ctr_list(Request $request, $course_id, $ctr_id)
     {
         $user_id = $request->input('user_id');
+        $ustudents_fire_base_token_list = [];
 
         $course = Course::where([
             ['user_id', '=', $user_id],
             ['id', '=', $course_id],
         ])->first();
 
-        $students = $course->students()->get();
+        $ustudents = $course->ustudents()->get();
 
-        foreach ($students as $student) {
-            $is_present = $request->input($student->national_code);
+        foreach ($ustudents as $ustudent) {
+            $is_present_checked = $request->input($ustudent->national_code);
 
             $absent = Absent::where([
                 ['user_id', '=', $user_id],
                 ['ctr_id', '=', $ctr_id],
-                ['national_code', '=', $student->national_code],
+                ['national_code', '=', $ustudent->national_code],
             ])->first();
 
-            if ($is_present){
+            if ($is_present_checked){
                 if ($absent)
                     Absent::find($absent->id)->delete();
             }else{
                if (!$absent){
+                   $ustudent = Ustudent::where([
+                       ['user_id', '=', $user_id],
+                       ['national_code', '=', $ustudent->national_code]
+                   ])->first();
+                   if ($ustudent) {
+                       array_push(
+                           $ustudents_fire_base_token_list,
+                           $ustudent->fire_base_token
+                       );
+                   }
+
                    $new_absent = new Absent();
-                   $new_absent->national_code = $student->national_code;
+                   $new_absent->national_code = $ustudent->national_code;
                    $new_absent->ctr_id = $ctr_id;
                    $new_absent->user_id = $user_id;
                    $new_absent->save();
+
                }
             }
+        }
+
+        if (sizeof($ustudents_fire_base_token_list) > 0) {
+            AdminController::notify(
+                "غیبت",
+                " غیبت در کلاس " . $course->title,
+                User::find($user_id)->fire_base_server_key,
+                $ustudents_fire_base_token_list
+            );
         }
 
         return back();
@@ -174,24 +196,74 @@ class AdminController extends Controller
     public function update_grades_list(Request $request, $course_id, $test_id)
     {
         $user_id = $request->input('user_id');
+        $ustudents_fire_base_token_list = [];
 
         $course = Course::where([
             ['user_id', '=', $user_id],
             ['id', '=', $course_id],
         ])->first();
 
-        $students = $course->students()->get();
+        $ustudents = $course->ustudents()->get();
 
-        foreach ($students as $student) {
+        foreach ($ustudents as $ustudent) {
             $grade = Grade::where([
                 ['user_id', '=', $user_id],
                 ['test_id', '=', $test_id],
-                ['national_code', '=', $student->national_code],
+                ['national_code', '=', $ustudent->national_code],
             ])->first();
 
-            $value = $request->input($student->national_code);
-            $grade->grade = (is_numeric($value)) ? $value : "-";
-            $grade->save();
+            $value = $request->input($ustudent->national_code);
+
+            if ($grade != null){
+                if(is_numeric($value)){
+                    $grade->grade =  $value;
+
+                    $ustudent = Ustudent::where([
+                        ['user_id', '=', $user_id],
+                        ['national_code', '=', $ustudent->national_code]
+                    ])->first();
+                    if ($ustudent) {
+                        array_push(
+                            $ustudents_fire_base_token_list,
+                            $ustudent->fire_base_token
+                        );
+                    }
+                }else{
+                    $grade->grade = "-";
+                }
+
+                $grade->save();
+            }else{
+                if(is_numeric($value)){
+                    $grade = new Grade();
+                    $grade->user_id = $user_id;
+                    $grade->test_id = $test_id;
+                    $grade->national_code = $ustudent->national_code;
+                    $grade->grade = $value;
+                    $grade->save();
+
+                    $ustudent = Ustudent::where([
+                        ['user_id', '=', $user_id],
+                        ['national_code', '=', $ustudent->national_code]
+                    ])->first();
+                    if ($ustudent) {
+                        array_push(
+                            $ustudents_fire_base_token_list,
+                            $ustudent->fire_base_token
+                        );
+                    }
+                }
+            }
+
+        }
+
+        if (sizeof($ustudents_fire_base_token_list) > 0) {
+            AdminController::notify(
+                "نمره آزمون",
+                " نمره آزمون " . Test::find($test_id)->title . " کلاس " . $course->title,
+                User::find($user_id)->fire_base_server_key,
+                $ustudents_fire_base_token_list
+            );
         }
 
         return back();
@@ -233,6 +305,7 @@ class AdminController extends Controller
         return view('vendor/backpack/crud/import_workbook')
             ->with('title', 'وارد کردن لیست کارنامه دانش آموزان')
             ->with('groups', \Auth::user()->groups()->get())
+            ->with('fields', \Auth::user()->fields()->get())
             ->with('user_id', \Auth::user()->id);
     }
 
@@ -272,6 +345,8 @@ class AdminController extends Controller
     {
         //Authenticating provider
         $user = User::where('id' , '=' , $request->input('user_id'))->first();
+        $ustudents_fire_base_token_list = [];
+
         if ($user){
             $user_id = $user->id;
         }else
@@ -325,10 +400,32 @@ class AdminController extends Controller
                             'grades' => implode("|",$grades),
                             'lessons' => implode("|",$lessons)
                         ]);
+
+                        $ustudent = Ustudent::where([
+                            ['user_id', '=', $user_id],
+                            ['national_code', '=', $student->national_code]
+                        ])->first();
+                        if ($ustudent) {
+                            array_push(
+                                $ustudents_fire_base_token_list,
+                                 $ustudent->fire_base_token
+                            );
+                        }
+
                     }
                 }
                 $i++;
             }
+
+            if (sizeof($ustudents_fire_base_token_list) > 0) {
+                AdminController::notify(
+                    "کارنامه جدید",
+                    " کارنامه " . $month . " " . $year,
+                    User::find(\Auth::user()->id)->fire_base_server_key,
+                    $ustudents_fire_base_token_list
+                );
+            }
+
         } catch (Exception $e) {
             return back()->withErrors(['error'=>'.فرمت فایل انتخابی با فرمت ارائه شده مطابقت ندارد']);
         }
@@ -467,6 +564,7 @@ class AdminController extends Controller
         $user = User::find($request->input('user_id'));
         $user->apk_name = $file_name;
         $user->last_version = $request->input('version');
+        $user->must_update = $request->input('must_update');
         $user->save();
 
         return Constant::$SUCCESS;

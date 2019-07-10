@@ -118,7 +118,7 @@ class CourseCrudController extends CrudController
 
         $this->crud->addButtonFromView('line', 'course_tests', 'course_tests', 'beginning');
         $this->crud->addButtonFromView('line', 'course_ctr', 'course_ctr', 'beginning');
-        $this->crud->addButtonFromView('line', 'course_students', 'course_students', 'beginning');
+        $this->crud->addButtonFromView('line', 'course_ustudents', 'course_ustudents', 'beginning');
 
         // ------ CRUD FIELDS
         // $this->crud->addField($options, 'update/create/both');

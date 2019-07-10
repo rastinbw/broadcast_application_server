@@ -77,7 +77,14 @@
                         </tr>
                         </thead>
                         <tbody>
-
+                        <td>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="hidden" value="0">
+                                    <input type="checkbox" value="1"/>
+                                </label>
+                            </div>
+                        </td>
                         </tbody>
                         <tfoot>
                         <tr>

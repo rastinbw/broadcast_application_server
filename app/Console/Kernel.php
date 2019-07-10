@@ -35,10 +35,16 @@ class Kernel extends ConsoleKernel
     {
         // broadcast:delete_not_verified_ustudents
         $schedule->call(function (){
-            Ustudent::where([
+            $ustudents = Ustudent::where([
                 ['verified', '=', false],
-                ['created_at', '<=', Carbon::now()->subMinutes(30)->toDateTimeString()]
-            ])->delete();
+                ['created_at', '<=', Carbon::now()->subMinutes(1)->toDateTimeString()]
+            ]);
+
+            foreach ($ustudents->get() as $ustudent){
+                $ustudent->plans()->sync([]);
+            }
+
+            $ustudents->delete();
         });
 
         // broadcast:delete_past_limit_posts

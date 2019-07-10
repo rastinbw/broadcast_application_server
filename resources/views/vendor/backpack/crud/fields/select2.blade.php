@@ -1,6 +1,7 @@
 <!-- select2 -->
 @php
     $current_value = old($field['name']) ? old($field['name']) : (isset($field['value']) ? $field['value'] : (isset($field['default']) ? $field['default'] : '' ));
+    $field['should_display_hyphen'] = isset($field['should_display_hyphen']) ? $field['should_display_hyphen'] : true;
 @endphp
 
 <div @include('crud::inc.field_wrapper_attributes') >
@@ -13,7 +14,7 @@
         @include('crud::inc.field_attributes', ['default_class' =>  'form-control select2_field'])
         >
 
-        @if ($entity_model::isColumnNullable($field['name']))
+        @if ($entity_model::isColumnNullable($field['name']) && $field['should_display_hyphen'])
             <option value="">-</option>
         @endif
 

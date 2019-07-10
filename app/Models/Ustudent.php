@@ -69,10 +69,21 @@ class Ustudent extends Model
         return $this->belongsTo('App\Models\Field');
     }
 
+    public function plans()
+    {
+        return $this->belongsToMany('App\Models\Plan');
+    }
+
     public function tickets()
     {
         return $this->hasMany('App\Models\Ticket');
     }
+
+    public function courses()
+    {
+        return $this->belongsToMany('App\Models\Course');
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

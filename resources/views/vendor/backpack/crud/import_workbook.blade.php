@@ -3,7 +3,7 @@
 @section('header')
     <section style="padding-top: 5px" class="content-header">
         <h1 style="text-align: right;">
-            <span  style="font-size: 20px" >وارد کردن لیست دانش آموزان </span>
+            <span  style="font-size: 20px" >وارد کردن لیست کارنامه دانش آموزان </span>
         </h1>
     </section>
 @endsection
@@ -64,23 +64,62 @@
                             </span>
                         </div>
 
-                        <div class="form-group" id="input_group" style="margin-right: 5px; margin-left: 5px">
-                            <div class="col-md-12">
-                                <div style="padding: 5px" class="col-md-8 col-md-offset-2">
-                                    <select style="text-align: right; font-size: 18px" class="form-control" name="group">
-                                        @foreach($groups as $group)
-                                            <option>{{ $group->title }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
 
-                                <label style="text-align: left" class="col-md-2 control-label">گروه آموزشی *</label>
-                            </div>
+                        {{--<div class="form-group" id="input_group" style="margin-right: 5px; margin-left: 5px">--}}
+                            {{--<div class="col-md-12">--}}
+                                {{--<div style="padding: 5px" class="col-md-8 col-md-offset-2">--}}
+                                    {{--<select style="text-align: right; font-size: 18px" class="form-control" name="group">--}}
+                                        {{--@foreach($groups as $group)--}}
+                                            {{--<option>{{ $group->title }}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
 
-                            <span id="input_month_error" style="display: none" class="help-block col-md-8 col-md-offset-2">
-                                <strong>.لطفا گروه آموزشی را مشخص کنید</strong>
-                            </span>
-                        </div>
+                                {{--<label style="text-align: left" class="col-md-2 control-label">پایه تحصیلی *</label>--}}
+                            {{--</div>--}}
+
+                            {{--<span id="input_group_error" style="display: none" class="help-block col-md-8 col-md-offset-2">--}}
+                                {{--<strong>.لطفا پایه تحصیلی را مشخص کنید</strong>--}}
+                            {{--</span>--}}
+                        {{--</div>--}}
+
+
+                        {{--<div class="form-group" id="input_field" style="margin-right: 5px; margin-left: 5px">--}}
+                            {{--<div class="col-md-12">--}}
+                                {{--<div style="padding: 5px" class="col-md-8 col-md-offset-2">--}}
+                                    {{--<select style="text-align: right; font-size: 18px" class="form-control" name="field">--}}
+                                        {{--@foreach($fields as $field)--}}
+                                            {{--<option>{{ $field->title }}</option>--}}
+                                        {{--@endforeach--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
+
+                                {{--<label style="text-align: left" class="col-md-2 control-label">رشته تحصیلی *</label>--}}
+                            {{--</div>--}}
+
+                            {{--<span id="input_field_error" style="display: none" class="help-block col-md-8 col-md-offset-2">--}}
+                                {{--<strong>.لطفا رشته تحصیلی را مشخص کنید</strong>--}}
+                            {{--</span>--}}
+                        {{--</div>--}}
+
+
+                        {{--<div class="form-group" id="input_gender" style="margin-right: 5px; margin-left: 5px">--}}
+                            {{--<div class="col-md-12">--}}
+                                {{--<div style="padding: 5px" class="col-md-8 col-md-offset-2">--}}
+                                    {{--<select style="text-align: right; font-size: 18px" class="form-control" name="gender">--}}
+                                        {{--<option>{{ \App\Includes\Constant::$GENDER_MALE_TITLE }}</option>--}}
+                                        {{--<option>{{ \App\Includes\Constant::$GENDER_FEMALE_TITLE }}</option>--}}
+                                    {{--</select>--}}
+                                {{--</div>--}}
+
+                                {{--<label style="text-align: left" class="col-md-2 control-label">جنسیت *</label>--}}
+                            {{--</div>--}}
+
+                            {{--<span id="input_gender_error" style="display: none" class="help-block col-md-8 col-md-offset-2">--}}
+                                {{--<strong>.لطفا جنسیت را مشخص کنید</strong>--}}
+                            {{--</span>--}}
+                        {{--</div>--}}
+
 
                         <div class="form-group" id="input_scale" style="margin-right: 5px; margin-left: 5px">
                             <div class="col-md-12">

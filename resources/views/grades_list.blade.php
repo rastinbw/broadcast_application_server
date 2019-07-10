@@ -98,7 +98,7 @@
                                         <input style="text-align: center"
                                                name="{{ $s->national_code }}"
                                                type="text"
-                                               value="{{ $grades[$s->national_code] }}">
+                                               value="{{ isset($grades[$s->national_code]) ?  $grades[$s->national_code] : "-"}}">
                                     </div>
                                 </td>
                             </tr>

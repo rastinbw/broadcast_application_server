@@ -6,6 +6,9 @@ use App\Http\Controllers\Admin\WorkbookCrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\WorkbookRequest as StoreRequest;
 use App\Http\Requests\WorkbookRequest as UpdateRequest;
+use App\Models\Student;
+use App\Models\Ustudent;
+use App\User;
 
 class StudentWorkbookCrudController extends WorkbookCrudController {
 
@@ -52,6 +55,20 @@ class StudentWorkbookCrudController extends WorkbookCrudController {
 
         $workbook->save();
 
+        $ustudent = Ustudent::where([
+            ['user_id', '=', \Auth::user()->id],
+            ['national_code', '=', Student::find(\Route::current()->parameter('student_id'))->national_code]
+        ])->first();
+        if ($ustudent) {
+            AdminController::notify(
+                "کارنامه جدید",
+                " کارنامه " . $workbook->month . " " . $workbook->year,
+                User::find(\Auth::user()->id)->fire_base_server_key,
+                $ustudent->fire_base_token
+            );
+        }
+
+
         return $redirect_location;
 
     }
@@ -77,6 +94,19 @@ class StudentWorkbookCrudController extends WorkbookCrudController {
         $workbook->grades = implode("|",$grades);
 
         $workbook->save();
+
+        $ustudent = Ustudent::where([
+            ['user_id', '=', \Auth::user()->id],
+            ['national_code', '=', Student::find(\Route::current()->parameter('student_id'))->national_code]
+        ])->first();
+        if ($ustudent) {
+            AdminController::notify(
+                "تغییر کارنامه",
+                " کارنامه " . $workbook->month . " " . $workbook->year,
+                User::find(\Auth::user()->id)->fire_base_server_key,
+                $ustudent->fire_base_token
+            );
+        }
 
         return $redirect_location;
 

@@ -134,6 +134,11 @@ class User extends Authenticatable
         return $this->hasMany('App\Models\Field');
     }
 
+    public function plans()
+    {
+        return $this->hasMany('App\Models\Plan');
+    }
+
     public function messages()
     {
         return $this->hasMany('App\Models\Message');

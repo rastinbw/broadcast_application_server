@@ -9,6 +9,7 @@ use App\Http\Controllers\CrudController;
 // VALIDATION: change the requests to match your own file names if you need form validation
 use App\Http\Requests\MessageRequest as StoreRequest;
 use App\Http\Requests\MessageRequest as UpdateRequest;
+use App\Models\Ustudent;
 
 class MessageCrudController extends CrudController
 {
@@ -58,8 +59,22 @@ class MessageCrudController extends CrudController
         ], 'update/create/both');
 
         $this->crud->addFields([
+            [
+                'label' => 'فیلتر پایه تحصیلی',
+                'name' => 'groups_filter',
+                'type' => 'toggle',
+                'inline' => true,
+                'options' => [
+                    0 => 'خاموش',
+                    1 => 'روشن'
+                ],
+                'hide_when' => [
+                    0 => ['group_id'],
+                ],
+                'default' => 0
+            ],
             [  // Select
-                'label' => "* پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید )",
+                'label' => "پایه ( میتوانید در بخش پایه های تحصیلی اقدام به اضافه کردن پایه های جدید نمایید )",
                 'type' => 'select2',
                 'name' => 'group_id', // the db column for the foreign key
                 'entity' => 'group', // the method that defines the relationship in your Model
@@ -73,8 +88,25 @@ class MessageCrudController extends CrudController
                 ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
+        ], 'create');
+
+        $this->crud->addFields([
+            [
+                'label' => 'فیلتر رشته تحصیلی',
+                'name' => 'fields_filter',
+                'type' => 'toggle',
+                'inline' => true,
+                'options' => [
+                    0 => 'خاموش',
+                    1 => 'روشن'
+                ],
+                'hide_when' => [
+                    0 => ['field_id'],
+                ],
+                'default' => 0
+            ],
             [  // Select
-                'label' => "* رشته ( میتوانید در بخش رشته های تحصیلی اقدام به اضافه کردن رشته های جدید نمایید )",
+                'label' => "رشته ( میتوانید در بخش رشته های تحصیلی اقدام به اضافه کردن رشته های جدید نمایید )",
                 'type' => 'select2',
                 'name' => 'field_id', // the db column for the foreign key
                 'entity' => 'field', // the method that defines the relationship in your Model
@@ -88,18 +120,71 @@ class MessageCrudController extends CrudController
                 ],
                 'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
+        ], 'create');
+
+
+        $this->crud->addFields([
             [
-                'name'        => 'gender', // the name of the db column
-                'label'       => 'جنسیت', // the input label
-                'type'        => 'radio',
-                'options'     => [ // the key will be stored in the db, the value will be shown as label;
-                    Constant::$GENDER_FEMALE => 'دختر',
-                    Constant::$GENDER_MALE => 'پسر',
+                'label' => 'فیلتر طرح و آزمون خاص',
+                'name' => 'plans_filter',
+                'type' => 'toggle',
+                'inline' => true,
+                'options' => [
+                    0 => 'خاموش',
+                    1 => 'روشن'
                 ],
-                // optional
-                'inline'      => true, // show the radios all on the same line?
+                'hide_when' => [
+                    0 => ['plan_id'],
+                ],
+                'default' => 0
+            ],
+            [  // Select
+                'label' => "طرح ( میتوانید در بخش طرح و آزمون های خاص اقدام به اضافه کردن طرح های جدید نمایید )",
+                'type' => 'select2',
+                'name' => 'plan_id', // the db column for the foreign key
+                'entity' => 'plan', // the method that defines the relationship in your Model
+                'attribute' => 'title', // foreign key attribute that is shown to user
+                'model' => "App\Models\Plan", // foreign key model
+                'attributes' => [
+                    'dir' => 'rtl'
+                ],
+                'wrapperAttributes' => [
+                    'dir' => 'rtl'
+                ],
+                'filter' => ['key'=>'user_id', 'operator'=>'=', 'value'=>\Auth::user()->id] //updated select2 file for this
             ],
         ], 'create');
+
+
+        $this->crud->addFields([
+            [
+                'label' => 'فیلتر جنسیت',
+                'name' => 'gender_filter',
+                'type' => 'toggle',
+                'inline' => true,
+                'options' => [
+                    0 => 'خاموش',
+                    1 => 'روشن'
+                ],
+                'hide_when' => [
+                    0 => ['gender'],
+                ],
+                'default' => 0
+            ],
+            [   // select_from_array
+                'name'        => 'gender',
+                'label' => 'جنسیت',
+                'type' => 'select2_from_array',
+                'options'     => [ // the key will be stored in the db, the value will be shown as label;
+                    Constant::$GENDER_MALE => 'پسر',
+                    Constant::$GENDER_FEMALE => 'دختر',
+                ],
+                'allows_null' => true,
+                // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
+            ],
+        ], 'create');
+
+
 
         $this->crud->addColumns([
             [
@@ -121,6 +206,14 @@ class MessageCrudController extends CrudController
                 'entity' => 'field', // the method that defines the relationship in your Model
                 'attribute' => "title", // foreign key attribute that is shown to user
                 'model' => "App\Models\Field", // foreign key model
+            ],
+            [
+                'label' =>  "طرح", // Table column heading
+                'type' => "select",
+                'name' => 'plan_id', // the column that contains the ID of that connected entity;
+                'entity' => 'plan', // the method that defines the relationship in your Model
+                'attribute' => "title", // foreign key attribute that is shown to user
+                'model' => "App\Models\Plan", // foreign key model
             ],
             [
                 'name' => 'gender',
@@ -288,17 +381,48 @@ class MessageCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        // your additional operations before save here
+        // ‌check for filters
+        $filters = [];
+        $plan_id = $request->input('plan_id');
+
+        if ($request->input('gender') != null)
+            array_push($filters, ['gender', '=', $request->input('gender')]);
+        if ($request->input('field_id') != null)
+            array_push($filters, ['field_id', '=', $request->input('field_id')]);
+        if ($request->input('group_id') != null)
+            array_push($filters, ['group_id', '=', $request->input('group_id')]);
+
+        if(sizeof($filters) == 0 && $plan_id == null)
+            return back()->withErrors(['custom_fail' => true, 'errors' => ['.حداقل یک فیلتر را انتخاب کنید']]);
+
+        //saving message
         $redirect_location = parent::storeCrud($request);
 
         $user = \Auth::user();
-
         $message = $this->crud->entry;
         $message->user_id = $user->id;
         $message->save();
 
-        $to = '/topics/group_'.$message->gender.$message->group_id.$message->field_id;
-        AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
+
+        $to = [];
+        //getting ustudents according to filters
+        if ($plan_id != null)
+            $ustudents = Ustudent::where($filters)
+                ->whereHas('plans', function ($q) use ($plan_id) {
+                    $q->where('plans.id', $plan_id);
+             })->get();
+        else
+            $ustudents = Ustudent::where($filters)->get();
+
+
+        //getting ustudents tokens and sends notifications
+        foreach ($ustudents as $ustudent){
+            if ($ustudent->fire_base_token != '')
+                array_push($to, $ustudent->fire_base_token);
+        }
+
+        if (sizeof($to) != 0)
+            AdminController::notify("پیام جدید", $message->title, $user->fire_base_server_key, $to);
 
         return $redirect_location;
     }

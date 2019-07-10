@@ -1,0 +1,255 @@
+**notice: some fields like (user_id, created_at, updated_at...) are not mentioned in outputs due to their redundancy but you can observe them by logging**
+
+
+"REGISTER"
+/api/{user_id}/login POST, returns a json 
+
+input: password:string, national_code:string, 
+	   phone_number:string, first_name:string, last_name: string
+	   gender:int(0:female or 1:male), group_id:int, field_id:int
+	   plan_ids:string(json_array)
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": REPETITIVE_PHONE_NUMBER}
+output3: {"result_code": REPETITIVE_NATIONAL_CODE}
+output3: {"result_code": SERVER_ISSUE}
+-----------------------------------------------------------------------------------------------------------
+"SEND VERIFICATION CODE"
+/api/{user_id}/ustudent/verification_code POST, returns phone message 
+
+input: national_code:string
+
+output: redundant (phone message)
+-----------------------------------------------------------------------------------------------------------
+"CONFIRM"
+/api/{user_id}/ustudent/confirm POST, returns a json 
+
+input: verification_code:string, national_code:string
+	  
+output1: {"result_code": SUCCESS, "data": string(json_object)}
+	json_object: {
+	 "token":string, "group_id":int, "field_id":int,
+	 "gender":int, "first_name":string, "last_name":string,
+	 "plan_ids":string(json_array)
+	}
+output2: {"result_code": INVALID_VERIFICATION_CODE}
+-----------------------------------------------------------------------------------------------------------
+"LOGIN"
+/api/{user_id}/ustudent/login POST, returns a json 
+
+input: national_code:string, password:string
+
+output1: {"result_code": SUCCESS, "data": string(json_object)}
+	json_object: {
+	 "token":string, "group_id":int, "field_id":int,
+	 "gender":int, "first_name":string, "last_name":string,
+	 "plan_ids":string(json_array)
+	}
+output2: {"result_code": INVALID_PASSWORD}
+output3: {"result_code": INVALID_NATIONAL_CODE}
+-----------------------------------------------------------------------------------------------------------
+"LOGIN AS PARENT"
+/api/{user_id}/ustudent/login/parent POST, returns a json 
+
+input: parent_code:string
+
+output1: {"result_code": SUCCESS, "data": string(json_object)}
+	json_object: {
+	 "token":string, "group_id":int, "field_id":int,
+	 "gender":int, "first_name":string, "last_name":string,
+	 "plan_ids":string(json_array)
+	}
+output2: {"result_code": USER_NOT_REGISTERED}
+output3: {"result_code": INVALID_PARENT_CODE}
+-----------------------------------------------------------------------------------------------------------
+"CHECK TOKEN"
+/api/{user_id}/ustudent/check_token POST, returns a json 
+
+input: token:string
+
+output1: {"result_code": SUCCESS, "data": string(token)}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"FORGET PASSWORD"
+/api/{user_id}/ustudent/forget_password POST, returns a json or phone message
+
+input: national_code:string
+
+output1: {"result_code": INVALID_REQUEST}
+output2: {"result_code": INVALID_NATIONAL_CODE}
+
+description: This request works every 5 minutes. Any attempt in less than 5 minutes returns output1.
+			 If the request is valid the result is redundant.
+-----------------------------------------------------------------------------------------------------------
+"CHECK VERSION"
+/api/{user_id}/ustudent/check_version/{version} GET, returns a json 
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": SHOULD_UPDATE, "data": {"name":string, "version":string, "must_update":string(0 or 1)}}
+-----------------------------------------------------------------------------------------------------------
+"SAVE FIREBASE TOKEN"
+/api/{user_id}/ustudent/save_fire_base_token POST, returns a json 
+
+input: fire_base_token:string
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"CHANGE PASSWORD"
+/api/{user_id}/ustudent/change_password POST, returns a json
+
+input: password:string, new_password:string, token:string
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": INVALID_PASSWORD}
+output3: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"USER INFO"
+/api/{user_id}/ustudent/info POST, returns a json 
+
+input: token:string
+
+output1: {"result_code": SUCCESS, "data": string(json_object)}
+	json_object: {
+	 "group_id":int, "field_id":int,
+	 "gender":int, "first_name":string, "last_name":string,
+	 "plan_ids":string(json_array), "is_student":int(0 or 1)
+	}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"UPDATE USER INFO"
+/api/{user_id}/ustudent/info/update POST, returns a json 
+
+input: token:string, password:string, national_code:string, 
+	   first_name:string, last_name: string, gender:int(0:female or 1:male),
+	   group_id:int, field_id:int, plan_ids:string(json_array)
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": INVALID_TOKEN}
+output3: {"result_code": REPETITIVE_NATIONAL_CODE}
+-----------------------------------------------------------------------------------------------------------
+"STUDENT WORKBOOK"
+/api/{user_id}/ustudent/workbook POST, returns a json
+
+input: token:string
+
+output1: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: {
+		"id":int, "student_id":int, "year":string, "month":string,
+		"lessons":string("x|y|z"), "grades": string("15|20|17"), "scale": int
+	}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"USER COURSES"
+/api/{user_id}/ustudent/courses POST, returns a json
+
+input: token:string
+
+output1: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: {"id":int, "title":string, "teacher":string}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"USER ABSENTS"
+/api/{user_id}/ustudent/absents POST, returns a json
+
+input: token:string, course_id:int
+
+output1: {"result_code": SUCCESS "data": json_array(dates)}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"USER GRADES"
+/api/{user_id}/ustudent/grades POST, returns a json
+
+input: token:string
+
+output1: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: {'title':string, 'date':string , 'grade':int}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"USER MESSAGES"
+/api/{user_id}/messages POST, returns a json
+
+input: token:string
+
+output1: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: {'title':string, 'content':string , created_at:string(2018-07-28 02:13:09), updated_at:string}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"SEND TICKET"
+/api/{user_id}/send_ticket POST, returns a json
+
+input: token:string, title:string, message:string, email:string,
+
+output1: {"result_code": SUCCESS}
+output2: {"result_code": INVALID_TOKEN}
+-----------------------------------------------------------------------------------------------------------
+"GET POST LIST"
+/api/{user_id}/posts/{type}/{chunk_count}/{page_count}/{search_phrase}/{group_id}/{field_id} GET, returns a json 
+
+parameters: 
+	type -> 'html', 'media', 'program'
+	search_phrase, group_id, field_id -> set null if you don't want
+	chunk_count -> how many result you want per each request
+	page_count -> which chunk you want
+
+output1: {"result_code": NO_MORE_POSTS}
+output2: {"result_code": INVALID_TOKEN}
+output3: {"result_code": SUCCESS, data: json_array(type_json_object)}
+	type_json_object:
+		type: html -> {id:int, title:string, preview_content:string, content:string, user_id:int, created_at:string(2018-07-28 02:13:09), updated_at:string}
+		type: program -> {id:int, title:string, preview_content:string, content:string, group_id:int, user_id:int, created_at:string(2018-07-28 02:13:09), updated_at:string}
+		type: media ->{id:int, title:string, description:string, media:string, user_id:int, created_at:string(2018-07-28 02:13:09), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
+"GET GROUP LIST"
+/api/{user_id}/groups GET, returns a json 
+
+output: {"result_code": SUCCESS, data: string(json_array(json_object))}
+	json_object: {id:int, title:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
+"GET FIELD LIST"
+/api/{user_id}/fields GET, returns a json 
+
+output: {"result_code": SUCCESS, data: string(json_array(json_object))}
+	json_object: {id:int, title:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
+"GET PLANS LIST"
+/api/{user_id}/plans GET, returns a json
+
+output: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: {id:int, title:string, description:string, created_at:string(2018-07-28 02:13:09), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
+"STAFF UPDATED STATUS"
+/api/{user_id}/staff/updated GET, returns a json
+
+output: {"result_code": SUCCESS "data": string(json_object}
+	json_object: {id:int (*staff_id), updated_at:string}
+-----------------------------------------------------------------------------------------------------------
+"STAFF LIST"
+/api/{user_id}/staff POST, returns a json 
+
+input: required_id_list:string(json_array(int)) -> it can be empty for the first time
+
+output: {"result_code": SUCCESS "data": string(json_array(json_object))}
+	json_object: { id:int, first_name:string, last_name:string, profession:string,
+				 description:string, email:string, photo:string (fucking damn base64),
+				 created_at:string(2018-07-28 02:13:09), updated_at:string }
+-----------------------------------------------------------------------------------------------------------
+"SLIDER UPDATED STATUS"
+/api/{user_id}/slider/updatedGET, returns a json
+
+output: {"result_code": SUCCESS "data": string (last update date) }
+-----------------------------------------------------------------------------------------------------------
+"SLIDER"
+/api/{user_id}/slider GET, returns a json 
+
+output: {"result_code": SUCCESS "data": string(json_object)}
+	json_object: { id:int, image1:string, image2:string, image3:string, image4:string,
+				  created_at:string(2018-07-28 02:13:09), updated_at:string }
+
+description: All the images are fucking damn base64
+-----------------------------------------------------------------------------------------------------------
+"ABOUT US"
+/api/{user_id}/about GET, returns html
+
+output: about us page (use webview)
+-----------------------------------------------------------------------------------------------------------

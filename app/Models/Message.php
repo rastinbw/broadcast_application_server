@@ -20,7 +20,7 @@ class Message extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     // protected $guarded = ['id'];
-    protected $fillable = ['title', 'content', 'user_id', 'group_id', 'field_id', 'gender'];
+    protected $fillable = ['title', 'content', 'user_id', 'group_id', 'field_id','plan_id', 'gender'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -54,6 +54,11 @@ class Message extends Model
     public function field()
     {
         return $this->belongsTo('App\Models\Field');
+    }
+
+    public function plan()
+    {
+        return $this->belongsTo('App\Models\Plan');
     }
     /*
     |--------------------------------------------------------------------------

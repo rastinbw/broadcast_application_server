@@ -136,7 +136,7 @@
                 <input id="searchBox" class="form-control input-sm" placeholder="جست و جو در لیست دانش آموزان"  type="search">
 
                 <select id="groups"  name="group_id" dir="rtl" class="form-control select2_field selects">
-                    <option id="group_all">همه گروه ها</option>
+                    <option id="group_all">همه پایه ها</option>
                     @foreach($group_list as $group)
                         <option id="group_{{$group->id}}"> {{$group->title}}</option>
                     @endforeach
@@ -438,10 +438,10 @@
 
         fill_student_list({!! json_encode($student_list->toArray()) !!});
         //when editing
-        @foreach($course->students()->get() as $student)
+        @foreach($course->ustudents()->get() as $student)
             course_students.push({{$student->id}} + "");
         @endforeach
-        fill_course_student_list({!! json_encode($course->students()->get()->toArray()) !!});
+        fill_course_student_list({!! json_encode($course->ustudents()->get()->toArray()) !!});
 
         $("#groups").change(function() {
             var id = $(this).children(":selected").attr("id");

@@ -115,11 +115,6 @@ class Student extends Model
         return $this->hasMany('App\Models\Workbook');
     }
 
-    public function courses()
-    {
-        return $this->belongsToMany('App\Models\Course');
-    }
-
     public function group()
     {
         return $this->belongsTo('App\Models\Group');

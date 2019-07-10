@@ -9,6 +9,7 @@
 <li><a href="{{ backpack_url('course') }}"><span>کلاس ها</span> <i class="fa fa-square "></i></a></li>
 <li><a href="{{ backpack_url('group') }}"><span>پایه های تحصیلی</span> <i class="fa fa-th-large "></i></a></li>
 <li><a href="{{ backpack_url('field') }}"><span>رشته های تحصیلی</span> <i class="fa fa-th-large "></i></a></li>
+<li><a href="{{ backpack_url('plan') }}"><span>طرح و آزمون های خاص</span> <i class="fa fa-th-large "></i></a></li>
 <li><a href="{{ backpack_url('staff') }}"><span>اعضای مجموعه</span> <i class="fa fa-users "></i></a></li>
 <?php
 $id = \Auth::user()->slider_id;

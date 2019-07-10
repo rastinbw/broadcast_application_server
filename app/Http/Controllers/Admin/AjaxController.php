@@ -10,6 +10,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Course;
 use App\Models\Student;
+use App\Models\Ustudent;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -37,13 +38,13 @@ class AjaxController extends Controller
             array_push($filter_list, ['gender', '=', $gender_id]);
 
         if ($search_phrase != ""){
-            $students = Student::where($filter_list)
+            $students = Ustudent::where($filter_list)
                 ->where(function ($query) use ($search_phrase){
                     $query->where(DB::raw('concat(first_name," ",last_name)'), 'like', '%' . $search_phrase . '%')
                         ->orWhere('national_code', '=',  $search_phrase);
                 })->get();
         }else
-            $students = Student::where($filter_list)->get();
+            $students = Ustudent::where($filter_list)->get();
 
         return response()->json(array('students'=> $students), 200);
     }
@@ -55,7 +56,7 @@ class AjaxController extends Controller
 
         if ($id_list) {
             foreach ($id_list as $id)
-                array_push($students, Student::find($id));
+                array_push($students, Ustudent::find($id));
         }
 
         return response()->json(array('students'=> $students), 200);
@@ -67,15 +68,15 @@ class AjaxController extends Controller
 
         if ($id_list) {
             foreach ($id_list as $id) {
-                $check = DB::table('course_student')
+                $check = DB::table('course_ustudent')
                         ->where([
-                                ['student_id', $id],
+                                ['ustudent_id', $id],
                                 ['course_id', $course->id]]
                         )->count() > 0;
 
                 if (!$check) {
-                    $course->students()->save(
-                        Student::find($id)
+                    $course->ustudents()->save(
+                        Ustudent::find($id)
                     );
                 }
             }
@@ -91,8 +92,8 @@ class AjaxController extends Controller
 
         if ($id_list) {
             foreach ($id_list as $id) {
-                $course->students()->detach(
-                    Student::find($id)
+                $course->ustudents()->detach(
+                    Ustudent::find($id)
                 );
             }
         }

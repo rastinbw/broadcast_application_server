@@ -125,7 +125,7 @@ class FieldCrudController extends CrudController
 
     public function store(StoreRequest $request)
     {
-        if(Field::where([['title', $request->input('title')]])->first())
+        if(Field::where([['title', trim($request->input('title'))]])->first())
             return back()->withErrors([
                 'custom_fail' => true,
                 'errors' => ['.رشته تحصیلی با این عنوان قبلا ایجاد شده است']

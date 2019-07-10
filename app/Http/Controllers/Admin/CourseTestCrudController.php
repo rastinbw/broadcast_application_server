@@ -66,15 +66,6 @@ class CourseTestCrudController extends TestCrudController {
         $course = Course::find(\Route::current()->parameter('course_id'));
         $test->course_id = $course->id;
 
-        foreach ($course->students()->get() as $student){
-            $grade = new Grade();
-            $grade->user_id = \Auth::user()->id;
-            $grade->test_id = $test->id;
-            $grade->national_code = $student->national_code;
-            $grade->grade = Constant::$NONE_GRADE;
-            $grade->save();
-        }
-
         $date = $request->input('year').'/'.$request->input('month').'/'.$request->input('day');
         $test->date = $date;
 
